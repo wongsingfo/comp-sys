@@ -10,7 +10,7 @@ nav_order: 1
 
 Here, the term "_context_" denotes a set of properties that describe the execution status of a program. For example, from the perspective of the process, a context includes the values in registers, the address space of the stack, the address space of the heap, and so on. During the process of context switching, the scheduler must take care of the saving and restoring of the running states.
 
-Next, we are going to discuss thr program context from the perspective of the programming language.
+Next, we are going to discuss the program context from the perspective of the programming language.
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -84,7 +84,7 @@ AST._while.prototype.compile = function(K) {
 (display (call-with-current-continuation f)) ; displays 2
 ```
 
-## C
+## program context in C
 
 Here are some posibilities for the C programming language:
 
