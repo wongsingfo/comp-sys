@@ -58,3 +58,5 @@ compress_html:
   startings: []
   blanklines: false
   profile: false
+
+bin_option_style: "{: .text-purple-000 .fw-500 .bin-option }"
