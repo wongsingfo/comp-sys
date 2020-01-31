@@ -101,6 +101,5 @@ Every local APIC has a programmable task priority register (TPR), which is used 
 
 ## Gates
 
-<img src="{{site.baseurl}}/assets/img/Screen Shot 2020-01-29 at 7.57.43 PM.png" width="588">
-
+{% include img.html filename="Screen Shot 2020-01-29 at 7.57.43 PM.png" width="588" %}
 

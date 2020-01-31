@@ -69,7 +69,7 @@ One implementation of that approach is a branch prediction buffer or branch hist
 
 Often, 2-bit prediction schemes are used:
 
-<img src="{{site.baseurl}}/assets/img/Screen Shot 2020-01-31 at 12.56.40 PM.png" width="588">
+{% include img.html filename="Screen Shot 2020-01-31 at 12.56.40 PM.png" width="588" %}
 
 ### Static: Branch Delay Slot
 
