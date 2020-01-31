@@ -15,6 +15,7 @@ This documentation is intended to give a very very very quick overview of the Ru
 
 - [Documenation](https://doc.rust-lang.org/std/index.html)
 - Book: [The Rust Programming Language](https://doc.rust-lang.org/book/)
+- Book: [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
 - Slides: [Rethinking Systems Programming](https://thoughtram.io/rust-and-nickel/)
 
 ## Table of contents
@@ -22,21 +23,6 @@ This documentation is intended to give a very very very quick overview of the Ru
 
 1. TOC
 {:toc}
-
-- tool `cargo`: Rust’s package manager and build system
-- file `Cargo.toml`: configuration file used by `cargo`
-
-Set up a workspace:
-
-```bash
-$ cargo new [name]
-$ cargo new [name] --lib  # library project
-$ cd [name]
-$ cargo run
-$ cargo run --package [packet name]
-```
-
-Split your program into a `main.rs` and a `lib.rs` and move your program’s logic to `lib.rs`.
 
 ## Basic
 
@@ -319,11 +305,26 @@ pub fn eat_at_restaurant() {
 
 We can edit the file `Cargo.toml` to add a crate to the package, then run `cargo update` to download and compile it:
 
+- tool `cargo`: Rust’s package manager and build system
+- file `Cargo.toml`: configuration file used by `cargo`
+
 ```rust
 [dependencies]
 rand = "0.6.0"
 iced = { path = "../iced" }  // or local crate
 ```
+
+Set up a workspace:
+
+```bash
+$ cargo new [name]
+$ cargo new [name] --lib  # library project
+$ cd [name]
+$ cargo run
+$ cargo run --package [packet name]
+```
+
+Split your program into a `main.rs` and a `lib.rs` and move your program’s logic to `lib.rs`.
 
 ## Generic Type
 
@@ -662,7 +663,7 @@ fn main() {
 }
 ```
 
-Channel:
+### Channel
 
 ```rust
 use std::thread;
@@ -694,6 +695,34 @@ As you might suspect, `Mutex<T> `is a smart pointer. More accurately, the call t
 ------------------------
 
 There are two traits about concurrency: `Send` and `Sync`. `Send` means its ownership can be transferred between threads. `Sync` means it is safe to be referenced from multiple threads. However, implementing them manually is unsafe. They’re just useful for enforcing invariants related to concurrency.
+
+### Future
+
+Wrap `Future` into `async/await` (this grammmar is added in 2018):
+
+```rust
+async fn learn_and_sing() {
+    // Wait until the song has been learned before singing it.
+    // We use `.await` here rather than `block_on` to prevent blocking the
+    // thread, which makes it possible to `dance` at the same time.
+    let song = learn_song().await;
+    sing_song(song).await;
+}
+async fn async_main() {
+    let f1 = learn_and_sing();
+    let f2 = dance();
+
+    // `join!` is like `.await` but can wait for multiple futures concurrently.
+    // If we're temporarily blocked in the `learn_and_sing` future, the `dance`
+    // future will take over the current thread. If `dance` becomes blocked,
+    // `learn_and_sing` can take back over. If both futures are blocked, then
+    // `async_main` is blocked and will yield to the executor.
+    futures::join!(f1, f2);
+}
+fn main() {
+    block_on(async_main());
+}
+```
 
 ## Foreign Function Interface 
 

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Unix World
+title: Linking
 nav_order: 20
-permalink: docs/unix
+permalink: docs/linking
 has_children: true
 ---
 
 
-# Unix World
+# Linking
 
