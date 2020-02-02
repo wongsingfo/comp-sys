@@ -10,8 +10,9 @@ nav_order: 20
 
 References:
 
-- [Tool Interface Standard (TIS) Executable and Linking Format (ELF) Specification Version 1.2](https://pdos.csail.mit.edu/6.828/2018/readings/elf.pdf)
+- [Tool Interface Standard (TIS) Executable and Linking Format (ELF) Specification Version 1.2](https://pdos.csail.mit.edu/6.828/2018/readings/elf.pdf) (32 bits)
 - [Executable and Linkable Format (ELF)](http://www.skyfree.org/linux/references/ELF_Format.pdf)
+- [ELF-64 Object File Format](https://uclibc.org/docs/elf-64-gen.pdf)
 - [Linux Manual -- objdump(1)](http://man7.org/linux/man-pages/man1/objdump.1.html)
 - [Linux Manual -- readelf(1)](http://man7.org/linux/man-pages/man1/readelf.1.html)
 
@@ -38,6 +39,7 @@ There are three main types of object files.
 | Elf32_Word    | 4        | n          |
 | unsigned char | 1        | n          |
 
+(for 32-bit class only!!!)
 
 A ELF file contains:
 
@@ -55,40 +57,51 @@ A ELF file contains:
 
 ```c
 #define ELF_MAGIC 0x464C457FU	/* "\x7FELF" in little endian */
+#define EI_NIDENT 16
 
 struct Elf {
-	uint32_t e_magic;	// must equal ELF_MAGIC
-	uint8_t  e_elf[12];
-	uint16_t e_type;
-	uint16_t e_machine;
-	uint32_t e_version;
-	uint32_t e_entry;
-	uint32_t e_phoff;
-	uint32_t e_shoff;
-	uint32_t e_flags;
-	uint16_t e_ehsize;
-	uint16_t e_phentsize;
-	uint16_t e_phnum;
-	uint16_t e_shentsize;
-	uint16_t e_shnum;
-	uint16_t e_shstrndx;
+	unsigned char e_ident[EI_NIDENT]; 
+	Elf32_Half e_type;
+	Elf32_Half e_machine; 
+	Elf32_Word e_version; 
+	Elf32_Addr e_entry;
+	Elf32_Off e_phoff;
+	Elf32_Off e_shoff; 
+	Elf32_Word e_flags; 
+	Elf32_Half e_ehsize; 
+	Elf32_Half e_phentsize; 
+	Elf32_Half e_phnum; 
+	Elf32_Half e_shentsize; 
+	Elf32_Half e_shnum; 
+	Elf32_Half e_shstrndx;
 };
 ```
 
 About ELF Header:
 
+- `e_ident`:
+  - the first 4 bytes must equal to `ELF_MAGIC`
+  - `e_ident[4]` represents the file class:
+    - 1 : 32 bits
+    - 2 : 64 bits
+  - `e_ident[5]` represents the data encoding:
+    - 1 : little endian
+    - 2 : big endian
 - `e_ehsize`: This member holds the ELF header's size in bytes.
 - `e_entry`: This member is the virtual address to which the system first transfers control, thus starting the process.
 
 About Program Header:
 
-- `e_phoff`: This member holds the program header table's file offset in bytes. If the file has no program header table, this member holds zero.
-- `e_phnum`: This member holds the number of entries in the program header table. Thus the product of `e_phentsize` and `e_phnum` gives the table's size in bytes. If a file has no program header table, e_phnum holds the value zero.
+- `e_phoff`: program header table offset
+- `e_phnum`: number of program entries
+- `e_phentsize`: program entry size
 
 About Section Header:
 
-- `e_shoff`: This member holds the section header table's file offset in bytes. If the file has no section header table, this member holds zero.
-- `e_shnum`: This member holds the number of entries in the section header table. Thus the product of e_shentsize and e_shnum gives the section header table's size in bytes. If a file has no section header table, e_shnum holds the value zero.
+- `e_shoff`: section header table offset
+- `e_shnum`: number of section entries
+- `e_shentsize`: section entry size
+- `e_shstrndx`: This member holds the section header table index of the entry associated with the section name string table.
 
 ## Section Header Entry
 
@@ -126,22 +139,6 @@ struct Secthdr {
   - SHF_EXECINSTR: contains executable machine instructions
 
 Some section header table indexes are reserved; an object file will not have sections for these special indexes.
-
-objdump -h
-{{ site.bin_option_style }}
-
-```
-Idx Name          Size      VMA               LMA               File off  Algn
-  0 .interp       0000001c  0000000000400238  0000000000400238  00000238  2**0
-                  CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .note.ABI-tag 00000020  0000000000400254  0000000000400254  00000254  2**2
-                  CONTENTS, ALLOC, LOAD, READONLY, DATA
-```
-
-- LMA (load address): address that section should be loaded into memory (change the LMA by passing `-Ttext 0x7C00` to linker).
-- VMA (link address): address form which the section expects to execute. 
-A binary may not get the address of a global variable if it is executing from an address that it is not linked for. (may be fixed by PIC)
-- Typically, LMA and VMA are the same.
 
 objdump -s
 {{ site.bin_option_style }}
@@ -343,3 +340,18 @@ Program Headers:
    02     .interp .note.ABI-tag .note.gnu.build-id .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt .init .plt .plt.got .text .fini .rodata .eh_frame_hdr .eh_frame
 ```
 
+objdump -h
+{{ site.bin_option_style }}
+
+```
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .interp       0000001c  0000000000400238  0000000000400238  00000238  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .note.ABI-tag 00000020  0000000000400254  0000000000400254  00000254  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+```
+
+- LMA (load address): address that section should be loaded into memory (change the LMA by passing `-Ttext 0x7C00` to linker).
+- VMA (link address): address form which the section expects to execute. 
+A binary may not get the address of a global variable if it is executing from an address that it is not linked for. (may be fixed by PIC)
+- Typically, LMA and VMA are the same.

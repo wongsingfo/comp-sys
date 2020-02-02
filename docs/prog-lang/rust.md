@@ -14,8 +14,11 @@ This documentation is intended to give a very very very quick overview of the Ru
 {: .no_toc .text-delta }
 
 - [Documenation](https://doc.rust-lang.org/std/index.html)
+- [RustDoc](https://doc.rust-lang.org/rustdoc/)
 - Book: [The Rust Programming Language](https://doc.rust-lang.org/book/)
 - Book: [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
+- Book: Programming Rust -- Fast, Safe, System Development
+- Book: [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
 - Slides: [Rethinking Systems Programming](https://thoughtram.io/rust-and-nickel/)
 
 ## Table of contents
@@ -397,7 +400,7 @@ impl Summary for Tweet {
   }
 }
 
-// trait grammmar:
+// trait grammar:
 fn notify(item: impl Summary + Display) {}
 fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {}
 fn returns_summarizable() -> impl Summary {}
@@ -698,7 +701,7 @@ There are two traits about concurrency: `Send` and `Sync`. `Send` means its owne
 
 ### Future
 
-Wrap `Future` into `async/await` (this grammmar is added in 2018):
+Wrap `Future` into `async/await` (this grammar is added in 2018):
 
 ```rust
 async fn learn_and_sing() {
