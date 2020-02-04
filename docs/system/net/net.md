@@ -18,6 +18,7 @@ This page is based on the Linux Kernel [4.19.101](https://elixir.bootlin.com/lin
 
 - [Netfilter](http://www.netfilter.org/)
 - Glenn Herrin. Linux IP Networking, A Guide to the Implementation and Modification of the Linux Protocol Stack. 2000
+- [ip-xfrm(8)](http://man7.org/linux/man-pages/man8/ip-xfrm.8.html)
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -76,12 +77,16 @@ the network representation of a socket (also known as _INET socket_) Defined at 
 - `atomic_t sk_backlog.rmem_alloc`
 	- UDP: size of the space used for buffer recevied packets
 - `atomic_t sk_drops`: raw/udp drops counter
+- `__s32 sk_peek_off`: current peek_offset value
+- `long sk_rcvtimeo`: SO_RCVTIMEO
 
 superclass: `struct sock_common __sk_common` (inet_timewait_sock)
 
 subclass:
 
 - `struct inet_sock` defined at `/include/net/inet_sock.h:177`
+- `struct udp_sock`
+  - `struct sk_buff_head reader_queue ____cacheline_aligned_in_smp`: udp_recvmsg try to use this before splicing sk_receive_queue
 
 
 struct sk_buff
@@ -97,6 +102,17 @@ the representation of a network packet and its status. Defined in `/include/linu
 - `unsigned int truesize`: buffer size
 - `char cb[48] __aligned(8)`: control buffer, that is free to use for every layer
   - UDP: `struct sock_skb_cb { u32 dropcount; }`
+- `unsigned int truesize`: the length of the variable size data component(s) plus the size of the `sk_buff` header. **This is the amount that is charged against the sock's send or receive quota.**
+- `unsigned int len`: the size of a complete input packet, includeing data in the kmalloc'd part, fragment chain and/or unmapped page buffers.
+- `unsigned int data_len`: the number of bytes in the fragment chain and in unmapped page buffers and is normally 0.
+
+{% include img.html filename="skb_layout.png" width=550 %}
+
+A buffer is _linear_ if and only if all the data is contained in the kmalloc'd header. Here are some cases where the buffer is not linear (Probably 1/2 of the network code in the kernel is dedicated to dealing with the rarely used abomination):
+
+- data is stored in different locations of physical pages (common in NIC driver model) (_unmapped page buffers_)
+- IP packet fragmentation (_fragment chain_)
+- large TCP data packets are cut into several MTU size
 
 struct net_device
 {{ site.struct_style }}
@@ -132,12 +148,12 @@ digraph {
   
   __udp_enqueue_schedule_skb [fontcolor=blue]
   
-  udp_rev -> udp_unicast_rcv_skb
+  udp_rev -> udp_unicast_rcv_skb [label="xfrm4_policy"]
   udp_unicast_rcv_skb -> __udp_queue_rcv_skb
   __udp_queue_rcv_skb -> __udp_enqueue_schedule_skb 
   __udp_queue_rcv_skb -> "sk_mark_napi_id(_once)" [color=grey]
   __udp_enqueue_schedule_skb -> skb_condense [color=grey]
-  __udp_enqueue_schedule_skb -> sk_data_ready
+  __udp_enqueue_schedule_skb -> sk_data_ready [label="sk_rmem_alloc\n< sk_rcvbuf"]
 }"
 
 </pre>
@@ -174,8 +190,13 @@ In the Linux kernel, packet capture using netfilter is done by attaching hooks. 
 
 {% include img.html filename="nfk-traversal.png" %}
 
-## xfrm4
+## XFRM
 
+xfrm is an IP framework for transforming packets (such as encrypting their payloads). This framework is used to implement the IPsec protocol suite. It is also used for the IP Payload Compression Protocol and features of Mobile IPv6.
+
+IPsec is a useful feature for securing network traffic, but the computational cost is high: a 10Gbps link can easily be brought down to under 1Gbps, depending on the traffic and link configuration. Luckily, there are NICs that offer a hardware based IPsec offload which can radically increase throughput and decrease CPU utilization. The XFRM Device interface allows NIC drivers to offer to the stack access to the hardware offload.
+
+Userland access to the offload is typically through a system such as libreswan or KAME/raccoon, but the iproute2 `ip xfrm` command set can be handy when experimenting.
 
 ## netcat / nc
 

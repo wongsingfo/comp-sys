@@ -103,3 +103,44 @@ Every local APIC has a programmable task priority register (TPR), which is used 
 
 {% include img.html filename="Screen Shot 2020-01-29 at 7.57.43 PM.png" width="588" %}
 
+## Deferrable Functions
+
+### Bottom Half (BH)
+
+A bottom half is essentially a high-priority tasklet that cannot be executed concurrently with any other bottom half, even if it is of a different type and on another CPU. The `global_bh_lock` spin lock is used to ensure that at most one bottom half is running.
+
+The BH concept is outdated.
+
+### Softirq
+
+Although the kernel supports up to 32 softirq, only 6 of them are effectively used (from index 0 to 5):
+
+- HI_SOFTIRQ: high-priority tasklet
+- TIMER_SOFTIRQ
+- NET_TX_SOFTIRQ
+- NET_RX_SOFTIRQ
+- SCSI_SOFTIRQ: Post-interrupt processing of SCSI commands
+- TASKLET_SOFTIR: low-priority tasklet
+
+Sofirq can run concurrently on several CPUs, even if they are of the same type. Thus, they need **spinlock** to proctect the data.
+
+Up to 10 softirq are processed when `do_softirq()` is called. The remaining softirq is processed by the kernel thread `ksoftirq/n`. There are several softirq chceckpoints:
+
+- `local_bh_enabled()` is called
+- after handing a local timer interrput
+- and others
+
+### Tasklet
+
+Tasklets are implemented on the top of softirqs. Tasklets of different types can run concurrently on several CPUs, but tasklets of the same type cannot. It can be dynamically allocated.
+
+### Work Queue
+
+The main difference between work queues and others deferrable functions is that it run in process context. Running in process context is the only way to execute functions that can block, while no process switch can take place in interrupt context.
+
+Use `create_workqueue(foo)` to create a work queue and n thread threads named `foo/0`, `foo/1`. The kernel offers a predefined work queue named `events`. Noted that work function can be put to sleep and even migrated to another CPU when resumed.
+
+
+
+
+

@@ -2,7 +2,7 @@
 layout: default
 title: Rust in 30 Minutes
 parent: Programming Language
-nav_order: 10
+nav_order: 30
 ---
 
 # Rust in 30 Minutes

@@ -1,5 +1,3 @@
-var debug;
-
 (function() {
   let inputs = document.getElementsByClassName("graphviz")
   var viz = new Viz();
