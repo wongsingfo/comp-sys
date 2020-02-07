@@ -275,6 +275,13 @@ Print the symbol table entries of the file.
 0000000000400390 g     F .init  0000000000000000              _init
 ```
 
+addr2line -a [address] -e [filename] -f
+{{ site.bin_option_style }}
+
+[Documentation](https://sourceware.org/binutils/docs-2.22/binutils/addr2line.html)
+
+translates addresses into file names and line numbers. 
+
 ### Objdump
 
 

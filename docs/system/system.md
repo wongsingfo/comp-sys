@@ -17,3 +17,8 @@ has_children: true
 - [MIT 6.828](https://pdos.csail.mit.edu/6.828/2018/schedule.html)
 - [Linux Kernel Labs](https://linux-kernel-labs.github.io/master/)
 - [Linux Kernel Source Code](https://www.kernel.org/)
+- [Linux Kernel Documentation 4.19](https://www.kernel.org/doc/html/v4.19/doc-guide/sphinx.html), [latest](https://www.kernel.org/doc/html/latest/index.html)
+
+## Tools
+
+- [netcat](https://en.wikipedia.org/wiki/Netcat), [doc](http://man7.org/linux/man-pages/man1/ncat.1.html)

@@ -36,6 +36,16 @@ make menuconfig
 - Kernel hacking -> Compile the kernel with debug info (CONFIG_DEBUG_INFO)
 - Kernel hacking -> Compile the kernel with debug info -> Provide GDB scripts for kernel debugging (New)
 
+Note [that](https://stackoverflow.com/questions/29151235/how-to-de-optimize-the-linux-kernel-to-and-compile-it-with-o0): You can't de-optimize the kernel. You might be able to de-optimize certain functions, like this:
+
+```
+void __attribute__((optimize("O0"))) foo(unsigned char data) {
+    // unmodifiable compiler code
+}
+```
+
+But the kernel as a whole requires `-O2` because the code itself is written with assumptions that certain functions will be optimized in a certain way. (Some people say that `-O1` also works for kernel.)
+
 ```
 make
 make modules
@@ -172,7 +182,13 @@ iface eth0 inet dhcp
 
 ### ready-to-use Debian
 
-Download from [debian.org](https://people.debian.org/~aurel32/qemu/).
+Download from [debian.org](https://people.debian.org/~aurel32/qemu/). Boot with `root=/dev/sda1`.
+
+```
+  - Root password:  root
+  - User account:   user
+  - User password:  user
+```
 
 ### Install by Image (Debian / Ubuntu / ...)
 
@@ -193,7 +209,11 @@ qemu-system-x86_64 -hda fs.qcow -m 512
 set architecture i386:x86-64:intel
 file ./vmlinux
 target remote :1234
+apropos lx
 ```
+
+https://01.org/linuxgraphics/gfx-docs/drm/kernel-hacking/index.html
+
 
 Q&A:
 

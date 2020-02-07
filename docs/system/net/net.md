@@ -140,6 +140,18 @@ network namspace. Defined at `/include/net/net_namespace.h:51`
 IPPROTO_UDPLITE
 
 <pre class="graphviz">
+digraph {
+    
+    node [shape=shape]
+    
+    __skb_recv_udp [fontcolor=blue]
+    
+    udp_recvmsg -> __skb_recv_udp
+    __skb_recv_udp -> __skb_try_recv_from_queue
+}
+</pre>
+
+<pre class="graphviz">
 
 digraph {
   rankdir = BT
@@ -153,7 +165,10 @@ digraph {
   __udp_queue_rcv_skb -> __udp_enqueue_schedule_skb 
   __udp_queue_rcv_skb -> "sk_mark_napi_id(_once)" [color=grey]
   __udp_enqueue_schedule_skb -> skb_condense [color=grey]
-  __udp_enqueue_schedule_skb -> sk_data_ready [label="sk_rmem_alloc\n< sk_rcvbuf"]
+  __udp_enqueue_schedule_skb -> "*sk_data_ready" [label="sk_rmem_alloc\n< sk_rcvbuf"]
+  "*sk_data_ready" -> sock_def_readable
+  sock_def_readable -> wake_up_interruptible_sync_poll
+  sk_data_ready -> sk_wake_async -> sock_wake_async
 }"
 
 </pre>
