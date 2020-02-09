@@ -15,8 +15,3 @@ References:
 - [godbolt](https://godbolt.org)
 - [cppreference](https://en.cppreference.com)
 
-## Table of contents
-{: .no_toc .text-delta }
-
-1. TOC
-{:toc}

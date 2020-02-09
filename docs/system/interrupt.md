@@ -95,6 +95,8 @@ The local APIC and the I/O APIC are connected by Interrupt Controller Communicat
 
 By default, distributing interrupts among processors in a round-robin fashion. It uses a technique called _arbitration_. 
 
+Depending on the type of interrupt, acknowledging the interrupt could either be done by the ack method or delayed until the interrupt handler terminates. In either case, we can take for granted that **the local APIC doesn’t accept further interrupts of this type until the handler terminates**, although further occurrences of this type of interrupt may be accepted by other CPUs. This leads to a simpler kernel architecture because **device drivers’ interrupt service routines need not to be reentrant** (their execution is serialized).
+
 `/proc/interrupt` tells us the number of interrupts per IRQ on the x86 architecture. The first column refers to the IRQ number. Each CPU in the system has its own column and its own number of interrupts per IRQ.
 
 Every local APIC has a programmable task priority register (TPR), which is used to compute the priority of the currently running process. You can adjust the which CPUs each of those IRQs will be handled by modifying `/proc/irq/IRQ_NUMBER/smp_affinity` for each IRQ number and the OS will set the TPR accordingly.
@@ -136,11 +138,12 @@ Tasklets are implemented on the top of softirqs. Tasklets of different types can
 
 ### Work Queue
 
-The main difference between work queues and others deferrable functions is that it run in process context. Running in process context is the only way to execute functions that can block, while no process switch can take place in interrupt context.
+The main difference between work queues and others deferrable functions is that it run in process context. **Running in process context is the only way to execute functions that can block**, while no process switch can take place in interrupt context.
 
 Use `create_workqueue(foo)` to create a work queue and n thread threads named `foo/0`, `foo/1`. The kernel offers a predefined work queue named `events`. Noted that work function can be put to sleep and even migrated to another CPU when resumed.
 
+## Syscall
 
-
+- 32-bit: [syscalls.kernelgrok.com](https://syscalls.kernelgrok.com)
 
 

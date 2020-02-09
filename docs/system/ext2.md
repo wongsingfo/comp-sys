@@ -2,7 +2,7 @@
 layout: default
 title: Ext2
 parent: Computer System
-nav_order: 20
+nav_order: 50
 ---
 
 # Ext2 Filesystem

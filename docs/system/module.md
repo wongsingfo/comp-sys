@@ -2,7 +2,7 @@
 layout: default
 title: Kernel Modules
 parent: Computer System
-nav_order: 2
+nav_order: 11
 ---
 
 # Kernel Modules

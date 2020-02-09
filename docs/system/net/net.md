@@ -2,7 +2,7 @@
 layout: default
 title: Network Stack
 parent: Computer System
-nav_order: 20
+nav_order: 80
 permalink: docs/system/net
 has_children: true
 graphviz: true
@@ -168,7 +168,7 @@ digraph {
   __udp_enqueue_schedule_skb -> "*sk_data_ready" [label="sk_rmem_alloc\n< sk_rcvbuf"]
   "*sk_data_ready" -> sock_def_readable
   sock_def_readable -> wake_up_interruptible_sync_poll
-  sk_data_ready -> sk_wake_async -> sock_wake_async
+  "*sk_data_ready" -> sk_wake_async -> sock_wake_async
 }"
 
 </pre>
@@ -213,6 +213,5 @@ IPsec is a useful feature for securing network traffic, but the computational co
 
 Userland access to the offload is typically through a system such as libreswan or KAME/raccoon, but the iproute2 `ip xfrm` command set can be handy when experimenting.
 
-## netcat / nc
 
 

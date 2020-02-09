@@ -2,7 +2,7 @@
 layout: default
 title: Timing
 parent: Computer System
-nav_order: 20
+nav_order: 50
 mathjax: false
 ---
 

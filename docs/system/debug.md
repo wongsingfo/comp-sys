@@ -2,7 +2,7 @@
 layout: default
 title: Debug the Linux
 parent: Computer System
-nav_order: 20
+nav_order: 10
 ---
 
 # Debug the Linux
