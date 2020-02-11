@@ -1,6 +1,6 @@
 ---
 layout: default
-title: concurrency
+title: Concurrency
 parent: C++
 grand_parent: Programming Language
 nav_order: 26

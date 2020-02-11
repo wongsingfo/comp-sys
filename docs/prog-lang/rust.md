@@ -701,7 +701,7 @@ There are two traits about concurrency: `Send` and `Sync`. `Send` means its owne
 
 ### Future
 
-Wrap `Future` into `async/await` (this grammar is added in 2018):
+Wrap `Future` into `async/await` (in Rust 2018):
 
 ```rust
 async fn learn_and_sing() {

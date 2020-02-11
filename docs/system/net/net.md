@@ -31,8 +31,8 @@ The structure:
 - BSD sockets ([sys_socketcall](`http://man7.org/linux/man-pages/man2/socketcall.2.html))
 - Netfilter / Nftables
 - Network Protocol
-	- TCP / UDP
-	- IP
+    - TCP / UDP
+    - IP
 - Packet Scheduler
 - Device Drivers
 
@@ -75,7 +75,7 @@ the network representation of a socket (also known as _INET socket_) Defined at 
 - `int sk_rcvbuf`: size of receive buffer in bytes
 - `int sk_forward_alloc`: space allocated forward
 - `atomic_t sk_backlog.rmem_alloc`
-	- UDP: size of the space used for buffer recevied packets
+    - UDP: size of the space used for buffer recevied packets
 - `atomic_t sk_drops`: raw/udp drops counter
 - `__s32 sk_peek_off`: current peek_offset value
 - `long sk_rcvtimeo`: SO_RCVTIMEO
@@ -94,7 +94,7 @@ struct sk_buff
 
 the representation of a network packet and its status. Defined in `/include/linux/skbuff.h:665`
 
-- `struct list_head	list`
+- `struct list_head list`
 - `struct sock *sk;`: Socket we are owned by
 - `struct net_device *dev;`: Device we arrived on/are leaving by
 - `unsigned char *head, *data`: Head of buffer; Data head pointer
@@ -125,7 +125,7 @@ Defined at `/include/linux/netdevice.h:1747`
 ```c
 typedef struct {
 #ifdef CONFIG_NET_NS
-	struct net *net;
+    struct net *net;
 #endif
 } possible_net_t;
 ```
@@ -169,7 +169,7 @@ digraph {
   "*sk_data_ready" -> sock_def_readable
   sock_def_readable -> wake_up_interruptible_sync_poll
   "*sk_data_ready" -> sk_wake_async -> sock_wake_async
-}"
+}
 
 </pre>
 
@@ -186,14 +186,30 @@ example `/net/ipv4/af_inet.c:1694`:
 
 ```c
 static struct net_protocol udp_protocol = {
-	.early_demux =	udp_v4_early_demux,
-	.early_demux_handler =	udp_v4_early_demux,
-	.handler =	udp_rcv,
-	.err_handler =	udp_err,
-	.no_policy =	1,
-	.netns_ok =	1,
+    .early_demux =  udp_v4_early_demux,
+    .early_demux_handler =  udp_v4_early_demux,
+    .handler =  udp_rcv,
+    .err_handler =  udp_err,
+    .no_policy =    1,
+    .netns_ok = 1,
 };
 ```
+
+<pre class="graphviz">
+
+digraph {
+  rankdir = BT
+
+  node [shape=shape]
+
+  ip_rcv -> "*dst_input" [label="NF_HOOK(PRE_ROUTING)"]
+  "*dst_input" ->  ip_local_deliver 
+  ip_local_deliver -> ip_defrag
+  ip_local_deliver -> "*handler" [label="NF_HOOK(INPUT)"]
+  "*handler" -> udp_rev
+}
+
+</pre>
 
 ## Netfilter
 
