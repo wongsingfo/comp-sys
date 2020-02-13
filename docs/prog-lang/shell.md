@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Shell Script
+title: Shell Script in 30 Minutes
 parent: Programming Language
 nav_order: 30
 ---
 
-# Shell Script
+# Shell Script in 30 Minutes
 {: .no_toc }
 
 ## References
