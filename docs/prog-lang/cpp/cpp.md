@@ -1,6 +1,6 @@
 ---
 layout: default
-title: C++
+title: C++ in 30 Minutes
 parent: Programming Language
 nav_order: 30
 permalink: docs/prog-lang/cpp

@@ -2,7 +2,7 @@
 layout: default
 title: OCaml in 30 Minutes
 parent: Programming Language
-nav_order: 30
+nav_order: 80
 ---
 
 # OCaml in 30 Minutes
