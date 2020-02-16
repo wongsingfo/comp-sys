@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Meta Programming
-parent: C++
+parent: C++ in 30 Minutes
 grand_parent: Programming Language
 nav_order: 26
 ---
