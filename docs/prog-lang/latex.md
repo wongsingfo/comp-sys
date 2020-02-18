@@ -16,6 +16,7 @@ nav_order: 30
 - [Installation: latex project](https://www.latex-project.org)
 - [Detexify](http://detexify.kirelabs.org/classify.html)
 - [Wiki](https://en.wikibooks.org/wiki/LaTeX)
+- [Setup Overleaf](https://github.com/overleaf/overleaf/wiki/Quick-Start-Guide) ([tsinghua mirror](https://mirror.tuna.tsinghua.edu.cn/help/CTAN/))
 
 ## Table of contents
 {: .no_toc .text-delta }

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Shell Script in 30 Minutes
-parent: Programming Language
+parent: Script
 nav_order: 80
 ---
 
@@ -27,6 +27,8 @@ nav_order: 80
 - `sed`, `awk`
 - `sort`, `uniq`
 - `xargs`
+- `tput bel`: alert when jobs finish
+- `sshfs`: [osxfuse](https://github.com/osxfuse/osxfuse/wiki/SSHFS)
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -160,7 +162,7 @@ A comprehensive list can be found [here](https://www.tldp.org/LDP/abs/html/speci
 - `$?` - Return code of the previous command
 - `$$` - PID for the current script
 - `!!` - Entire last command, including arguments. `sudo !!`
-- `$_` - Last argument from the last command. If you are in an interactive shell, you can also quickly get this value by typing Esc followed by .
+- `$_` - Last argument from the last command. If you are in an interactive shell, you can also quickly get this value by typing Esc followed by `.`
 
 ## Comparison
 

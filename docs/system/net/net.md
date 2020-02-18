@@ -11,6 +11,11 @@ graphviz: true
 # Linux Network Stack
 {: .no_toc }
 
+Tools:
+
+- `telnet`
+- `nc`
+
 References:
 {:toc}
 

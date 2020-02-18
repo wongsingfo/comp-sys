@@ -8,6 +8,8 @@ nav_order: 50
 # RISC-V
 {: .no_toc}
 
+RISC-V is an ISA specification but not a processor.
+
 ## Table of contents
 {: .no_toc .text-delta }
 
