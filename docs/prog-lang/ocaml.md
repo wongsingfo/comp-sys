@@ -127,7 +127,7 @@ type ast =
 
 ## Exception
 
-```ocal
+```ocaml
 exception Bad;;
 raise Bad;;
 try e with 
@@ -218,7 +218,7 @@ Use the `include` directive to add a function to a existing module:
 
 ## IO
 
-```
+```ocaml
 val stdin : in_channel
 val stdout : out_channel
 val stderr : out_channel

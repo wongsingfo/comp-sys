@@ -2,7 +2,6 @@
 layout: default
 title: Netfilter
 parent: Network Stack
-grand_parent: Computer System
 nav_order: 20
 ---
 

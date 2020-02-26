@@ -1,9 +1,8 @@
 ---
 layout: default
 title: Network Stack
-parent: Computer System
 nav_order: 80
-permalink: docs/system/net
+permalink: docs/net
 has_children: true
 graphviz: true
 ---
