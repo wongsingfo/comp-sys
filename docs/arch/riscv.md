@@ -39,6 +39,8 @@ Reference:
 
 At user-level, there are 32 general registers (named `x0/zeor`, `x1`, ..., `x31`) plus a `ip` register.
 
+{% include img.html filename="Screen Shot 2020-03-02 at 9.19.44 PM.png" width="588" %}
+
 ## Instruction Formats
 
-{% include img.html filename="Screen Shot 2020-02-01 at 11.54.04 PM.png" %}
+{% include img.html filename="Screen Shot 2020-03-02 at 9.20.21 PM.png" %}

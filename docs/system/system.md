@@ -22,3 +22,7 @@ has_children: true
 ## Tools
 
 - [netcat](https://en.wikipedia.org/wiki/Netcat), [doc](http://man7.org/linux/man-pages/man1/ncat.1.html)
+
+## Link
+
+- [install GNU GCC](http://mirror.hust.edu.cn/gnu/gcc/)
