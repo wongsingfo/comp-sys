@@ -48,7 +48,7 @@ A term t is in _normal form_ if no evaluation rule applies to it.
 
 - Every value is in normal form.
 - If t is in normal form, then t is a value. (Prove by contradiction then by structural induction).
-- A closed term is _stuck_ if it is in normal form but not a value.
+- A closed term (a term that does not contains any free variables) is _stuck_ if it is in normal form but not a value.
 
 # Lambda
 
@@ -118,8 +118,20 @@ Recursion:
 
 de Bruijin presentation: λx. x (λy. y x) x => λ. 0 (λ. 0 1) 0 => λ. 0 (0 0)
 
+## Types
 
+Safety (Soundness) = Progress + Preservation
 
+Well-typed: `t : T`
+
+- Progress: A-well typed term is not stuck
+- Preservation: If a well-typed term takes a step of evaluation, then the result term is also well-typed.
+
+Typing relation: the smallest binary relation between terms and types satisfying all instances of typing rules.
+
+Uniqueness of Types (However, in some languages, a term may have multiple types)
+
+Syntactic sugar; Derived form; Abbreviation for a term.
 
 
 

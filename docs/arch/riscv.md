@@ -41,6 +41,8 @@ At user-level, there are 32 general registers (named `x0/zeor`, `x1`, ..., `x31`
 
 {% include img.html filename="Screen Shot 2020-03-02 at 9.19.44 PM.png" width="588" %}
 
+The gp (Global Pointer) register is a solution to further optimise memory accesses within a single 4KB region. The gp register should be loaded during startup with the address of the `__global_pointer$` symbol and should not be changed later. This process is also called _relaxing_, and can be disabled by `-Wl,--no-relax`.
+
 ## Instruction Formats
 
 {% include img.html filename="Screen Shot 2020-03-02 at 9.20.21 PM.png" %}

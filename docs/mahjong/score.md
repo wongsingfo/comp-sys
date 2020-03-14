@@ -36,9 +36,8 @@ References: https://www.bilibili.com/read/cv4133506
 - 11番，24000，三倍满
 - 8番，16000，倍满
 - 6番，12000，跳满
-- let rv = 符数 x 2 ^ (2 + 番数)
-- if rv > 2000，8000 满贯
-- rv * 4
+- let rv = 16 x 符数 x (2 ^ 番数)
+- return min(8000 满贯, rv)
 
 点数向上百位取整
 
