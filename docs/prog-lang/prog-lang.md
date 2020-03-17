@@ -50,7 +50,7 @@ A term t is in _normal form_ if no evaluation rule applies to it.
 - If t is in normal form, then t is a value. (Prove by contradiction then by structural induction).
 - A closed term (a term that does not contains any free variables) is _stuck_ if it is in normal form but not a value.
 
-# Lambda
+## Lambda
 
 Russell's paradox => halting problem
 
@@ -132,6 +132,33 @@ Typing relation: the smallest binary relation between terms and types satisfying
 Uniqueness of Types (However, in some languages, a term may have multiple types)
 
 Syntactic sugar; Derived form; Abbreviation for a term.
+
+## Reference
+
+computational effect / side effect / impure feature
+
+Haskell expresses side effects using _monadic_ action.
+
+In most programming languages, variables are mutable. A variable provides both
+
+- a name that refers to a previously calculated value, and
+- the possibility of overwriting this value with another (which will be referred to by the same name)
+
+In some languages (e.g., OCaml), these features are separate. There are three basic operation: 
+
+- allocation `ref`
+- dereference `!`
+- assignment `:=`
+
+Aliasing sometimes confounds programmers and compilers:
+
+`lambda r: Ref Nat. lambda s: Ref Nat. (r := 2; s := 3; !r)`
+
+A reference names a _location_ in the _store_ (a.k.a _heap_ or _memory_). We can think of the store as a partial function from locations to values!
+
+Store typing: a finite function mapping locations to types.
+
+
 
 
 

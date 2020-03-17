@@ -45,7 +45,7 @@ mahjong: true
 
 价值从低到高
 
-- 偏张
+- 偏张 / 边张
 - 13，79
 - 24，68
 - 35，46，57
@@ -55,10 +55,19 @@ mahjong: true
 
 价值从高到低
 
-<div class="mahjong">4556m 4567p</div>
+<div class="mahjong">4567p</div>
+
+1234和孤立4几乎没有区别，但是1234能形成雀头
+
+<div class="mahjong">4556m</div>
 
 <div class="mahjong">4456s</div>
+
+亚两面形：用于听牌（6进张）；一杯口；雀头
+
 <div class="mahjong">3567m</div>
+
+跳一形：可吃
 
 <div class="mahjong">4445s</div>
 三面听，未听时只能提供雀头.
@@ -104,7 +113,31 @@ mahjong: true
 
 难题，打 68m。因为如果上了 5m，出现 2356m 重复效牌，而 24p 没有这样的问题
 
+------------------------
+
+听牌的时候注意多面听，需要注意的是“3张一样的牌可以看作暗刻，也可以看作雀头+一个单张”
+
 ## 雀头例题 
+
+对子复合型：
+
+- 122, 6进张
+- 688, 6进张
+- 344, 10进张
+
+复合型听雀头：
+
+<div class="mahjong">
+2345m
+</div>
+
+<div class="mahjong">
+2344m
+</div>
+
+<div class="mahjong">
+3335m 3334p
+</div>
 
 原则：
 
