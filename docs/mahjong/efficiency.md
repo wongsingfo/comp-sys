@@ -61,6 +61,8 @@ mahjong: true
 
 <div class="mahjong">4556m</div>
 
+四连
+
 <div class="mahjong">4456s</div>
 
 亚两面形：用于听牌（6进张）；一杯口；雀头
