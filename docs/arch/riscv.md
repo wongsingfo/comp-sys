@@ -2,7 +2,7 @@
 layout: default
 title: RISC-V
 parent: Processor Architecture
-nav_order: 50
+nav_order: 60
 ---
 
 # RISC-V
