@@ -133,6 +133,14 @@ Uniqueness of Types (However, in some languages, a term may have multiple types)
 
 Syntactic sugar; Derived form; Abbreviation for a term.
 
+Some important properties:
+
+- Inversion of the subtype relation: If [relation about S], then S has the form F.
+- Substitution
+- Cononical Forms: If v is a closed value of type T, then v has the form F.
+- Preservation
+- Progress
+
 ## Reference
 
 computational effect / side effect / impure feature
@@ -158,7 +166,11 @@ A reference names a _location_ in the _store_ (a.k.a _heap_ or _memory_). We can
 
 Store typing: a finite function mapping locations to types.
 
+## Subtyping
 
+- invariant: S <: T, T <: S => [statment involve S <: T]
+- covariant: S <: T => [statment involve S <: T]
+- contravariant T <: S => [statment involve S <: T]
 
 
 

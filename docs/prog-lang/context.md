@@ -118,7 +118,3 @@ int function(void) {
 }
 ``` 
 
-## Go
-
-to be continued
-

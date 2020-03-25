@@ -18,13 +18,13 @@ SQL: A declarative language in which you specify the data you want in terms of i
 
 Resources: 
 
+- [SQL bolt](https://sqlbolt.com), recommended
 - [MIT 6.830](http://db.csail.mit.edu/6.830/); [another version](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-830-database-systems-fall-2010/assignments/)
-- [SimpleDB](https://github.com/MIT-DB-Class/simple-db-hw)
-- Database Management Systems, by Johannes Gehrke and Raghu Ramakrishnan
-- [UW CSE444](https://courses.cs.washington.edu/courses/cse444/19sp/)
-- [SQL tutorial- PostgreSQL](https://www.postgresql.org/docs/current/tutorial-sql.html)
+- [SimpleDB](https://github.com/MIT-DB-Class/simple-db-hw), recommended
+- Database Management Systems, by Johannes Gehrke and Raghu Ramakrishnan, recommended
+- [UW CSE444](https://courses.cs.washington.edu/courses/cse444/19sp/), recommended
+- [SQL tutorial - PostgreSQL](https://www.postgresql.org/docs/current/tutorial-sql.html)
 - [SQLite SELECT documentation](https://sqlite.org/lang_select.html)
-- [SQL bolt](https://sqlbolt.com)
 - Database Systems: The Complete Book, Hector Garcia-Molina, Jeffrey Ullman, and Jennifer Widom. Second edition.
 
 Database Management System (DBMS) Implementations: SQLite, PostgreSQL, MySQL, SQLite, Oracle, Microsoft, etc.
@@ -64,11 +64,12 @@ Integrity constraints
 
 - domain constraint: attribute values must come from the attribute domain
 - key constraints: 
-  - super key: set of attributes that functionally determines all attributes
+  - super key: a set of attributes whose values uniquely identify an entity in the set.
   - **Key:** Minimal super-key; a.k.a. “candidate key”
-  - One minimal key can be selected as **primary key**
+  - There could be more than one candidate key; if so, we designate one of them as the **primary key**
 - Foreign Key Constraints
-  - Foreign key: Field that refers to tuples in another relation. Typically, this field refers to the primary key of other relation
+  - Foreign key: Field that refers to tuples in another relation. This is a consistency check which ensures that each value in this column corresponds to another value in a column in another table.
+  - Typically, this field refers to the primary key of other relation
 
 ----
 
@@ -76,18 +77,6 @@ Benefits of relational model:
 
 - Physical data independence: Can change how data is organized on disk without affecting applications
 - Logical data independence: Can change the logical schema without affecting applications (not 100%... consider updates)
-
-## Transactions
-
-A set of instructions that must be executed all or nothing. Some properties:
-
-- ACID 
-  - Atomicity
-  - Consistency: bring the database from one valid state to another
-  - Isolation: ensures that concurrent execution of transactions leaves the database in the same state that would have been obtained if the transactions were executed sequentially
-  - Durability: A committed transaction will remain committed even in the case of a system failure
-- Serialization
-- recovery
 
 ## Query
 
@@ -121,7 +110,7 @@ Extended operators:
 
 ### relational calculus
 
-SQL: declarative -> Parser Rewrite 
+SQL: declarative -> Parser Rewrite -> Logical Plan (RA tree) -> physical Plan -> Executor
 
 ```sql
 SELECT [DISTINCT] column, another_table_column, …
@@ -129,16 +118,17 @@ FROM mytable
 INNER/LEFT/RIGHT/FULL JOIN another_table 
     ON mytable.id = another_table.id
 WHERE condition(s)
+GROUP BY column
+HAVING constraint_expression
 ORDER BY column, … ASC/DESC
 LIMIT num_limit OFFSET num_offset;
 ```
 
 ```sql
-// Person(pname, address, worksfor) 
-// Company(cname, address)
-SELECT DISTINCT x.pname, y.address
-FROM Person AS x, Company AS y
-WHERE x.worksfor = y.cname
+SELECT col_expression AS expr_description
+FROM a_long_widgets_table_name AS mywidgets
+INNER JOIN widget_sales
+  ON mywidgets.id = widget_sales.widget_id;
 ```
 
 Subqueries:
@@ -162,5 +152,41 @@ SELECT avg(price) FROM Product WHERE maker=“Toyota”
 SELECT city, count(*) FROM sales
 GROUP BY city
 HAVING sum(price) > 100
+// If you aren't using the `GROUP BY` clause, a simple `WHERE` clause will suffice.
 ```
+
+Update the database:
+
+```sql
+INSERT INTO movies 
+  VALUES (4, "Toy Story 4", "El Directore", 2015, 90);
+
+UPDATE movies 
+  SET director = "John Lasseter", director = "Lee Unkrich"
+  WHERE id = 2;
+  
+DELETE FROM movies
+  where year < 2005;
+  
+ALTER TABLE Movies
+  ADD COLUMN Aspect_ratio FLOAT DEFAULT 2.39;
+ALTER TABLE mytable
+  DROP column_to_be_deleted;
+ALTER TABLE mytable
+  RENAME TO new_table_name;
+
+DROP TABLE IF EXISTS mytable;
+```
+
+## Transactions
+
+A set of instructions that must be executed all or nothing. Some properties:
+
+- ACID 
+  - Atomicity
+  - Consistency: bring the database from one valid state to another
+  - Isolation: ensures that concurrent execution of transactions leaves the database in the same state that would have been obtained if the transactions were executed sequentially
+  - Durability: A committed transaction will remain committed even in the case of a system failure
+- Serialization
+- recovery
 
