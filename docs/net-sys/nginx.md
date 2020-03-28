@@ -33,7 +33,7 @@ Model:
 NGINX files and directories:
 
 - `/etc/nginx/nginx.conf`: default configuration entry point
-- `/etc/nginx/conf.d/`: Files in this directory ending in `.conf` are included in the top-level `http` block from within the `/etc/ nginx/nginx.conf` file.
+- `/etc/nginx/conf.d/`: Files in this directory ending in `.conf` are included in the top-level `http` block from within the `/etc/nginx/nginx.conf` file.
 - `/var/log/nginx/`
 
 

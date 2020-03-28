@@ -129,7 +129,11 @@ mv *{.py,.sh} folder
 touch {foo,bar}/{a..j}
 ```
 
-## Redirection
+## Pipe
+
+[Process Substitution](https://www.gnu.org/software/bash/manual/html_node/Process-Substitution.html#Process-Substitution)
+
+> If the `>(list)` form is used, writing to the file will provide input for `list`. If the `<(list)` form is used, the file passed as an argument should be read to obtain the output of `list`.
 
 ```bash
 2> /dev/null
@@ -139,8 +143,14 @@ touch {foo,bar}/{a..j}
 # temporary file and substitute the <() with that file’s name. 
 diff <(ls foo) <(ls bar) 
 
-# >( CMD ) will execute CMD with the STDOUT as the STDIN
+# >( CMD ) appears as a file and writing to this file provides
+# input for CMD as STDIN
 echo "example" | tee >(xargs mkdir) >(wc -c)
+
+$ cat << END
+> asdf
+> qwerty
+> END
 ```
 
 ## Function

@@ -8,6 +8,8 @@ parent: Network System
 # Redis
 {: .no_toc }
 
+REmote Dictionary Server
+
 References:
 {:toc}
 
@@ -46,3 +48,27 @@ Use cases:
   - single-threaded architecture assures serializability
 - Fast Data Ingest
   - Pub/Sub; Lists; Sorted Sets
+
+## Redis Command
+
+```
+keys *       -- show all keys
+exists [key]
+del [key]
+set [key] [value]
+set [key] [value] nx  -- fail if the key already exists
+set [key] [value] xx  -- fail if the key doesn't exist
+mset [key1] [value1] [key2] [value2] ...
+incr [key]      --- += 1
+incr [key] [delta]
+get [key]
+mget [key1] [key2] ...
+expires [key] [seconds]
+ttl [key]
+type [key]
+object encoding [key]    -- show the data encoding format (opaque to user)
+```
+
+Redis doesn't support namespace. In general, we use something like `ns:table:id:attr` as keys.
+
+
