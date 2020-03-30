@@ -1,7 +1,7 @@
 ---
 layout: default
 title: SQL
-nav_order: 180
+nav_order: 1
 parent: Network System
 ---
 
@@ -19,15 +19,9 @@ SQL: A declarative language in which you specify the data you want in terms of i
 Resources: 
 
 - [SQL bolt](https://sqlbolt.com), recommended
-- [MIT 6.830](http://db.csail.mit.edu/6.830/); [another version](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-830-database-systems-fall-2010/assignments/)
-- [SimpleDB](https://github.com/MIT-DB-Class/simple-db-hw), recommended
-- Database Management Systems, by Johannes Gehrke and Raghu Ramakrishnan, recommended
-- [UW CSE444](https://courses.cs.washington.edu/courses/cse444/19sp/), recommended
 - [SQL tutorial - PostgreSQL](https://www.postgresql.org/docs/current/tutorial-sql.html)
 - [SQLite SELECT documentation](https://sqlite.org/lang_select.html)
 - Database Systems: The Complete Book, Hector Garcia-Molina, Jeffrey Ullman, and Jennifer Widom. Second edition.
-
-Database Management System (DBMS) Implementations: SQLite, PostgreSQL, MySQL, SQLite, Oracle, Microsoft, etc.
 
 ## Relational Model
 

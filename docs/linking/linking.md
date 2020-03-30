@@ -16,3 +16,6 @@ has_children: true
 DWARF
 Debug With Arbitrary Record Format 
 http://www.dwarfstd.org/
+
+STABS debugging info
+http://sourceware.org/gdb/onlinedocs/stabs.html
