@@ -48,3 +48,41 @@ Column store v.s. Row store
 
 - Row-store storage managers are most commonly used today for OLTP systems. They offer high-performance for transactions.
 - Column-stores win for analytical workloads and are widely used in OLAP.
+
+## Index
+
+RID: unique tuple identifier (e.g. `(PageID, SlotID)` )
+
+search key: can be any set of fields (not the same as the primary key!)
+
+data entry for key k can be:
+
+- (k, RID)
+- (k, list-of-RIDs)
+- the actual record with key k (also called _indexed file organization_)
+
+index: collection of data entries (now we have two files: data file and index file)
+
+- dense or sparse
+- primary or secondary 
+  - primary: determines the location of indexed records
+- clustered or unclustered
+  - clustered: records close in index are close in data
+
+Large indexes: index the index itself
+
+- hash-based: not good for range queries
+- tree-based: 
+  - B tree: 1 node = 1 page
+  - B+ tree: 
+    - keep tree balanced in height
+    - make leaves into a linked list to facilitate range queries
+
+B+ tree (default index structure on most DBMSs):
+
+- parameter d
+- each node (except root) has d ≤ m ≤ 2d keys and m+1 pointers
+- each leaf has d ≤ m ≤ 2d keys and pointers to
+  - the data records
+  - the next leaf (for range queries)
+- usually:  2d x key-size + (2d+1) x pointer-size ≤ block-size
