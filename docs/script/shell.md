@@ -36,24 +36,13 @@ nav_order: 80
 1. TOC
 {:toc}
 
-## system log
-
-```
-logger "Hello Logs"
-# On macOS
-log show --last 1m | grep Hello
-# On Linux
-journalctl --since "1m ago" | grep Hello
-```
-
-In addition, most UNIX systems you can also use the `dmesg` command to access the kernel log.
-
 ## ssh
 
 - [A network filesystem client to connect to SSH servers: sshfs](https://github.com/libfuse/sshfs)
 - [Remote terminal application that allows roaming: mosh](https://mosh.org/#getting), error: [The locale requested by LC_CTYPE=UTF-8 isn't available here.](https://github.com/mobile-shell/mosh/issues/793)
 - tmux
 - [blog: A look at terminal emulators](https://anarc.at/blog/2018-04-12-terminal-emulators-1/)
+- [How to exit: `~.`](https://unix.stackexchange.com/questions/196701/terminal-hang-when-lost-connection-and-ssh-is-on). `~` is the escape character. (Opppp, it does not work on my laptop :( )
 
 ```bash
 apt-get update
@@ -251,6 +240,11 @@ set -x
 # print before execution
 set -e
 # die on error
+
+# perl -n assume "while (<>) { ... }" loop around program
+# perl -a autosplit mode with -n or -p (splits $_ into @F)
+# perl -e evaluate
+cat /tmp/sslparams.log | cut -d ' ' -f 2,2 | sort | uniq -c | sort -rn | perl -ane 'printf "%30s %s\n", $F[1], "="x$F[0];'
 ```
 
 

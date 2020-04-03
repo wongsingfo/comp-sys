@@ -18,6 +18,53 @@ reference:
 1. TOC
 {:toc}
 
+
+## System Log
+
+```
+logger "Hello Logs"
+# On macOS
+log show --last 1m | grep Hello
+# On Linux
+journalctl --since "1m ago" | grep Hello
+```
+
+In addition, most UNIX systems you can also use the `dmesg` command to access the kernel log.
+
+## Resouces
+
+lsof
+{{ site.bin_option_style }}
+
+```bash
+# List processes which opened a specific file
+lsof /var/log/syslog 
+# List opened files under a directory
+lsof +D /var/log/
+# List opened files based on process names starting with
+lsof -c ssh
+# List file opened by a specific process
+lsof -p 1753
+# List files (not) opened by a specific user
+lsof -u lakshmanan
+lsof -u ^lakshmanan 
+
+# Kill all process that belongs to a particular user
+kill -9 `lsof -t -u lakshmanan`
+```
+
+se
+{{ site.bin_option_style }}
+
+```bash
+# List processes which opened a listening TCP socket 
+ss -ltp
+# Show the port number rather than the service name
+ss -n
+```
+
+## User
+
 password file:
 
 ```bash
