@@ -14,6 +14,7 @@ nav_order: 80
 - [Missing Semester](https://missing.csail.mit.edu/)
 - zsh, oh-my-zsh, zsh-history-substring-search,  zsh-syntax-highlighting
 - [TLDR page](https://tldr.sh)
+- [KMDR page](https://github.com/ediardo/kmdr-cli)
 - [shellcheck](https://github.com/koalaman/shellcheck) 
 - [enhanced grep: rg](https://github.com/BurntSushi/ripgrep)
 - autojump
@@ -245,6 +246,9 @@ set -e
 # perl -a autosplit mode with -n or -p (splits $_ into @F)
 # perl -e evaluate
 cat /tmp/sslparams.log | cut -d ' ' -f 2,2 | sort | uniq -c | sort -rn | perl -ane 'printf "%30s %s\n", $F[1], "="x$F[0];'
+
+# tr -s " " Compress a series of identical characters (space here) to a single character
+kill -9 $(ps aux | grep h2o | tr -s " " | cut -f 2 -d ' ')
 ```
 
 

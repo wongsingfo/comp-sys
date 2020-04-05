@@ -7,7 +7,16 @@ nav_order: 20
 
 # Netfilter
 
+Reference:
+
 - [Netfilter](http://www.netfilter.org/)
+
+Packet filtering framework inside the Linux 2.4.x and later. It includes:
+
+- netfilter: a set of hooks inside the Linux kernel that allows kernel modules to register callback functions with the network stack.
+- iptables: a generic table structure for the definition of rulesets (matches + actions).
+- connection tracking (ip_conntrack, nf_conntrack)
+- NAT subsystem
 
 
 ```c

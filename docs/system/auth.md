@@ -53,7 +53,7 @@ lsof -u ^lakshmanan
 kill -9 `lsof -t -u lakshmanan`
 ```
 
-se
+ss
 {{ site.bin_option_style }}
 
 ```bash
@@ -61,6 +61,22 @@ se
 ss -ltp
 # Show the port number rather than the service name
 ss -n
+```
+
+ps
+{{ site.bin_option_style }}
+
+```bash
+# List all running processes:
+ps aux
+# List all running processes including the full command string:
+ps auxww
+# List all processes of the current user in extra full format:
+ps --user $(id -u) -F
+# List all processes of the current user as a tree:
+ps --user $(id -u) f
+# Get the parent pid of a process:
+ps -o ppid= -p pid
 ```
 
 ## User

@@ -13,6 +13,7 @@ nav_order: 50
 
 - Python for Data Analysis, [zh](https://github.com/apachecn/pyda-2e-zh)
 - [Documentation](https://pandas.pydata.org/pandas-docs/stable/reference/index.html)
+- [10 Min Documentation](https://pandas.pydata.org/docs/getting_started/10min.html)
 
 ## Table of contents
 {: .no_toc .text-delta }
