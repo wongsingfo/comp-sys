@@ -6,6 +6,7 @@ nav_order: 20
 ---
 
 # Netlink
+{: .no_toc}
 
 Netlink is a IPC mechanism primarly between the kernel and user space processes. It was designed to be a more flexible successor to ioctl to provide mainly networking related kernel configuration and monitoring interfaces.
 
