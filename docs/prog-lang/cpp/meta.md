@@ -136,7 +136,62 @@ public:
 }
 ```
 
+## [assign](http://blog.kongfy.com/2017/06/c%e5%ae%9e%e7%8e%b0%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e6%a3%80%e6%9f%a5/)
 
 
+```cpp
+template<bool, typename T> struct __has_assign__;
+ 
+template <typename T>
+struct __has_assign__<true, T>
+{
+    typedef int (T::*Sign)(const T &);
+    typedef char yes[1];
+    typedef char no[2];
+    template <typename U, U>
+    struct type_check;
+    template <typename _1> static yes &chk(type_check<Sign, &_1::assign> *);
+    template <typename> static no &chk(...);
+    static bool const value = sizeof(chk<T>(0)) == sizeof(yes);
+};
+ 
+template <typename T>
+struct __has_assign__<false, T>
+{
+    static bool const value = false;
+};
+
+template <bool c>
+struct BoolType
+{
+    static const bool value = c;
+};
+typedef BoolType<false> FalseType;
+typedef BoolType<true> TrueType;
+
+template <typename T>
+inline int copy_assign_wrap(T &dest, const T &src, TrueType c)
+{
+    return dest.assign(src);
+}
+ 
+template <typename T>
+inline int copy_assign_wrap(T &dest, const T &src, FalseType c)
+{
+    dest = src;
+    return 0;
+}
+ 
+// 此函数用于拷贝赋值
+// - 如果T有成员函数int assign(const T &)，则调用dest.assign(src)，
+//   并以assign函数的返回值作为返回值；
+// - 如果T没有成员函数int assign(const T &)，则调用dest=src，
+//   并返回0。
+template <typename T>
+inline int copy_assign(T &dest, const T &src)
+{
+    return copy_assign_wrap(dest, src, BoolType<__has_assign__<__is_class(T), T>::value>());
+}
+```
 
 

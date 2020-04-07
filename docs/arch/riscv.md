@@ -10,9 +10,6 @@ nav_order: 60
 
 RISC-V is an ISA specification but not a processor.
 
-## Table of contents
-{: .no_toc .text-delta }
-
 The RISC-V ISA is defined as a base integer ISA, which must be present in any implementation, plus optional extensions to the base ISA. The base is carefully restricted to a minimal set of instructions sufficient to provide a reasonable target for compilers, assemblers, linkers, and operating systems.
 
 Each base integer instruction set is characterized by 
@@ -23,6 +20,9 @@ Each base integer instruction set is characterized by
 There are two primary base integer variants, RV32I and RV64I. The suffix "I" means the base integer ISA. Diffenrent standard extensions add different suffixes.
 
 The base RISC-V ISA has a **little-endian memory system**, but non-standard variants can provide a big-endian or bi-endian memory system.
+
+## Table of contents
+{: .no_toc .text-delta }
 
 1. TOC
 {:toc}

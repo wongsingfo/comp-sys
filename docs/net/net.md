@@ -215,15 +215,6 @@ digraph {
 
 </pre>
 
-## Netfilter
-
-need to enable `CONFIG_NETFILTER`
-
-the kernel interface for capturing network packets for modifying/analyzing them (for filtering, NAT, etc.). The netfilter interface is used in user space by `iptables`.
-
-In the Linux kernel, packet capture using netfilter is done by attaching hooks. Hooks can be specified in different locations in the path followed by a kernel network packet, as needed. 
-
-{% include img.html filename="nfk-traversal.png" %}
 
 ## XFRM
 

@@ -22,6 +22,7 @@ nav_order: 80
 - [regex debugger: regex101](https://regex101.com/)
 - [Parsing HTML: pup](https://github.com/EricChiang/pup)
 - [Parsing JSON: jq](https://stedolan.github.io/jq/manual/)
+- [httpie](https://httpie.org/)
 
 - `bc`: calculator
 - `paste`
@@ -30,6 +31,7 @@ nav_order: 80
 - `xargs`
 - `tput bel`: alert when jobs finish
 - `sshfs`: [osxfuse](https://github.com/osxfuse/osxfuse/wiki/SSHFS)
+- `column -t`
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -208,6 +210,8 @@ while [ $counter -lt 3 ]; do
     let counter-=1
     echo $counter
 done
+
+cat file.txt | sed '/^[[:space:]]*$/d' | while read -r a; do echo $a; done
 ```
 
 ## getopts

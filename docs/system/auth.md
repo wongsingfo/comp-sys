@@ -77,6 +77,8 @@ ps --user $(id -u) -F
 ps --user $(id -u) f
 # Get the parent pid of a process:
 ps -o ppid= -p pid
+# List all details
+ps -l pid
 ```
 
 ## User

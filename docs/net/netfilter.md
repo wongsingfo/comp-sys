@@ -5,14 +5,13 @@ parent: Network Stack
 nav_order: 20
 ---
 
+# Netfilter
 
 Reference:
 
 - [Netfilter](http://www.netfilter.org/)
 - [Tutorial](https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture)
 
-
-# Netfilter
 {: .no_toc}
 
 Netfilter is the kernel interface for capturing network packets for modifying/analyzing them (for filtering, NAT, etc.). The netfilter interface is used in user space by `iptables`.

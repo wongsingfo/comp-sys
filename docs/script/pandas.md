@@ -60,6 +60,7 @@ series.value_counts(nomalize=True) # relative frequencies
 series.value_counts(ascending=True)
 
 ### set & get
+
 series[['c', 'a', 'd']]
 series[series > 0]
 series1.combine_first(series2)  # update #1 with #2
@@ -68,6 +69,10 @@ series1.combine_first(series2)  # update #1 with #2
 
 np.exp(series)
 series.map(lambda x: x * 2) 
+
+## merge
+
+series1.append(series2)
 ```
 
 ## DataFrame
@@ -150,7 +155,7 @@ frame["debt"].apply(lambda x: x * 2) # x is a cloumn
 
 ## Groupby
 
-groupby = group + mapping + concatenate
+groupby = group + mapping + concatenation
 
 `grouped = df.groupby(?)`:
 

@@ -86,6 +86,12 @@ mahjong: true
 ## 牌效例题
 
 <div class="mahjong">
+3889m 233789p 3s
+</div>
+
+打 9m
+
+<div class="mahjong">
 12666m 1245p 33678s
 </div>
 
