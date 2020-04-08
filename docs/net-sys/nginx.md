@@ -18,6 +18,8 @@ References:
 - NGINX Cookbook - Advanced Recipes for High Performance Load Balancing
 - [Documentation](https://nginx.org/en/docs/)
 - [Directive Documentation](http://nginx.org/en/docs/dirindex.html)
+- [nginx module tutorial](https://www.evanmiller.org/nginx-modules-guide.html)
+- [lua nginx Documentation](https://openresty-reference.readthedocs.io/en/latest/Lua_Nginx_API/)
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -193,4 +195,15 @@ server {
     # ...
 }
 ```
+
+## lua-nginx / OpenResty
+
+[lua-nginx](https://github.com/openresty/lua-nginx-module) is a core component of [OpenResty](https://openresty.org/).
+
+- lua-coroutines (ease of concurrent) + Nginx event model
+- a LuaJIT VM instance shared across all the requests in a single Nginx worker process
+- plugged into Nginx's "http" subsystem so it can only speaks downstream communication protocols in the HTTP family
+- data is shared with in a Nginx worker process until a HUP signal is sent to the Nginx master process to force a reload.
+
+> It is discouraged to build this module with Nginx yourself since it is tricky to set up exactly right.
 

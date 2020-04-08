@@ -6,7 +6,7 @@ nav_order: 20
 ---
 
 # iproute2
-{: .no_toc .text-delta }
+{: .no_toc }
 
 The 2.2 and above Linux kernels include a completely redesigned network subsystem. This new networking code brings Linux performance and a feature set with little competition in the general OS arena.
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Latex in 30 Minutes
-parent: Programming Language
+parent: Script
 nav_order: 30
 ---
 

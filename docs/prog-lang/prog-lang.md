@@ -166,12 +166,47 @@ A reference names a _location_ in the _store_ (a.k.a _heap_ or _memory_). We can
 
 Store typing: a finite function mapping locations to types.
 
+## Exception
+
+`error` can be any type. It introduces two problems:
+
+- From the point of view of implementation, the language is not _syntax-directed_ any more. (They cannot just be "read from the bottom to top" to yield a typechecking algorithm)
+- The Uniqueness of Typing theroem breaks.
+
+Alternative:
+
+- Use variable type for `error`
+- Use the minimal type `Bot` for `error` (`Bot` (bottom type) is a subtype of any type)
+
+Exceptions are _value-carrying_ in the sense that one may pass a value to the exception handler when the exception is raised. Exception values have a single type, T_{exn}, which is shared by all exception handler.
+
 ## Subtyping
 
 - invariant: S <: T, T <: S => [statment involve S <: T]
+  - covariant + contravariant
+    - Array
 - covariant: S <: T => [statment involve S <: T]
+  - "output a value"
+    - the function result
+    - `Source`
+    - the output of a pipe
 - contravariant T <: S => [statment involve S <: T]
+  - "input a value"
+    - the function argument
+    - `Sink`
+    - the input of a pipe
 
+_minimal typing_: assign each typable term its smallest possible type.
+
+## Type Variable
+
+S > t: type t is an instance of type scheme S
+
+## Polymorphism
+
+- subtype polymorphism (OO-style)
+- parametric polymorphism (ML-style)
+- ad-hoc polymorphism (static / dynamic overloading)
 
 
 

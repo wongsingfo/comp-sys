@@ -57,11 +57,11 @@ mahjong: true
 
 <div class="mahjong">4567p</div>
 
-1234和孤立4几乎没有区别，但是1234能形成雀头
+四连形。特别的，1234和孤立4几乎没有区别，但是1234能形成雀头
 
 <div class="mahjong">4556m</div>
 
-四连
+中膨形
 
 <div class="mahjong">4456s</div>
 
@@ -84,6 +84,12 @@ mahjong: true
 严重的有效牌重复
 
 ## 牌效例题
+
+<div class="mahjong">
+2468m 3579p 223499s
+</div>
+
+打 2s， 打 8m, 9p 等损 8 张！（打 8m 损 6p）
 
 <div class="mahjong">
 3889m 233789p 3s
