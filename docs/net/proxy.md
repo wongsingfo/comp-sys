@@ -48,7 +48,10 @@ ssh -R 2222:localhost:22 relay@123.123.123.123
 autossh -M 55555 -NfR 2222:localhost:22 relay@123.123.123.123
 ```
 
+## proxychains4
 
-
+```
+brew install proxychains-ng`
+```
 
 

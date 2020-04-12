@@ -117,56 +117,39 @@ server {
 }
 ```
 
-## FastCGI
+## Module
 
-```nginx
-server {
-    root /data/www;
-  
-    location / {
-        index   index.html index.php;
-    }
-  
-    location ~ \.php$ {
-        fastcgi_pass  localhost:9000;
-        # $document_root=/data/www;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param QUERY_STRING    $query_string;
-    }
+- Nginx modules are not dynamically linked! They’re compiled right into the Nginx binary.
+- Nginx’s module invocation is *extremely* customizable. A hook can be added to many places or events.
 
-    location ~ \.(gif|jpg|png)$ {
-        root /data/images;
-        expires 30d;
-    }
-}
-```
+Nginx modules have three roles:
 
-## HTTP Manipulation
+- handlers
+  - at server startup, attach itself to particular locations defined in the configuration (usually only one handler attaches to a particular location)
+  - (if applicable) it also acts as a load-balancer to pick a backend server
+  - return:
+    - good
+    - error
+    - decline to process the request and defer to the default handler
+- filter: If the handler does not produce an error, the filters are called. 
+  - Multiple filters can hook into each location. The order of their execution is determined at compile-time. 
+  - works like pipes in Unix
+- 
 
-The “`@`” prefix defines a named location. Such a location is not used for a regular request processing, but instead used for request redirection. 
+## lua-nginx / OpenResty
 
-```nginx
-location / {
-    # Checks the existence of files in the specified 
-    # order and uses the first found file for request processing
-    try_files /system/maintenance.html
-              $uri $uri/index.html $uri.html
-              @mongrel;
-}
+[lua-nginx](https://github.com/openresty/lua-nginx-module) is a core component of [OpenResty](https://openresty.org/).
 
-location @mongrel {
-    proxy_pass http://mongrel;
-}
-```
+- lua-coroutines (ease of concurrent) + Nginx event model
+- a LuaJIT VM instance shared across all the requests in a single Nginx worker process
+- plugged into Nginx's "http" subsystem so it can only speaks downstream communication protocols in the HTTP family
+- data is shared with in a Nginx worker process until a HUP signal is sent to the Nginx master process to force a reload.
 
-ngx_http_rewrite_module:
+> It is discouraged to build this module with Nginx yourself since it is tricky to set up exactly right.
 
-- `last` starts a search for a new location matching the changed URI
-- `break`
-- `redirect`: 302
-- `permanent`: 301
+## Use Case
 
-## Logging
+### Logging
 
 - [Docs](https://docs.nginx.com/nginx/admin-guide/monitoring/logging/)
 
@@ -196,14 +179,52 @@ server {
 }
 ```
 
-## lua-nginx / OpenResty
+### HTTP Manipulation
 
-[lua-nginx](https://github.com/openresty/lua-nginx-module) is a core component of [OpenResty](https://openresty.org/).
+The “`@`” prefix defines a named location. Such a location is not used for a regular request processing, but instead used for request redirection. 
 
-- lua-coroutines (ease of concurrent) + Nginx event model
-- a LuaJIT VM instance shared across all the requests in a single Nginx worker process
-- plugged into Nginx's "http" subsystem so it can only speaks downstream communication protocols in the HTTP family
-- data is shared with in a Nginx worker process until a HUP signal is sent to the Nginx master process to force a reload.
+```nginx
+location / {
+    # Checks the existence of files in the specified 
+    # order and uses the first found file for request processing
+    try_files /system/maintenance.html
+              $uri $uri/index.html $uri.html
+              @mongrel;
+}
 
-> It is discouraged to build this module with Nginx yourself since it is tricky to set up exactly right.
+location @mongrel {
+    proxy_pass http://mongrel;
+}
+```
+
+ngx_http_rewrite_module:
+
+- `last` starts a search for a new location matching the changed URI
+- `break`
+- `redirect`: 302
+- `permanent`: 301
+
+### FastCGI
+
+```nginx
+server {
+    root /data/www;
+  
+    location / {
+        index   index.html index.php;
+    }
+  
+    location ~ \.php$ {
+        fastcgi_pass  localhost:9000;
+        # $document_root=/data/www;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param QUERY_STRING    $query_string;
+    }
+
+    location ~ \.(gif|jpg|png)$ {
+        root /data/images;
+        expires 30d;
+    }
+}
+```
 
