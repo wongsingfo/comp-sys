@@ -74,6 +74,8 @@ qdisc (queueing discipline):
 
 There exists a queue for each interface. The kernel first sends the packet to the qdisc, and then tries to get as many packets as possible from the qdisc, for giving them to the interface. qdisc can contain *classes*. 
 
+Each interface has one egress *root qdisc* (default: `pfifo_fast`)
+
 A classful qdisc allows you to have branches. The branches are called *classes*. 
 
 Although tc shaping rules for ingress are very limited, you can create a virtual interface ifb.
@@ -96,7 +98,7 @@ tc -g class show dev eth0  # Shows classes as ASCII graph on eth0 interface.
 modprobe sch_netem
 ```
 
-Setting a classful qdisc requires that you name each class. To name a class, the `classid` parameter is used. To name a qdisc, the `handle` parameter is used.
+Each qdisc and class is assigned a handle. To name a qdisc, the `handle` parameter is used. To name a class, the `classid` parameter is used. 
 
 ```
 $ tc qdisc add dev eth0 root handle 1: my_qdisc <args>
@@ -110,11 +112,15 @@ $ tc class add dev eth0 parent 1: classid 1:2 myclass <args>
 $ tc qdisc add dev eth0 parent 1:2 handle 20: my_qdisc2 <args>
 ```
 
+{% include img.html filename="Screen Shot 2020-04-17 at 10.50.11 PM.png" %}
+
+Only the root qdisc gets dequeued by the kernel! When the kernel decides that it needs to extract packets to send to the interface, the root qdisc 1: gets a dequeue request, which is passed to 1:1, which is in turn passed to 10:, 11: and 12:, each of which queries its siblings, and tries to dequeue() from them. In this case, the kernel needs to walk the entire tree, because only 12:2 contains a packet.
+
 name:
 
-- root: ffff:ffff
-- unspecified: 0000:0000
-- qdisc: 10:
+- root: `ffff:ffff` or `1:0`
+- unspecified: `0000:0000`
+- qdisc:
   - major number is called handle
   - minor number is left for classed
 

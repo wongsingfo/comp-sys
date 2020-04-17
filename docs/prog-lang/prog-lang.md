@@ -140,6 +140,11 @@ Some important properties:
 - Cononical Forms: If v is a closed value of type T, then v has the form F.
 - Preservation
 - Progress
+- Erasure: Type annotations play no role in evaluation
+- Typability
+- Normalization: evaluation of every well-typed program terminates
+
+`fix` itself cannot be defined in simply typed lambda-calculus. Indeed, no expression that can lead to non-termination computations can be typed using only simple type.
 
 ## Reference
 

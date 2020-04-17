@@ -134,7 +134,6 @@ Nginx modules have three roles:
 - filter: If the handler does not produce an error, the filters are called. 
   - Multiple filters can hook into each location. The order of their execution is determined at compile-time. 
   - works like pipes in Unix
-- 
 
 ## lua-nginx / OpenResty
 
