@@ -203,9 +203,14 @@ Exceptions are _value-carrying_ in the sense that one may pass a value to the ex
 
 _minimal typing_: assign each typable term its smallest possible type.
 
+syntax-directed rules: each rule can be "read from bottom to top"
+
+- input position: all metavariables appearing in the premises also appear in the conclusion (not syntax-directed)
+- output position: all metavariables appearing in the conclusion also appear in the premises (syntax-directed)
+
 ## Type Variable
 
-S > t: type t is an instance of type scheme S
+`S > t`: type t is an instance of type scheme S
 
 ## Polymorphism
 
@@ -213,5 +218,23 @@ S > t: type t is an instance of type scheme S
 - parametric polymorphism (ML-style)
 - ad-hoc polymorphism (static / dynamic overloading)
 
+principal types: the most general solution for the constraint typing relation
 
+principal unifier (or the most general unifier)
 
+## OOP and its primitive form
+
+- dynamic dispatch: when an operation is invoked on an object, the ensuring behavior depends on the object itself, rather than being fixed once and for all.
+- encapsulation of state
+- inheritance: avoid duplication of code
+- late binding `this` / open recursion
+- super
+
+Object interfaces fit naturally into a *subtype relation*.
+
+Abstract data type (ADT) is similar to OO encapsulation in that only the operations provided by the ADT are allowed to directly manipulate elements of the abstract type.  But different in that there is just one (hidden) representation type and just one implementation of the operations — no dynamic dispatch.
+
+Today's languages is criticized for mixing dynamic dispatch and inheritance features in `class`. Some OO languages offer an alternative mechanism, called **delegation** or **aggregation** (Golang), which allows new objects to be derived by refining the behavior of existing objects.
+
+- structural type system: when recursive types are considered, some of its simplicity and elegance slips away (in C# language)
+- nominal type system (Java and most other mainstream languages)

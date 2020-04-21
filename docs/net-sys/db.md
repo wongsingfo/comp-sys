@@ -86,3 +86,25 @@ B+ tree (default index structure on most DBMSs):
   - the data records
   - the next leaf (for range queries)
 - usually:  2d x key-size + (2d+1) x pointer-size ≤ block-size
+
+## Execution
+
+SQL query is first transformed into _physical plan_. Execution of physical plan is pull-based. 
+
+Each operator pre-allocates heap space for I/O tuples and its internal state. **DBMS limits how  much memory each operator, or each query can use.**
+
+join operator(R S):
+
+- Hash join: one-pass when the memory can hold the relation
+- nested loop join; and (reduce the number of swap-in/out of pages) B(R) + T(R)B(S)
+  - page-at-a-time refinement B(R) + B(R)B(S)
+  - block-nested-loop refinement: B(R) + B(R)B(S)/(M-1)   (M is the memory size)
+- sort-merge join
+- index-based nested loop join
+  - If index on S is clustered: B(R) + T(R)B(S)/V(S,a)
+    B: sizeof R, T: #tuples V: distinct values
+  - If index on S is unclustered: B(R) + T(R)T(S)/V(S,a)
+    - Don’t build unclustered indexes when V(R,a) is small! (T >> B)
+
+
+
