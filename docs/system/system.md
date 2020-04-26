@@ -22,7 +22,9 @@ has_children: true
 ## Tools
 
 - [netcat](https://en.wikipedia.org/wiki/Netcat), [doc](http://man7.org/linux/man-pages/man1/ncat.1.html)
+- [automake tutorial](https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install)
 
-## Link
+## Resources
 
 - [install GNU GCC](http://mirror.hust.edu.cn/gnu/gcc/)
+- [Arch Linux packages](https://www.archlinux.org/packages/): to see what configure parameters a package uses (assume they are using autotools for the build system)

@@ -106,5 +106,26 @@ join operator(R S):
   - If index on S is unclustered: B(R) + T(R)T(S)/V(S,a)
     - Don’t build unclustered indexes when V(R,a) is small! (T >> B)
 
+What if the data does not fit in memory: two-pass algorithm
 
+- sorting
+  - a **run**: an increasing subsequence
+  - merge and sort run \~3B(R)
+- join (R S):
+  - runs of R; runs of S
+  - join while merging
+- grace-join (hashing)
+  - use hash to split R/S into k buckets (k <= M)
+    - expected bucket size = B(R) / k <= M
+    - When a bucket fills up, flush it to disk
+    - using another hash function to join each pair of buckets
+  - join every pair of buckets
+- Hybrid join
+  - still into k buckets, but the first t buckets stay in the memory, while k-t buckets to disk (k <= M)
+  - we first join t buckets immediately and then join the k-t pairs of buckets
+  - t / k * B(s) <= M
+  - adjust t dynamically
+    - start with t = k
+    - when run out of memory, send one bucket to disk, t -= 1
+  - time: 3B(R) + 3B(S)
 
