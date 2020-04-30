@@ -15,6 +15,7 @@ reference:
 - [wiki.debian.org](https://wiki.debian.org/QEMU#Usage).
 - [nairobi-embedded.org: qemu_monitor_console](https://web.archive.org/web/20180104171638/http://nairobi-embedded.org/qemu_monitor_console.html)
 - [qemu-doc](https://qemu.weilnetz.de/doc/qemu-doc.html)
+- [linux inside](https://0xax.gitbooks.io/linux-insides/content/Misc/linux-misc-1.html)
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -29,12 +30,21 @@ make clean
 make kernelversion
 make help
 
-make defconfig
-make menuconfig
+make defconfig   # default config
+make allnoconfig / allyesconfig / allmodconfig
+make menuconfig  # menu-driven interface
+make nconfig     # ncurses-based interface
 ```
 
 - Kernel hacking -> Compile the kernel with debug info (CONFIG_DEBUG_INFO)
 - Kernel hacking -> Compile the kernel with debug info -> Provide GDB scripts for kernel debugging (New)
+
+`make` arguments:
+
+- `ARCH`: arm64
+- `CROSS_COMPILER`: aarch64-linux-gnu-
+
+---
 
 Note [that](https://stackoverflow.com/questions/29151235/how-to-de-optimize-the-linux-kernel-to-and-compile-it-with-o0): You can't de-optimize the kernel. You might be able to de-optimize certain functions, like this:
 
@@ -62,7 +72,15 @@ The default target of `make`. As the Linux kernel matured, the size of the kerne
 
 The bzImage (big zImage) format was developed to overcome this limitation by splitting the kernel over discontiguous memory regions.
 
-## RPM
+## Installation
+
+```bash
+make headers_install
+make modules_install
+make install
+```
+
+### RPM
 
 naming convention: `name-version-release.arch.rpm`
 
@@ -70,11 +88,13 @@ naming convention: `name-version-release.arch.rpm`
 
 `make rpm`
 
-
 https://people.debian.org/~aurel32/qemu/
+
 QEMU's own "Copy On Write" image format: qcow
 qemu-system-x86_64 -hda debian.img -cdrom debian-testing-amd64-netinst.iso -boot d -m 512
+
 https://en.wikipedia.org/wiki/Vmlinux
+
 https://wiki.debian.org/QEMU#Usage
 
 ## qemu
@@ -153,9 +173,17 @@ It has advantage of performance with KVM if the architecture is same with host a
 
 ## Create Root file system
 
+initial ramdisk (`initrd`): a temporary root file system that is used by the Linux kernel during initialization process while other filesystems are not mounted.
+
+### minimal
+
+https://github.com/ivandavidov/minimal
+
+a tiny educational Linux distribution, which is designed to be built from scratch by using a collection of automated shell scripts.
+
 ### Buildroot
 
-Buildroot is a simple, efficient and easy-to-use tool to generate embedded Linux systems through cross-compilation.
+Buildroot is a simple, efficient and easy-to-use tool to generate embedded Linux systems through cross-compilation. It can automate the process of generating `initrd`.
 
 ```
 git clone git://git.buildroot.net/buildroot

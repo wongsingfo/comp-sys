@@ -14,8 +14,9 @@ has_children: true
 - Understanding Linux Kernel
 - INTEL 80386 PROGRAMMER'S REFERENCE MANUAL 1986
 - Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1
+- [The Linux Development Project](http://www.tldp.org/)
 - [MIT 6.828](https://pdos.csail.mit.edu/6.828/2018/schedule.html)
-- [Linux Kernel Labs](https://linux-kernel-labs.github.io/master/)
+- [Linux Kernel Labs](https://linux-kernel-labs.github.io/)
 - [Linux Kernel Source Code](https://www.kernel.org/)
 - [Linux Kernel Documentation 4.19](https://www.kernel.org/doc/html/v4.19/doc-guide/sphinx.html), [latest](https://www.kernel.org/doc/html/latest/index.html)
 
