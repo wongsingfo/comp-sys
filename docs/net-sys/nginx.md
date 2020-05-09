@@ -12,7 +12,7 @@ parent: Network System
 - high-performance and small memory footprint
 
 References:
-{:toc}
+{: .no_toc .text-delta }
 
 - [The C10K Problem](http://www.kegel.com/c10k.html)
 - NGINX Cookbook - Advanced Recipes for High Performance Load Balancing
@@ -20,6 +20,7 @@ References:
 - [Directive Documentation](http://nginx.org/en/docs/dirindex.html)
 - [nginx module tutorial](https://www.evanmiller.org/nginx-modules-guide.html)
 - [lua nginx Documentation](https://openresty-reference.readthedocs.io/en/latest/Lua_Nginx_API/)
+- OpenResty: Best Practices
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -52,7 +53,7 @@ configuration file:
 - simple directive: `name: parameters;`
 - block directive (a.k.a _context_ like [events](https://nginx.org/en/docs/ngx_core_module.html#events), [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http), [server](https://nginx.org/en/docs/http/ngx_http_core_module.html#server), and [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location)): `{ a set of instructions }`. The children contexts can override these values at will. The contexts comprises a tree structure:
   - `main/global`
-    - `event`
+    - `event` 
     - `http`
       - `upstream`
       - `server`
@@ -65,7 +66,10 @@ server {
         root /data/www;
     }
     location /images/ {
-        root /data;
+        root /data;    # /images/1.jpg  -> /data/images/1.jpg
+    }
+    location /images2/ {
+        alias /data2;  # /images/1.jpg  -> /data2/1.jpg
     }
     error_page  500 502 503 504 /50x.html;
 }
@@ -180,7 +184,30 @@ server {
 
 ### HTTP Manipulation
 
-The “`@`” prefix defines a named location. Such a location is not used for a regular request processing, but instead used for request redirection. 
+Variables: 
+
+```
+http://www.google.com:88/test1/test2/test.php?k=v
+
+$host = www.google.com
+$server_port = 88
+$request_uri = /test1/test2/test.php?k=v
+$document_uri = /test1/test2/test.php
+$document_root = /data/www
+$request_filename = /data/www//test1/test2/test.php
+```
+
+[location matching](http://nginx.org/en/docs/http/ngx_http_core_module.html#location): `location [=|~|~*|^~] uri {}`
+
+1. Decode `%xx`, resolve `.` and `..`
+2. Check locations defined using the prefix strings
+   1. if it is a exact matching (with `=` modifier), return
+   2. select the longest matching
+      1. if the longest matching has the `^~` modifier, return
+      2. remember it, go on to step 3
+3. Search through the regular expressions and terminates on the first match and return. If none of the regexes are matched, use the remerbered one in step 2.2.2
+
+The “`@`” prefix defines a named location. Such a location is not used for a regular request processing, but instead used for request redirection. Example:
 
 ```nginx
 location / {
@@ -196,12 +223,33 @@ location @mongrel {
 }
 ```
 
-ngx_http_rewrite_module:
+[ngx_http_rewrite_module](http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite): `rewrite regex replacement [flag]`
+
+If a replacement string starts with “`http://`”, “`https://`”, or “`$scheme`”, the processing stops and the redirect is returned to a client.
+
+Flags: 
 
 - `last` starts a search for a new location matching the changed URI
 - `break`
 - `redirect`: 302
 - `permanent`: 301
+
+[try_files](http://nginx.org/en/docs/http/ngx_http_core_module.html#try_files): `try_files file1, file2, file3 [ uri | =code ]`
+
+The path to a file is constructed from the `file` parameter according to the [root](http://nginx.org/en/docs/http/ngx_http_core_module.html#root) and [alias](http://nginx.org/en/docs/http/ngx_http_core_module.html#alias) directives. It is possible to check directory’s existence by specifying a slash at the end of a name, e.g. `$uri/`. If none of the files were found, an internal redirect to the `uri` specified in the last parameter is made.
+
+```nginx
+# file exists
+if (-f $request_filename) {
+  expires 1h;
+  break;
+}
+
+valid_referers none blocked start.igrow.cn sta.igrow.cn
+if ($invalid_referer) {
+  rewrite ^/ http://$host/logo.png
+}
+```
 
 ### FastCGI
 
@@ -227,3 +275,11 @@ server {
 }
 ```
 
+## Pitfalls
+
+Resoures:
+
+- [common pitfalls](https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/)
+- [if is evil](https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/)
+
+  

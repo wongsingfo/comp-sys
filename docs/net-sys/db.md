@@ -64,6 +64,8 @@ data entry for key k can be:
 index: collection of data entries (now we have two files: data file and index file)
 
 - dense or sparse
+  - dense: 1 2 3 4
+  - sparse: 10 20 30 40
 - primary or secondary 
   - primary: determines the location of indexed records
 - clustered or unclustered
@@ -91,7 +93,7 @@ B+ tree (default index structure on most DBMSs):
 
 SQL query is first transformed into _physical plan_. Execution of physical plan is pull-based. 
 
-Each operator pre-allocates heap space for I/O tuples and its internal state. **DBMS limits how  much memory each operator, or each query can use.**
+Each operator pre-allocates heap space for I/O tuples and its internal state. **DBMS limits how much memory each operator, or each query can use.**
 
 join operator(R S):
 
@@ -102,7 +104,7 @@ join operator(R S):
 - sort-merge join
 - index-based nested loop join
   - If index on S is clustered: B(R) + T(R)B(S)/V(S,a)
-    B: sizeof R, T: #tuples V: distinct values
+    **B: sizeof R, T: #tuples, V: distinct values**
   - If index on S is unclustered: B(R) + T(R)T(S)/V(S,a)
     - Don’t build unclustered indexes when V(R,a) is small! (T >> B)
 
@@ -115,7 +117,7 @@ What if the data does not fit in memory: two-pass algorithm
   - runs of R; runs of S
   - join while merging
 - grace-join (hashing)
-  - use hash to split R/S into k buckets (k <= M)
+  - use hash to split R and S into k buckets (k <= M)
     - expected bucket size = B(R) / k <= M
     - When a bucket fills up, flush it to disk
     - using another hash function to join each pair of buckets
@@ -129,3 +131,37 @@ What if the data does not fit in memory: two-pass algorithm
     - when run out of memory, send one bucket to disk, t -= 1
   - time: 3B(R) + 3B(S)
 
+## Query Optimization
+
+1. Collect statistical summaries of stored data
+2. Estimate size in a bottom-up fashion (most difficult)
+   - T(R)
+   - V(R, a)
+   - B(R)
+   - min, max
+   - histograms
+   - Collection approach: periodic, using sampling
+3. Estimate cost by using the estimated size
+
+Selectivity Factor: Each condition `cond` reduces the size by some factor called selectivity factor.
+
+```sql
+Q = SELECT * 
+    FROM R, S, T
+    WHERE R.B=S.B and S.C=T.C and R.A<40
+```
+
+T(Q) = T(R) x T(S) x T(T) x Selectivity(R.B = S.B) x Selectivity(S.C=T.C) x Selectivity(R.A<40)
+
+Selectivity Factors for Conditions
+
+- A = c: 1 / V(R, A)
+- A < c: (c - Low(R, A)) / (high(R, A) - Low(R, A))
+- A = B: 1 / max(V(R, A), V(S, A))
+  - T(R⨝S) = T(R) x T(S) / max(V(R, A), V(S, A))
+
+Histograms: make size estimation much more accurate
+
+- eq-width: 0-10: 1000, 10-20: 500, 20-30: 5000
+- eq-depth: 0-33: 2000, 33 - 47: 2000, 47 - 100: 2000
+- v-optimal (adopted by modern DBMS): Defines bucket boundaries in an optimal way, to minimize the error over all point queries

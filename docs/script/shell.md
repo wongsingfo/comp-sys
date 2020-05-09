@@ -24,7 +24,6 @@ nav_order: 80
 - [Parsing JSON: jq](https://stedolan.github.io/jq/manual/)
 - [httpie](https://httpie.org/)
 - [showterm](https://github.com/ConradIrwin/showterm)
-
 - `bc`: calculator
 - `paste`
 - `sed`, `awk`
@@ -33,6 +32,7 @@ nav_order: 80
 - `tput bel`: alert when jobs finish
 - `sshfs`: [osxfuse](https://github.com/osxfuse/osxfuse/wiki/SSHFS)
 - `column -t`
+- `od`, `hexdump`
 
 ## Table of contents
 {: .no_toc .text-delta }

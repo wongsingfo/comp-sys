@@ -15,6 +15,8 @@ Lua: an *embedded language*
 
 - Programming in Lua, fourth Edition
 - [Learning X in Y minutes](https://learnxinyminutes.com/docs/lua/)
+- [5.3 Documentation](http://www.lua.org/manual/5.3/)
+- OpenResty: Best Practices
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -29,6 +31,9 @@ arg
 Comments
 --]]
 
+[[ string with \n ]]
+[=[ string with [] ]=]
+
 "result is " .. 3 --> result is 3
 5 .. 6            --> 56
 tonumber("123")   --> 123
@@ -40,8 +45,8 @@ zip = company?.director?.address?.zipcode
 if ... then ... elseif ... then ... else ... end
 while ... do ... end
 repeat ... until ...
-for var = from, to, step ... end
-do end -- a block
+for var = from, to, step do ... end
+do ... end -- a block
 
 ::label:: 
 goto label
@@ -54,6 +59,8 @@ local status, err = pcall(function () error({code=121}) end)
 ```
 
 ## Data Representation
+
+string:  two strings are equal iff their addresses are the same
 
 integer: `i64` (`i32` on Small Lua)
 
@@ -84,7 +91,15 @@ function foo2 ()
   local mi = 1
   return "a", "b" 
 end
-x,y,z = foo2()   -- x="a", y="b", z=nil
+x,y,z = foo2()    -- x="a", y="b", z=nil
+x,y,z = 1, foo2() -- x=1,   y="a", z="b"
+print(1, foo2())  -- 1 a b  (can't be compiled by JIT)
+print(1, (foo2()))-- 1 a
+
+function do_action(callback, ...)
+	params = {...} or {}
+	callback(unpack(params, 1, table.maxn(params)))
+end
 
 function add (...)
 	local s = 0
@@ -98,6 +113,36 @@ function tablename.fn(f1, f2)
   -- tablename.fn = function(f1, f2)
 function tablename:fn(f1)
   -- function tablename.fn(self, f1)
+```
+
+regex: 
+
+|                 | lua language         | `ngx.re.*`                    |
+| --------------- | -------------------- | ----------------------------- |
+| POSIX-compliant | no                   | Yes                           |
+| performance     | not as good as `ngx` | with cache (use `jo` option') |
+
+```lua
+local regex = [[\d+]]
+local m = ngx.re.match("hello, 123", regex, "jo")
+-- j: enable JIT
+-- o: use cache (default number of cached entries: 1024)
+if m then
+  ngx.say(m[0])
+else
+  ...
+end
+```
+
+## Variable
+
+IMPORTANT: A variable without `local` keyword will be treated as a global variable. To detect all the global variable, see this [script](https://github.com/openresty/openresty-devel-utils/blob/master/lj-releng) or or use `luacheck`.
+
+It is faster to access a local variable than a global one. Therefore, some codes like the below one should benifit the performace:
+
+```lua
+local tonumber = tonumber
+-- uses of the function tonumber
 ```
 
 ## Libraries
@@ -171,7 +216,8 @@ f:write(string.dump(p)) f:close()
 Objects are not primitive in Lua.
 
 ```lua
-setmetatable(A, {__index = B, __add = .... })  
+getmetatable(A)
+setmetatable(A, {__index = B, __add = .... })  -- return A
 -- __pow(a, b)                     for a ^ b
 -- __unm(a)                        for -a
 -- __concat(a, b)                  for a .. b
@@ -179,10 +225,12 @@ setmetatable(A, {__index = B, __add = .... })
 -- __eq(a, b)                      for a == b
 -- __lt(a, b)                      for a < b
 -- __le(a, b)                      for a <= b
--- __index(a, b)  <fn or a table>  for a.b
+-- __index(a, b)  <fn or a table>  for a.b when b is not in a
 -- __newindex(a, b, c)             for a.b = c
 -- __call(a, ...)                  for a(...)
-
+-- __tostring(a)
+-- __mode
+-- __metatable                     for getmetable(a)
 
 function tablename.fn(f1, f2) 
   -- tablename.fn = function(f1, f2)
@@ -211,9 +259,10 @@ function LoudDog:makeSound()
   print(s .. s .. s)
 end
 
+-- lua discourage inheritance
 seymour = LoudDog:new()  -- Inheritance
 seymour:makeSound()  -- 'woof woof woof'
-    
+
 -- If needed, a subclass's new() is like the base's:
 function LoudDog:new()
   newObj = {}
@@ -225,21 +274,28 @@ end
 
 ## Module
 
-A module is fundamentally a table.
+A module is fundamentally a table. Use `lua_code_cache on` to imporve the module performance.
 
 ```lua
-local M = {}
+local _M = {}
+_M._VERSION = '1.0'
+
+local mt = { __index = _M }
+
+function _M.new(self, ...)
+  ...
+end
 
 local function sayMyName()
   print('Hrunkner')
 end
 
-function M.sayHello()
+function _M.sayHello()
   print('Why hello there')
   sayMyName()
 end
 
-return M
+return _M
 ```
 
 ```lua
@@ -261,7 +317,7 @@ g = loadstring('print(343)')  -- Returns a function.
 g()  -- Prints out 343; nothing printed before now.
 ```
 
-## C API
+## CAPI: CFunction
 
 The API emphasizes flexibility and simplicity, sometimes at the cost of ease of use. It is our responsibility to make sure that the arguments are valid before calling a function. 
 
@@ -271,7 +327,7 @@ All data exchange from Lua to C and from C to Lua occurs through a virtual stack
 void lua_pushboolean (lua_State *L, int bool);
 // The first element pushed on the stack has index 1
 // The last has index -1
-int lua_isboolean (lua_State *L, int index);
+int lua_isboolean (lua_State *L, int index);	
 int lua_toboolean (lua_State *L, int index);
 int lua_gettop(lua_State *L); /* depth of the stack */
 
@@ -280,3 +336,55 @@ if (lua_pcall(L, 2, 1, 0) != LUA_OK)
   error(L, "error running function 'f': %s", lua_tostring(L, -1));
 ```
 
+## C API: FFI
+
+An extention in LuaJIT to ease writing C API.
+
+```lua
+local ffi = require "ffi"
+-- compiled the dynamic library with -fpic -shared
+local myffi = ffi.load('libz.so')
+ffi.cdef[[
+int add(int x, int y);
+]]
+local res = myffi.add(1, 2)  -- 3
+
+local int_t = ffi.typeof("int")
+local int_array_t = ffi.typeof("int[?]")
+local uintptr_t = ffi.typeof("uintptr_t")
+
+local vector = ffi.new(int_array_t, size)  -- GC
+fii.fill(vector, ffi.sizeof(int_t, size), 0)
+tonumber(ffi.cast(uintptr_t, c_str))
+
+-- sth about GC
+ffi.cdef[[
+typedef struct { int *a; } foo_t;
+]]
+local s = fii.new("foo_t", ffi.new("int[10]"))  -- WRONG! 
+-- ffi.new("int[10]") is freed by GC
+
+ffi.cdef[[
+int printf(const char *fmt, ...);
+]]
+ffi.C.printf("Hello, %s", "world")
+
+-- metatype
+local point
+local mt = {
+  __add = function (a, b) return point(a.x + b.x, a.y + b.y) end,
+  __gc = ...
+}
+point = ffi.metatype("point_t", mt)
+
+-- RAII
+
+
+```
+
+## LuaJIT
+
+About [NYI](http://wiki.luajit.org/NYI) (not yet implemented): 
+
+- avoid using NYI (e.g. `lua_CFunction`, `unpack`, `string.match`, `pairs`) . NYI stops JIT from working.
+- use `jit.dump` or `jit.v` module to find out which NYI stops JIT.
