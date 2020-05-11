@@ -42,10 +42,12 @@ The structure:
 
 The `init` program runs the script `/etc/init.d/networking` which enables the networking.
 
-## Core Data Structures
+## Data Structures
 
 struct proto_ops
 {{ site.struct_style }}
+
+for virtual dispatching
 
 - `int family`
 - `int (*bind) (struct socket *sock, ...)` and others
@@ -145,7 +147,7 @@ IPPROTO_UDPLITE
 
 <pre class="graphviz">
 digraph {
-    
+
     node [shape=shape]
     
     __skb_recv_udp [fontcolor=blue]
@@ -161,9 +163,9 @@ digraph {
   rankdir = BT
   node [shape=box]
 //   concentrate=true
-  
+
   __udp_enqueue_schedule_skb [fontcolor=blue]
-  
+
   udp_rev -> udp_unicast_rcv_skb [label="xfrm4_policy"]
   udp_unicast_rcv_skb -> __udp_queue_rcv_skb
   __udp_queue_rcv_skb -> __udp_enqueue_schedule_skb 

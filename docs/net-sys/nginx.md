@@ -116,6 +116,7 @@ server {
     # A regular expression should be preceded with ~
     # regular expressions has higher priority than the longest prefix matching
     location ~ \.(gif|jpg|png)$ { 
+        set $file_suffix $1
         root /data/images;
     }
 }
@@ -149,6 +150,27 @@ Nginx modules have three roles:
 - data is shared with in a Nginx worker process until a HUP signal is sent to the Nginx master process to force a reload.
 
 > It is discouraged to build this module with Nginx yourself since it is tricky to set up exactly right.
+
+### Internal
+
+```nginx
+location = /sum {
+  internal;
+  content_by_lua_block {
+    local args = ngx.req.get_uri_args()
+    ngx.print(tonumber(args.a) + tonumber(args.b))
+  }
+}
+
+location = /app/test {
+  content_by_lua_block {
+    local res1, res2 = ngx.location.capture_multi(
+      { "/sum", {args = {a = 3, b = 1} } ,
+        "/sum", {args = {a = 1, b = 2} } })
+    ngx.say(res1.body, res2.body)
+  }
+}
+```
 
 ## Use Case
 
