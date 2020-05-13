@@ -1,13 +1,16 @@
 ---
 layout: default
 title: Programming Language
-nav_order: 20
+nav_order: 30
 permalink: docs/prog-lang
 has_children: true
 ---
 
-
 # Programming Language 
+
+1. TOC
+
+{:toc}
 
 Reference:
 
@@ -238,3 +241,25 @@ Today's languages is criticized for mixing dynamic dispatch and inheritance feat
 
 - structural type system: when recursive types are considered, some of its simplicity and elegance slips away (in C# language)
 - nominal type system (Java and most other mainstream languages)
+
+## Recursive Types μ
+
+Universal Set U: everything in the world
+
+Generation Function:  A function F ∈ P(U) → P(U) is monotone if X ⊆ Y implies F(X) ⊆ F(Y).
+
+- X is F-closed: F(X) ⊆ X
+- X is F-consistent if X ⊆ F(X). 
+- X is a fixed point of F if F(X) = X.
+
+**Knaster-Tarski Theorem (1955)**:
+
+- The intersection of all F-closed sets is the least fixed point of F. Denoted as μF
+- The union of all F-consistent sets is the greatest fixed point of F. Denoted as vF
+- Corollary
+  - Principle of induction: If X is F-closed, then µF ⊆ X. 
+  - Principle of coinduction: If X is F-consistent, then X ⊆ νF.
+
+
+
+ 

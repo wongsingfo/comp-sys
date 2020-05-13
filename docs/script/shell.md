@@ -12,6 +12,9 @@ nav_order: 80
 {: .no_toc .text-delta }
 
 - [Missing Semester](https://missing.csail.mit.edu/)
+- [Documentation](http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html)
+- [Google Style Guide](https://google.github.io/styleguide/shellguide.html)
+- [Advanced Bash-Scripting Guide](http://www.tldp.org/LDP/abs/html/index.html)
 - zsh, oh-my-zsh, zsh-history-substring-search,  zsh-syntax-highlighting
 - [TLDR page](https://tldr.sh)
 - [KMDR page](https://github.com/ediardo/kmdr-cli)
@@ -181,11 +184,12 @@ A comprehensive list can be found [here](https://www.tldp.org/LDP/abs/html/speci
 ```bash
 test EXPRESSION
 [ EXPRESSION ]
-[[ EXPRESSION ]]
+[[ EXPRESSION ]]  ## preferred over [ ]
 
 [ 1 -nq 2 ]
 echo $?  # => 0
 
+# http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions
 if [ ! -d "/home/$1" ]; then
 ```
 
@@ -212,40 +216,30 @@ while [ $counter -lt 3 ]; do
     echo $counter
 done
 
-cat file.txt | sed '/^[[:space:]]*$/d' | while read -r a; do echo $a; done
-```
-
-## getopts
-
-```bash
 while getopts ":o:h" o; do
     case "${o}" in
-        o)
-            do_something ${OPTARG}
-            ;;
+        o) do_something ${OPTARG} ;;
         h)
             usage
             exit 0
-            ;;
+        ;;
         *)
             usage
             error unknow option
             exit 1
-            ;;
+        ;;
     esac
 done
 ```
 
-## misc
+## Best Practices 
 
 ```bash
 trap 'kill $(jobs -p)' EXIT
 # Watch out to use single ', to prevent the shell from substituting the $() immediately.
 
-set -x 
-# print before execution
-set -e
-# die on error
+set -x  # print before execution
+set -e  # die on error
 
 # perl -n assume "while (<>) { ... }" loop around program
 # perl -a autosplit mode with -n or -p (splits $_ into @F)
@@ -254,6 +248,23 @@ cat /tmp/sslparams.log | cut -d ' ' -f 2,2 | sort | uniq -c | sort -rn | perl -a
 
 # tr -s " " Compress a series of identical characters (space here) to a single character
 kill -9 $(ps aux | grep h2o | tr -s " " | cut -f 2 -d ' ')
-```
 
+# read: BASH builtin for retrieving data from standard input.
+# read -r : Do not let backslash (\) act as an escape character
+# read variable: Store data that you type from the keyboard
+cat file.txt | sed '/^[[:space:]]*$/d' | while read -r a; do echo $a; done
+
+# DEFAULT_PATH=/usr/local/sbin:/usr/local/bin
+for path in $(echo "$DEFAULT_PATH" | /bin/sed "s/:/\\n/g"); do
+
+# set default value
+[ -z "${MAX_CARNUM}" ] && MAX_CARNUM=18
+
+# 2020-05-13 12:38:13
+date +"%Y-%m-%d %H:%M:%S"
+
+# Print the fifth column
+# Use space as delimiter by default
+cat /proc/uptime | awk -F . '{print $5}'
+```
 

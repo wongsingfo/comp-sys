@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Processor Architecture
-nav_order: 22
+nav_order: 32
 permalink: docs/arch
 has_children: true
 ---

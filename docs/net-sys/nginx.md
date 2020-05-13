@@ -125,6 +125,8 @@ server {
 ## Module
 
 - Nginx modules are not dynamically linked! They’re compiled right into the Nginx binary.
+  - In NGINX 1.9.11 onwards a new way of loading modules dynamically has been introduced. Stil, Not every module can be converted to a Dynamic Module. see https://www.nginx.com/resources/wiki/extending/converting/.
+  - use `load_module` directive
 - Nginx’s module invocation is *extremely* customizable. A hook can be added to many places or events.
 
 Nginx modules have three roles:

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Linking
-nav_order: 20
+nav_order: 30
 permalink: docs/linking
 has_children: true
 ---

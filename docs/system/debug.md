@@ -34,6 +34,8 @@ make defconfig   # default config
 make allnoconfig / allyesconfig / allmodconfig
 make menuconfig  # menu-driven interface
 make nconfig     # ncurses-based interface
+
+make rpm         # make rpm package
 ```
 
 - Kernel hacking -> Compile the kernel with debug info (CONFIG_DEBUG_INFO)
@@ -80,13 +82,7 @@ make modules_install
 make install
 ```
 
-### RPM
-
-naming convention: `name-version-release.arch.rpm`
-
-- `release` is the number of times this version of the software has been packaged.
-
-`make rpm`
+## qemu
 
 https://people.debian.org/~aurel32/qemu/
 
@@ -97,7 +93,7 @@ https://en.wikipedia.org/wiki/Vmlinux
 
 https://wiki.debian.org/QEMU#Usage
 
-## qemu
+-----
 
 [command line option](https://www.qemu.org/docs/master/qemu-doc.html):
 

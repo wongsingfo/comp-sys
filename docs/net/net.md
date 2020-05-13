@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Network Stack
-nav_order: 80
+nav_order: 21
 permalink: docs/net
 has_children: true
 graphviz: true

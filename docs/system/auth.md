@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Authentication
+title: Administration
 parent: Computer System
 nav_order: 0
 ---
 
-# Authentication in Linux
+# Administration in Linux
 {: .no_toc }
 
-reference: 
+Reference: 
 
 - Secure Programming Cookbook for C and C++: Recipes for Cryptography, Authentication, Input Validation & More - John Viega and Matt Messier
 
@@ -108,8 +108,22 @@ sudo setcap cap_net_raw+p /bin/ping
 # +p: add CAP_NET_RAW to the Permitted set
 ```
 
+## Package Manager
 
+### RPM
 
+Although it was created for use in Red Hat Linux, RPM is now used in many Linux distributions. It has also been ported to some other operating systems, such as Novell NetWare (as of version 6.5 SP3), IBM's AIX (as of version 4), **CentOS**, **Fedora** (from the Fedora Project, also sponsored by Red Hat), and **Oracle Linux**. All versions or variants of these Linux operating systems use the RPM Package Manager. 
 
+naming convention: `name-version-release.arch.rpm`
 
+- `release` is the number of times this version of the software has been packaged.
 
+### ipkg / opkg
+
+Naming convention: `name_version_arch.ipk`
+
+Itsy Package Management System. It has been discontinued. Many projects which formerly used ipkg have adopted the ipkg fork opkg as the replacement. It is a lightweight package management system designed for **embedded devices that resembles Debian's dpkg**.  It was used in the Unslung operating system for the Linksys NSLU2 (Optware), in **OpenWrt**, Openmoko, webOS, Gumstix, the iPAQ, QNAP NAS appliances and elsewhere.
+
+Opkg is a full package manager for the root file system, including kernel modules and drivers, while ipkg is just a way to add software to a separate directory (e.g. `/opt`).
+
+[Package Manipulation](https://openwrt.org/docs/guide-user/additional-software/opkg)
