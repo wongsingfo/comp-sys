@@ -36,6 +36,7 @@ nav_order: 80
 - `sshfs`: [osxfuse](https://github.com/osxfuse/osxfuse/wiki/SSHFS)
 - `column -t`
 - `od`, `hexdump`
+- `aria2c -x 16 -s 16 [url]`: file downloader 
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -70,16 +71,6 @@ ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519
 ssh-copy-id id@server -p [port] # by default, use ~/.ssh/id_rsa
 ssh-copy-id id@server -p [port] -i ~/.ssh/id_ed25519.pub
 ```
-
-Port Forwarding ([credit](https://unix.stackexchange.com/questions/115897/whats-ssh-port-forwarding-and-whats-the-difference-between-ssh-local-and-remot)): For example, if we execute jupyter notebook in the remote server that listens to the port 8888. Thus, to forward that to the local port 9999, we would do `ssh -L 9999:localhost:8888 foobar@remote_server` and then navigate to `locahost:9999` in our local machine. 
-
-Local Port Forwarding:
-
-{% include img.html filename="a28N8.png" width=500 %}
-
-Remote Port Forwarding:
-
-{% include img.html filename="4iK3b.png" width=500 %}
 
 ## Variable
 
