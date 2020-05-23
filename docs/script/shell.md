@@ -26,7 +26,7 @@ nav_order: 80
 - [Parsing HTML: pup](https://github.com/EricChiang/pup)
 - [Parsing JSON: jq](https://stedolan.github.io/jq/manual/)
 - [httpie](https://httpie.org/)
-- [showterm](https://github.com/ConradIrwin/showterm)
+- recorder: [showterm](https://github.com/ConradIrwin/showterm)
 - `bc`: calculator
 - `paste`
 - `sed`, `awk`

@@ -12,6 +12,7 @@ nav_order: 10
 {: .no_toc .text-delta }
 
 - [GDB and LLDB](https://lldb.llvm.org/use/map.html)
+- [GDB GUI](https://www.gdbgui.com/)
 
 ## Table of contents
 {: .no_toc .text-delta }

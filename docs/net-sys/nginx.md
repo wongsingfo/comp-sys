@@ -3,6 +3,7 @@ layout: default
 title: Nginx
 nav_order: 180
 parent: Network System
+mathjax: true
 ---
 
 # Nginx
@@ -16,8 +17,10 @@ References:
 
 - [The C10K Problem](http://www.kegel.com/c10k.html)
 - NGINX Cookbook - Advanced Recipes for High Performance Load Balancing
-- [Documentation](https://nginx.org/en/docs/)
-- [Directive Documentation](http://nginx.org/en/docs/dirindex.html)
+- Documentation
+  - [Module Documentation](https://nginx.org/en/docs/)
+  - [Directive Documentation](http://nginx.org/en/docs/dirindex.html)
+  - [Variable Documentation](http://nginx.org/en/docs/varindex.html)
 - [nginx module tutorial](https://www.evanmiller.org/nginx-modules-guide.html)
 - [lua nginx Documentation](https://openresty-reference.readthedocs.io/en/latest/Lua_Nginx_API/)
 - OpenResty: Best Practices
@@ -100,8 +103,11 @@ Load Balancing Strategies:
 - Least connections (`least_conn`)
 - Least time (`least_time`): akin to least connections in that it proxies to the upstream server with the least number of current connections but favors the servers with the lowest average response times.
 - Generic hash (`hash`): This method is very useful when you need more control over where requests are sent or for determining which upstream server most likely will have the data cached. 
-- Random
+- Random (`random`)
 - IP hash: uses the client IP address as the hash. This method ensures that clients are proxied to the same upstream server as long as that server is available, which is extremely helpful when the session state is of concern and not handled by shared memory of the application.
+- [Power of Two Choices](https://www.nginx.com/blog/nginx-power-of-two-choices-load-balancing-algorithm/):  `random two`
+  - One Choices: the max load $\log n \;/ \log \log n$
+  - Two Choices: $n + O(1)$
 
 ```nginx
 upstream backend {

@@ -67,6 +67,8 @@ Summary:
 - For each server, we **repeat** the file download **for 3 times at both** locations, and **measure the average** throughput.
 - We **now walk through Algorithm 1**, which combines chunk-based transfer (§4.1), subflow completion time balancing (§4.2), and adap- tive reinjection (§4.4). 
 - We **describe each component in turn**.
+- Without loss of generality, we list the keys in **monotonically decreasing order** of popularity, i.e.,
+- We **define PASR (peak-to-average size ratio) to be** the ratio between the 95𝑡h percentile chunk size and the average chunk size within a track.
 
 ## Conclusion
 
@@ -76,4 +78,5 @@ Summary:
 - However, 5G throughput **exhibits much higher variations than** 4G despite the presence of LoS. 
 - The above results **highlight the need for** cross-layer efforts that improve 5G performance under (even low) mobility. 
 - While these values have worked well for our experiments, **refining them to improve performance remains a subject for future work**.
+- Since this proposal deals with other layers than ours, both approaches **are complementary and the advantages are cumulative.**
 

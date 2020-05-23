@@ -21,6 +21,7 @@ mathjax: false
 - Our experimental results show that MPTCP-MA can efficiently utilize **an intermittently available path**, with Wifi throughput improvements of up to 72 percent.
 - These studies show that most problems are not **artifacts** of specific players but **manifest** across all state-of-art players.
 - Regardless of implementation details, **a wide range** of factors **spanning** the server, the network and the client and across the transport and application layers can be customized based on the system designers’ considerations around different tradeoffs to optimize streaming performance. 
+- The ABR adaptation logic needs to deal with **time-varying** network conditions and make complex tradeoffs.
 
 ## Nouns
 

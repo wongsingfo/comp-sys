@@ -53,6 +53,16 @@ A term t is in _normal form_ if no evaluation rule applies to it.
 - If t is in normal form, then t is a value. (Prove by contradiction then by structural induction).
 - A closed term (a term that does not contains any free variables) is _stuck_ if it is in normal form but not a value.
 
+|                 | family of | indexed by |
+| --------------- | --------- | ---------- |
+| Lambda          | Terms     | Terms      |
+| System F        | Terms     | Types      |
+| Lambda-ω        | Types     | Types      |
+| Dependent types | Types     | Terms      |
+
+- Lambda calculus `λx. λxs. cons x xs`
+- Dependent types `cons: Π n:Nat. Nat->NatList n->NatList (succ n)`
+
 ## Lambda
 
 Russell's paradox => halting problem

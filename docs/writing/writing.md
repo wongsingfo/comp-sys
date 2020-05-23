@@ -21,6 +21,7 @@ has_children: true
 - **The partitions in the log serve several purposes.** First, ...
 - **Interestingly**, we also find that the (in)activity of user traffic can trigger 4G-5G handoffs. 
 - **Other than that**, being an agent for all the on-board passengers, a mobile relay should optimize the aggregated user experience rather than any single user, while there is currently no practical solution towards this goal, especially from an application-agnostic perspective.
+- **It is worth mentioning that** compared to HTTPS, QUIC has some unique properties which make its analysis even more challenging
 
 ### Because
 
