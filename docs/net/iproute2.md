@@ -135,6 +135,8 @@ tc filter add dev eth0 protocol ip parent 1: prio 1 handle 6 fw flowid 1:30
 iptables -A PREROUTING -t mangle -i eth0 -j MARK --set-mark 6
 ```
 
+
+
 ## ifb
 
 The Intermediate Functional Block (`ifb`) pseudo network interface acts as a QoS concentrator for multiple different sources of traffic. Packets from or to other interfaces have to be redirected to it using the `mirred` action in order to be handled, regularly routed traffic will be dropped. This way, a single stack of qdiscs, classes and filters can be shared between multiple interfaces.

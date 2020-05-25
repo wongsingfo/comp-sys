@@ -29,6 +29,12 @@ Motivation: reduce the _dispatch latency_, that is, the delay between the time t
 
 Kernel Preemption introduces a nonnegligible overhead.
 
+```c
+// include/linux/smp.h
+#define get_cpu()		({ preempt_disable(); smp_processor_id(); })
+#define put_cpu()		preempt_enable()
+```
+
 ## Per-CPU variables
 
 General rule: a kernel control path should access a per-CPU variable with kernel preemption disabled.
