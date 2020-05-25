@@ -108,6 +108,14 @@ sudo setcap cap_net_raw+p /bin/ping
 # +p: add CAP_NET_RAW to the Permitted set
 ```
 
+scirpt:
+
+```bash
+useradd -m user -s /bin/bash
+yes "123456" | passwd user
+adduser user sudo
+```
+
 ## Package Manager
 
 ### RPM

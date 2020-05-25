@@ -77,7 +77,7 @@ safety:
   - Proves some control over a DNS domain
   - ideal for use on websites like this site that provides content, and not used for sensitive data.
 - Extended Validation Certificate (EV / EVC)
-  - usrd for HTTPS websites 
+  - used for HTTPS websites 
   - proves the legal entity controlling the website or software package
   - requires verification of the requesting entity’s identity by a certificate authority (CA)
 
@@ -180,3 +180,8 @@ unique_subject = no  # Set to 'no' to allow creation of
 openssl x509 -req -day 365 -in server.scr -signkey server.key -out server.crt
 ```
 
+### OCSP stapling
+
+The Online Certificate Status Protocol (OCSP) stapling, formally known as the TLS Certificate Status Request extension, is a standard for checking the revocation status of X.509 digital certificates.
+
+https://blog.cloudflare.com/high-reliability-ocsp-stapling/
