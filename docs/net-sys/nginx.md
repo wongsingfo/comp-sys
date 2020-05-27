@@ -31,11 +31,11 @@ References:
 1. TOC
 {:toc}
 
-
-Model: 
+[Model](https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/): 
 
 - A master process
 - several workder processes
+- A cache manager
 
 NGINX files and directories:
 
@@ -147,6 +147,27 @@ Nginx modules have three roles:
 - filter: If the handler does not produce an error, the filters are called. 
   - Multiple filters can hook into each location. The order of their execution is determined at compile-time. 
   - works like pipes in Unix
+
+### Phases
+
+Each HTTP request passes through a sequence of phases. 
+
+1. NGX_HTTP_POST_READ_PHASE [ngx_http_realip_module](http://nginx.org/en/docs/http/ngx_http_realip_module.html)
+2. NGX_HTTP_SERVER_REWRITE_PHASE [ngx_http_rewrite_module](http://nginx.org/en/docs/http/ngx_http_rewrite_module.html) 
+   1. rewrite directives defined in a `server` block
+3. NGX_HTTP_FIND_CONFIG_PHASE a location is chosen based on the request URI. Before this phase, the default location for the relevant virtual server is assigned to the request, and any module requesting a location configuration receives the configuration for the default server location.
+4. NGX_HTTP_REWRITE_PHASE
+   1. rewrite directives defined in a `location` block
+5. NGX_HTTP_POST_REWRITE_PHASE Special phase where the request is redirected to a new location if its URI changed during a rewrite. This is implemented by the request going through the `NGX_HTTP_FIND_CONFIG_PHASE` again. No additional handlers can be registered at this phase.
+6. NGX_HTTP_PREACCESS_PHASE [ngx_http_limit_conn_module](http://nginx.org/en/docs/http/ngx_http_limit_conn_module.html), [ngx_http_limit_req_module](http://nginx.org/en/docs/http/ngx_http_limit_req_module.html)
+7. NGX_HTTP_ACCESS_PHASE  [ngx_http_access_module](http://nginx.org/en/docs/http/ngx_http_access_module.html) [ngx_http_auth_basic_module](http://nginx.org/en/docs/http/ngx_http_auth_basic_module.html)
+   1. verified that the client is authorized to make the request.
+   2. The [satisfy](http://nginx.org/en/docs/http/ngx_http_core_module.html#satisfy) directive, can be used to permit processing to continue if any of the phase handlers authorizes the client.
+8. NGX_HTTP_POST_ACCESS_PHASE Special phase where the [satisfy any](http://nginx.org/en/docs/http/ngx_http_core_module.html#satisfy) directive is processed.
+9. NGX_HTTP_PRECONTENT_PHASE prior to generating content [ngx_http_try_files_module](http://nginx.org/en/docs/http/ngx_http_core_module.html#try_files) [ngx_http_mirror_module](http://nginx.org/en/docs/http/ngx_http_mirror_module.html) 
+10. NGX_HTTP_CONTENT_PHASE [ngx_http_index_module](http://nginx.org/en/docs/http/ngx_http_index_module.html) ngx_http_static_module 
+    1. If the [ngx_http_core_module](http://nginx.org/en/docs/http/ngx_http_core_module.html)'s location configuration has `handler` set, it is called as the content handler and the handlers installed at this phase are ignored.
+11. NGX_HTTP_LOG_PHASE [ngx_http_log_module](http://nginx.org/en/docs/http/ngx_http_log_module.html)
 
 ## lua-nginx / OpenResty
 

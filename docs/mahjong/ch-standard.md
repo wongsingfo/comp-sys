@@ -10,7 +10,7 @@ nav_order: 120
 References:
 
 - 《中国麻将竞赛规则》 1998 年国家体育总局
-- [wiki]([https://zh.m.wikipedia.org/zh-hans/%E5%9B%BD%E6%A0%87%E9%BA%BB%E5%B0%86](https://zh.m.wikipedia.org/zh-hans/国标麻将))
+- [wiki](https://zh.m.wikipedia.org/zh-hans/%E5%9B%BD%E6%A0%87%E9%BA%BB%E5%B0%86])
 
 ### 得分
 
