@@ -7,9 +7,9 @@ has_children: true
 ---
 
 # Programming Language 
+{: .no_toc }
 
 1. TOC
-
 {:toc}
 
 Reference:
@@ -254,6 +254,8 @@ Today's languages is criticized for mixing dynamic dispatch and inheritance feat
 
 ## Recursive Types μ
 
+The primary content of the recusive type metathoey is about the subtyping relation.
+
 Universal Set U: everything in the world
 
 Generation Function:  A function F ∈ P(U) → P(U) is monotone if X ⊆ Y implies F(X) ⊆ F(Y).
@@ -270,6 +272,50 @@ Generation Function:  A function F ∈ P(U) → P(U) is monotone if X ⊆ Y impl
   - Principle of induction: If X is F-closed, then µF ⊆ X. 
   - Principle of coinduction: If X is F-consistent, then X ⊆ νF.
 
+## Universal Type and System F
 
+ploymorphism:
 
- 
+- Parameteric: system F
+- Ad-hoc / overloading
+
+selfApp = λx:any X.X→X. x [any X.X→X] x 
+selfApp : (any X. X→X) → (any X. X → X) 
+
+quadruple = λX. double [X→X] (double [X])
+quadruple : any X. (X→X) → X → X
+
+System is able to encode Bool / Church / List / Pair !
+
+Property of System F:
+
+- Well-typed System F term are normalizing.
+- Theorem: It is **undecidable** whether, given a closed term s in which type applications are marked but the arguments are omitted, there is some well-typed System F term t such that erase_partially(t) = s.
+  - Type reconstruction is as hard as **higher-order unification**. (But many practical algorithms have been developed)
+- Erasure and Evaluation Order: need to keep the type abstraction:
+  - earse\_v(λX. t) = λ\_. erase\_v(t)
+- Free Theorem
+- Impredicativity: A definition (of a set, a type, etc.) is called “impredicative” if it involves a quantifier whose domain includes the very thing being defined.
+  - T = any X. X → X ranges over all types, including T itself
+
+Fragments of System F:
+
+- Rank-1 (prenex): type variables should not be instantiated with polymorphic types
+- Rank-2: A type is said to be of rank 2 if no path from its root to a `any` quantifier passes to the left of 2 or more arrows.
+- Type reconstruction for ranks 2 and lower is decidable, and that for rank 3 and higher of System F is undecidable.
+
+## Existential Types
+
+used for 
+
+- abstrct data type
+- Module
+
+p = {*Nat, {a=5, f=λx:Nat. succ(x)}} as {exist. X, {a:X, f:X→X}}; 
+
+views:
+
+- logical:  an element of {exist. X,T} is a value of type [X → S] T, for some type S.
+- operational:  an element of {exist. X,T} is a pair, written as { \*S, t }, of a type S and a term t of type [X → S] T.
+
+Existential Types can be encoded by System F.
