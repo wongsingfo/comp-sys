@@ -101,6 +101,10 @@ Depending on the type of interrupt, acknowledging the interrupt could either be 
 
 Every local APIC has a programmable task priority register (TPR), which is used to compute the priority of the currently running process. You can adjust the which CPUs each of those IRQs will be handled by modifying `/proc/irq/IRQ_NUMBER/smp_affinity` for each IRQ number and the OS will set the TPR accordingly.
 
+### IRQ sharing
+
+Kenel simply invokes all the handlers that registered for the same shared IRQ. Each tim ea device registers for a IRQ line, it needs to explicitly say whether it supports interrupt sharing. It is up to the handlers to filter spurious invocations. 
+
 ## Gates
 
 {% include img.html filename="Screen Shot 2020-01-29 at 7.57.43 PM.png" width="588" %}

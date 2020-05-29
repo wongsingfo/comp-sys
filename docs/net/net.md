@@ -135,7 +135,7 @@ Defined in `/include/net/dst.h`. It denotes the route for this `sk_buff`; the ro
 struct net_device
 {{ site.struct_style }}
 
-Defined at `/include/linux/netdevice.h:1747`. It represents physical or virtual device. Actually, this whole structure is a big mistake.  It mixes I/O data with strictly "high-level" data, and it has to know about almost every data structure used in the INET module.
+Defined at `/include/linux/netdevice.h:1747`. It represents physical or virtual device. Actually, this whole structure is a big mistake.  It mixes I/O data with strictly "high-level" data, and it has to know about almost every data structure used in the INET module. It is initialized by the device driver and the core kernel routines. 
 
 - `unsigned int mtu`
 - `struct netdev_rx_queue *_rx`
@@ -147,6 +147,8 @@ typedef struct {
 #endif
 } possible_net_t;
 ```
+
+Memory-mapped IO: `request_region`, `release_region`
 
 struct net
 {{ site.struct_style }}

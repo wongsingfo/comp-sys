@@ -11,7 +11,10 @@ has_children: true
 
 ## References
 
-- Understanding Linux Kernel
+- O'Reilly series:
+  - Understanding Linux Kernel
+  - Understanding Linux Network Internals
+  - Linux Device Drivers
 - INTEL 80386 PROGRAMMER'S REFERENCE MANUAL 1986
 - Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1
 - [The Linux Development Project](http://www.tldp.org/)
@@ -19,6 +22,17 @@ has_children: true
 - [Linux Kernel Labs](https://linux-kernel-labs.github.io/)
 - [Linux Kernel Source Code](https://www.kernel.org/)
 - [Linux Kernel Documentation 4.19](https://www.kernel.org/doc/html/v4.19/doc-guide/sphinx.html), [latest](https://www.kernel.org/doc/html/latest/index.html)
+- [woboq](https://code.woboq.org/linux)
+
+## Linux
+
+User interface: 
+
+- `/proc` procfs: usually expose complex data and the data are read-only
+- `/proc/sys` sysctl: usually expose simple data
+- `/sys` After 2.6, a newer filesystem compared with procfs and sysctl
+- `ioctl` work with socket. It is processed by kernel in many different places
+- netlink
 
 ## Tools
 
