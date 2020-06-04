@@ -19,6 +19,10 @@ References:
 1. TOC
 {:toc}
 
+## Common
+
+- [type_traits](https://en.cppreference.com/w/cpp/header/type_traits)
+
 ## [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae)
 
 "Substitution Failure Is Not An Error"
@@ -114,6 +118,43 @@ int main()
    std::cout << std::is_same_type<A, function_traits<fun>::arg<0>::type>::value << std::endl;
    std::cout << std::is_same_type<B, function_traits<fun>::arg<1>::type>::value << std::endl;
 } 
+```
+
+### [Type Trait](https://zhuanlan.zhihu.com/p/102240099)
+
+```c++
+namespace detail {
+
+template<typename R, typename ...As>
+struct __function_traits_base {
+    using function_type = std::function<R(As...)>;
+
+    using result_type = R;
+
+    using argument_types = std::tuple<As...>;
+};
+
+template<typename F>
+struct __function_traits;
+template<typename F>
+struct __function_traits<std::reference_wrapper<F>> : public __function_traits<F> {};
+template<typename R, typename ...As>
+struct __function_traits<R(*)(As...)> : public __function_traits_base<R, As...> {};
+template<typename R, typename C, typename ...As>
+struct __function_traits<R(C::*)(As...)> : public __function_traits_base<R, As...> {};
+template<typename R, typename C, typename ...As>
+struct __function_traits<R(C::*)(As...) const> : public __function_traits_base<R, As...> {};
+template<typename F>
+struct __function_traits : public __function_traits<decltype(&F::operator())> {};
+
+}
+
+namespace fp {
+
+template<typename F>
+struct function_traits : public detail::__function_traits<std::decay_t<F>> {};
+
+}
 ```
 
 ## [Currying](https://github.com/Light-of-Hers/Cpp-curry-partial-and-other-FP-combinators)
