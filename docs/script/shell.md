@@ -44,6 +44,23 @@ nav_order: 80
 1. TOC
 {:toc}
 
+```bash
+#!/bin/bash
+
+#######################################
+# Delete a file in a sophisticated manner.
+# Arguments:
+#   File to delete, a path.
+# Returns:
+#   0 if thing was deleted, non-zero on error.
+#######################################
+function del_thing() {
+  rm "$1"
+}
+```
+
+If you are writing a script that is more than 100 lines long, or that uses non-straightforward control flow logic, you should rewrite it in a more structured language *now*!!!!
+
 ## ssh
 
 - [A network filesystem client to connect to SSH servers: sshfs](https://github.com/libfuse/sshfs)
@@ -75,7 +92,9 @@ ssh-copy-id id@server -p [port] -i ~/.ssh/id_ed25519.pub
 ## Variable
 
 ```bash
-#!/bin/bash
+# 'Single' quotes indicate that no substitution is desired.
+# "Double" quotes indicate that substitution is required/tolerated.
+
 
 # This bash script is used to backup a user's home directory to /tmp/.
 
@@ -134,21 +153,30 @@ diff <(ls foo) <(ls bar)
 # input for CMD as STDIN
 echo "example" | tee >(xargs mkdir) >(wc -c)
 
-$ cat << END
-> asdf
-> qwerty
-> END
+cat << END
+asdf
+qwerty
+END
+
+echo "to stdout"
+err "to stderr"
 ```
 
 ## Function
 
 ```bash
 function total_files {
+  local name="$1"
+  
+  (( $? == 0 )) || return
+  
   find $1 -type f | wc -l
   echo $0  # the name of the function
   echo $1 $2 $4
   echo $#  # number of args
-  echo $@  # all args
+  echo $@  # all args (expands to a separate word)
+  echo $*  # all args (expands to a single word)
+  echo $$  # the PID
 }
 
 total_files $input
@@ -176,8 +204,9 @@ A comprehensive list can be found [here](https://www.tldp.org/LDP/abs/html/speci
 test EXPRESSION
 [ EXPRESSION ]
 [[ EXPRESSION ]]  ## preferred over [ ]
+(( EXPRESSION ))  ## preferred over [[ ]]
 
-[ 1 -nq 2 ]
+[ 1 -ne 2 ]
 echo $?  # => 0
 
 # http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions
@@ -187,6 +216,16 @@ if [ ! -d "/home/$1" ]; then
 ## Control
 
 ```bash
+last_line='NULL'
+while read line; do
+  if [[ -n "${line}" ]]; then
+    last_line="${line}"
+  fi
+done < <(your_command)
+# This will output the last non-empty line from your_command
+echo "${last_line}"
+
+
 if [ $num_a -lt $num_b ]; then
 	echo "haha"
 elif
@@ -202,14 +241,14 @@ for directory in $*; do
 done
 
 until [ $counter -lt 3 ]; do
-while [ $counter -lt 3 ]; do
-    let counter-=1
-    echo $counter
+while [ $a -lt 11 ]; do
+        echo $a
+        let a+=2
 done
 
-while getopts ":o:h" o; do
-    case "${o}" in
-        o) do_something ${OPTARG} ;;
+while getopts ":o:h" flag; do
+    case "${flag}" in
+        f) files="${OPTARG}" ;;
         h)
             usage
             exit 0

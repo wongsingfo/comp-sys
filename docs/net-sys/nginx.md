@@ -31,23 +31,23 @@ References:
 1. TOC
 {:toc}
 
+## Overview
+
 [Model](https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/): 
 
-- A master process
+- A cache loader: runs at startup to load the disk‑based cache into memory
+- A master process: performs the privileged operations
 - several workder processes
-- A cache manager
+- A cache manager: runs periodically and prunes entries from the disk caches to keep them within the configured sizes.
 
 NGINX files and directories:
 
 - `/etc/nginx/nginx.conf`: default configuration entry point
 - `/etc/nginx/conf.d/`: Files in this directory ending in `.conf` are included in the top-level `http` block from within the `/etc/nginx/nginx.conf` file.
 - `/var/log/nginx/`
-- use `nginx -s` to send signal. Note that this command should be executed under the same user that started nginx. 
+- use `nginx -s` to send signal. Note that this command sometimes need to be executed by the privileged user. 
 
-
-Context:
-
-- `http`, `stream`
+Trun `lua_code_cache` off for the ease of debugging (the lua code will be reloaded at every request).
 
 ## Configuration
 
@@ -112,7 +112,8 @@ Load Balancing Strategies:
 ```nginx
 upstream backend {
     server 10.10.12.45:80      weight=1; 
-    server app.example.com:80  weight=2;
+    server app.example.com:80  weight=2; 
+    # WARN: app.example.com only resolve once when the config is loaded
     server 10.10.12.32:80      backup;
 }
 server {

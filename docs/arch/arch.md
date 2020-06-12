@@ -12,6 +12,7 @@ has_children: true
 
 - Computer Orgnization and Design, fifth edition
 - Computer Architecture: A Quantitative Approach, fifth edition
+- [uclibc ABI docs](https://uclibc.org/docs/)
 
 ## Terms
 

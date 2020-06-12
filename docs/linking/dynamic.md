@@ -39,7 +39,7 @@ Environment variables. Monitoring the Dynamic Linker.
 
 ## PIC
 
-- inner call (static function): relative jmp
+- inner call (static function): relative jmp (i.e., relative to `pc` register)
 - inner data: relative to `pc` register
 - inter-module data: GOT (global offset table)
   - GOT address can be obtained the same way as inner data

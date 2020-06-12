@@ -21,7 +21,7 @@ nav_order: 20
 -g
 {{ site.bin_option_style }}
 
-include debugging infor- mation in the compiled program
+include debugging information in the compiled program
 
 ### Strip Debugging Info
 
