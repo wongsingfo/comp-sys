@@ -22,7 +22,12 @@ reference:
 1. TOC
 {:toc}
 
+The object files are placed in `/lib/modules/2.6.12/`. In the same directory, there exists:
 
+- `modules.pcimap`, `modules.submap`: PCI and USB IDs of the devices supported by the kernel and a reference to the associated kernel module.
+- `modules.dep`: dependency graph
+
+## In-Tree and Out-of-Tree
 
 "in-tree" and "out-of-tree" are actually generic software development terms. It refers to where the resulting build output/artifacts are placed during a compile, either "in-tree", right next to the files they come from, or "out-of-tree", in a separate root directory that separates the build output from the source files. 
 

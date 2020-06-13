@@ -135,20 +135,17 @@ Defined in `/include/net/dst.h`. It denotes the route for this `sk_buff`; the ro
 struct net_device
 {{ site.struct_style }}
 
-Defined at `/include/linux/netdevice.h:1747`. It represents physical or virtual device. Actually, this whole structure is a big mistake.  It mixes I/O data with strictly "high-level" data, and it has to know about almost every data structure used in the INET module. It is initialized by the device driver and the core kernel routines. 
+Defined at `/include/linux/netdevice.h:1747`. It represents physical or virtual device (Every interface except aliasing interface is assigned a `net_device`). Actually, this whole structure is a big mistake.  It mixes I/O data with strictly "high-level" data, and it has to know about almost every data structure used in the INET module. It is initialized by the device driver and the core kernel routines. 
 
+When the relationship of vitural device to real device is not one-to-one, the `dev_queue_xmit` may need to select the real device to use. Becasue QoS is enforced on a per-device basis.
+
+Memory-mapped IO (MMIO): `request_region`, `release_region`
+
+- Each network device is assigned a queuing discipline.
+  - bitmap `state`:  used by Traffic Control 
 - `unsigned int mtu`
 - `struct netdev_rx_queue *_rx`
 - `possible_net_t nd_net;`
-```c
-typedef struct {
-#ifdef CONFIG_NET_NS
-    struct net *net;
-#endif
-} possible_net_t;
-```
-
-Memory-mapped IO: `request_region`, `release_region`
 
 struct net
 {{ site.struct_style }}
@@ -209,12 +206,27 @@ Sending Packets:
 
 ## Routing
 
-The routing table and the routing cache enable us to find the net device and the address of the host to which a packet will be sent. Reading entries in the routing table is done by calling`fib_lookup(const struct flowi *flp, struct fib_result *res`. (FIB: Forwarding Information Base)
+The routing table (also called FIB) and the routing cache enable us to find the net device and the address of the host to which a packet will be sent. Reading entries in the routing table is done by calling`fib_lookup(const struct flowi *flp, struct fib_result *res`. (FIB: Forwarding Information Base)
 
 There are two routing tables by default (`include/net/ip_fib.h`)
 
-- `ip_fib_local_talbe`, ID 255
-- `ip_fib_main_talbe`, ID 25
+- `ip_fib_local_talbe`, ID 255. A successful lookup means that the packet is to be delivered on the host itself.
+- `ip_fib_main_talbe`, ID 25. A table for all other routes, manually configured by the user or routing protocols.
+
+Both routes and IP addresses are assigned scopes. 
+
+- Host: loopback
+- Link: a LAN
+- Universe
+
+Primary and Secondary address: An address is considered secondary if it falls within the subnet of another already configured address on the same NIC. Thus, the order in which addresses are configured is important.
+
+Route actions:
+
+- Black hole
+- Unreachable: generate ICMP message
+- Prohibit: generate ICMP message
+- Throw: continue with the matching (used with policy routing)
 
 ## Multicast Routing (IPMR)
 

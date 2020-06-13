@@ -15,6 +15,7 @@ has_children: true
   - Understanding Linux Kernel
   - Understanding Linux Network Internals
   - Linux Device Drivers
+- The Linux Programming Interface
 - INTEL 80386 PROGRAMMER'S REFERENCE MANUAL 1986
 - Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A: System Programming Guide, Part 1
 - [The Linux Development Project](http://www.tldp.org/)
@@ -29,10 +30,59 @@ has_children: true
 User interface: 
 
 - `/proc` procfs: usually expose complex data and the data are read-only
+  - `net/[dev|dev_mcast|wireless]`: created by `net_[dev|proc]_init`; displays statistics
 - `/proc/sys` sysctl: usually expose simple data
+  - `kernel/[modprobe]`: change the default path to user-space helpers
 - `/sys` After 2.6, a newer filesystem compared with procfs and sysctl
+  - can configure module options; `/sys/module/sis900/parameters/`
 - `ioctl` work with socket. It is processed by kernel in many different places
-- netlink
+  - `ethtool`, `ifconfig` are based on `ioctl`
+- netlink: a newer interface
+- User-space helpers:
+  - `/sbin/modprobe`: kernel module loader that allows kernel components to request the load.
+    - `/etc/modprobe.conf` is the configuration file.
+    - `/etc/modules`: modules loaded at boot time
+  - `/sbin/hotplug` 
+
+## Boot
+
+### Option
+
+- options of the new option infrastructure are divied into two classes. There are two calls to `parse_args` and each call takes care of one class. `linux/init.h` provides  `__setup_param` wrapper for these classes.
+  - early options: `early_param("keyword=", function_handler)`
+  - default options: register a keyword and the handler: `__steup("keyword=", function_handler)`
+- options are pass through until being accepted
+  - early options
+  - default options
+  - Old option infrastructure
+  - as arg or env to `init` program
+- The new option infrastructure exposed to `/sys`
+
+### initcall
+
+1. `init/main.c`: initialzation of various critical subsystems
+2. other kernel components that do not need a strict order (`do_initcalls()`). But still, the higher priority (mark as `[core|postcore|arch|subsys|fs|device|late]_initcall`) is initilized first.
+   - `__init` macro: routines that are not needed anymore at the end of the boot phase
+   - `__initcall` (or with prioirity `xxx_initcall`) and `__exitcall`. They are often wrapped by `module_[init|exit]`.
+   - `module_exit` are never executed when the associated modules are included statically in the kernel. Therefore, in this case, there is no need to include `module_exit` routines into the kernel image.
+
+### Steps for booting
+
+- PC powers on, BIOS initializes hardwares.
+- BIOS load the first 512-byte sector of the boot disk at `0x7c00`
+- BIOS transfer control to boot loader 
+  - `%ip=0x7c00, %cs=0 `
+  - in real mode 16bits: linear address (20bits) = selector x 16 + offset 
+- boot loader: 
+  - sets up *segment descriptor table* `gdt`, enters **protected mode** (since 80286)
+    all segments have a base address of zero and the maximum possible limit. The table has a null entry, one entry for executable code, and one entry to data (only 3 entries). The loader also sets segment selectors `fs,gs / cs / ds,es,ss` to `0 / 8 / 16` accordingly.
+  - Now, we evolved from 8088 to 80386 (32bit mode)
+  - loads kernel (ELF format) from disk (at `1MB` plus a few bytes) and executes kernel starting at `_start`
+
+- set up `entry_pgdir` (cr3)
+
+- turn on paging (cr0)
+
 
 ## Tools
 
