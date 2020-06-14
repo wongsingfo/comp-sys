@@ -15,9 +15,9 @@ nav_order: 50
 1. TOC
 {:toc}
 
-## Setup
+A full-fledged IDE like Android Studio is strongly recommended, but here we are not going to use any **heavy** IDE in order to understand how the whole toolchain works. [In the past, there was no functionality in Android Studio that was not present in IntelliJ IDEA with the Android plugin installed. However, since its inception, Android Studio has grown and has diverged more and more from IntelliJ IDEA, especially recently.](https://stackoverflow.com/questions/30779596/difference-between-android-studio-and-intellij-idea-with-plugins)
 
-A full-fledged IDE like Android Studio is strongly recommended, but here we are not going to use any **heavy** IDE in order to understand how the whole toolchain works.
+## Setup
 
 First, [download](https://developer.android.com/studio#command-tools) the `sdkmanger` which is a package manager. Unzip the file to `${ANDROID_HOME}/cmdline-tools/` (see [this post](https://stackoverflow.com/questions/60440509/android-command-line-tools-sdkmanager-always-shows-warning-could-not-create-se) for the details). Then to install your favourite command line tools (see [Andoird User Guide](https://developer.android.com/studio/command-line)), type the following commands ([sdkmanager Documentation](https://developer.android.com/studio/command-line/sdkmanager)): 
 

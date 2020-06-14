@@ -84,6 +84,22 @@ User interface:
 - turn on paging (cr0)
 
 
+## Process
+
+- lightweight process (LWP)
+  - process descriptor: `mm_struct, tty_struct, fs_struct, signal_struct, files_struct`
+  - each LWP is associated with a Kernel stack
+  - Created by `clone()`  (handled by `do_fork()` function)
+    - `fork()` is implemented as `clone()` with `SIGCHLD` signal and all clone flags cleared and whose `child_stack` is equal to the current parent stack pointer.
+    - `vfork()` is implemented as `clone()` with `SIGCHLD` signal and the flags `CLONE_VM, CLONE_VFORK`  set (`CLONE_VM` means to share the memory descriptor and page table, `CLONE_VFORK` means to insert the parent process in a wait queue and suspends it until the child releases its memory address space (that is, untail the child either teminates or executes a new program) ),  and whose `child_stack` is equal to the current parent stack pointer.
+- thread group = a set of LWPs
+  - act as a whole with regards to `kill()`, `_exit()` ...
+
+POSIX-compliant pthread library
+
+- Older version: a multithreaded application is just a normal process. The scheduling happens in User mode.
+- Use LWP
+
 ## Tools
 
 - [netcat](https://en.wikipedia.org/wiki/Netcat), [doc](http://man7.org/linux/man-pages/man1/ncat.1.html)

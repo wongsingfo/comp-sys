@@ -23,17 +23,23 @@ When synchronization is not necessary:
 
 ## Kernel Preemption
 
-A process running in Kernel Mode can be replaced by another process while in the middle of a kernel function (exception handler, in particularly a syscall). 
+A process running in Kernel Mode can be replaced by another process with higher prioritity, while in the middle of a kernel function (exception handler, in particularly a syscall). 
 
 Motivation: reduce the _dispatch latency_, that is, the delay between the time they become runnable and the time they actually begin running.
 
-Kernel Preemption introduces a nonnegligible overhead.
+Although adding full preemption was not a major change to the kernel (because we just disable the preemption in the code protected by locks), Kernel Preemption introduces a nonnegligible overhead.
 
 ```c
 // include/linux/smp.h
 #define get_cpu()		({ preempt_disable(); smp_processor_id(); })
 #define put_cpu()		preempt_enable()
 ```
+
+There is a counter named `preempt-count` in each `thread_info` structure. A nonzero counter means thath preemption is disabled . It has three components and each component is managed by two functions:
+
+- Hardware interrupt  `irq_enter(), irq_exit()`
+- Software interrupt (i.e., softirq), `local_bh_disable(), local_bh_enable()`
+- Preemption `preempt_enable(), preempt_disable()`
 
 ## Per-CPU variables
 

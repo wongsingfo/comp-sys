@@ -37,6 +37,7 @@ nav_order: 80
 - `column -t`
 - `od`, `hexdump`
 - `aria2c -x 16 -s 16 [url]`: file downloader 
+- expect (Recommended: Exploring Expect: A Tcl-Based Toolkit for Automating Interactive Programs)
 
 ## Table of contents
 {: .no_toc .text-delta }
