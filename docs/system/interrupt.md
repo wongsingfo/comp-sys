@@ -122,19 +122,20 @@ The BH concept is outdated.
 Although the kernel supports up to 32 softirq, only 6 of them are effectively used (from index 0 to 5):
 
 - HI_SOFTIRQ: high-priority tasklet
+  - All the BH in the old model have been reimplemented to run as HI_SOFTIRQ
 - TIMER_SOFTIRQ
 - NET_TX_SOFTIRQ
 - NET_RX_SOFTIRQ
 - SCSI_SOFTIRQ: Post-interrupt processing of SCSI commands
-- TASKLET_SOFTIR: low-priority tasklet
+- TASKLET_SOFTIRQ: low-priority tasklet
 
-Sofirq can run concurrently on several CPUs, even if they are of the same type. Thus, they need **spinlock** to proctect the data.
+Sofirq can run concurrently on several CPUs, even if they are of the same type. Thus, they need **spinlock** to proctect the data. The only restriction on concurrency is that only one instance of each softirq can run at the same time on a CPU.
 
 Up to 10 softirq are processed when `do_softirq()` is called. The remaining softirq is processed by the kernel thread `ksoftirq/n`. There are several softirq chceckpoints:
 
 - `local_bh_enabled()` is called
 - after handing a local timer interrput
-- and others
+- in the `schedule()` function, before deciding what to execute next on the CPU.
 
 ### Tasklet
 

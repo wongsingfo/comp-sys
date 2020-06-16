@@ -35,7 +35,7 @@ Although adding full preemption was not a major change to the kernel (because we
 #define put_cpu()		preempt_enable()
 ```
 
-There is a counter named `preempt-count` in each `thread_info` structure. A nonzero counter means thath preemption is disabled . It has three components and each component is managed by two functions:
+There is a counter named `preempt_count` in each `thread_info` structure. A nonzero counter means thath preemption is disabled . It has three components and each component is managed by two functions:
 
 - Hardware interrupt  `irq_enter(), irq_exit()`
 - Software interrupt (i.e., softirq), `local_bh_disable(), local_bh_enable()`
