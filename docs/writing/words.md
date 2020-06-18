@@ -22,6 +22,7 @@ mathjax: false
 - These studies show that most problems are not **artifacts** of specific players but **manifest** across all state-of-art players.
 - Regardless of implementation details, **a wide range** of factors **spanning** the server, the network and the client and across the transport and application layers can be customized based on the system designers’ considerations around different tradeoffs to optimize streaming performance. 
 - The ABR adaptation logic needs to deal with **time-varying** network conditions and make complex tradeoffs.
+- The former provides multi-Gbps rates but is **susceptible** to blockage, whereas the latter is slower but offers reliable connectivity. 
 
 ## Nouns
 
@@ -44,19 +45,12 @@ High-speed railway (HSR) networking asks the new question of how to improve aggr
 ## Verb
 
 - To reduce the time to market, carriers may **couple** their 5G core network equipment **with** existing 4G LTE infrastructures in what is known as a Non-Standalone Deployment (NSA). 
-
 - We instead believe that Verizon is imposing per-TCP- connection rate limiting over 5G, whose bandwidth appears to **be fully utilized** when there are more than 8 concurrent connections.
-
 - Such frequent switches make the **throughput highly fluctuating**, ranging from 0 to 954 Mbps.
-
 - How to **strategically select interface(s) among 5G, 4G, and WiFi**? 
-
 - Network conditions vary significantly, and results may **be biased by specific time and location during travel**.
-
 - These alternative algorithms were so far not **extensively tested against** MPTCP’s default scheduler. 
-
 - MPTCP can improve user experience over WiFi by **associating with multiple APs** simultaneously. By utilizing an MPTCP connection with subflows connected to all available APs, a mobile client can maintain **seamless connectivity** without having to consider a handover.
-
 - Regardless of implementation details, **a wide range** of factors **spanning** the server, the network and the client and across the transport and application layers can be customized based on the system designers’ considerations around different tradeoffs to optimize streaming performance. 
 
   

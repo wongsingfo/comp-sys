@@ -202,6 +202,11 @@ Global symbols within a shared library should be preferentially bound to definit
 
 makes the symbol available across all source code files that compose the shared library, but prevents it from being visible outside the library.
 
+-rdynamic (or --export-dynamic)
+{{ site.bin_option_style }}
+
+refer back to the symbols defined by the program when use "dlopen" to load a dynamic object. It also helps e.g. Glibc's `backtrace_symbols()` symbolizing the backtrace
+
 
 ## Runtime Linking API
 

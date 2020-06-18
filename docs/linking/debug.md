@@ -23,6 +23,11 @@ nav_order: 20
 
 include debugging information in the compiled program
 
+-funwind-tables
+{{ site.bin_option_style }}
+
+Tt generates any needed static data for exception handling and allows a running program to walk back the function call stack from a given execution point.
+
 ### Strip Debugging Info
 
 -fomit–frame–pointer

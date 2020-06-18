@@ -10,6 +10,14 @@ nav_order: 10
 
 See [medium.com/@daeseok.youn](https://medium.com/@daeseok.youn/prepare-the-environment-for-developing-linux-kernel-with-qemu-c55e37ba8ade) if you want a step-by-step guide book.
 
+tools:
+
+- `catchsegv` (`LD_PRELOAD=/lib/libSegFault.so`)
+- `calltree`
+- `gporf` => `gmon.out`
+- `gcov`, `-fprofile-arcs -ftest-coverage`
+- `Memwatch, Valgrind, mtrace`
+
 reference: 
 
 - [wiki.debian.org](https://wiki.debian.org/QEMU#Usage).
@@ -38,8 +46,18 @@ make nconfig     # ncurses-based interface
 make rpm         # make rpm package
 ```
 
-- Kernel hacking -> Compile the kernel with debug info (CONFIG_DEBUG_INFO)
+- Kernel hacking -> Compile the kernel with debug info (`CONFIG_DEBUG_INFO`)
 - Kernel hacking -> Compile the kernel with debug info -> Provide GDB scripts for kernel debugging (New)
+- Others related `CONFIG`s:
+
+```
+CONFIG_DEBUG_KERNEL=y
+CONFIG_DEBUG_INFO=y
+CONFIG_KALLSYMS=y
+CONFIG_KALLSYMS_ALL=y
+CONFIG_DEBUG_BUGVERBOSE=y
+CONFIG_STACKTRACE=y
+```
 
 `make` arguments:
 

@@ -2,7 +2,7 @@
 layout: default
 title: ELF in 30 Minutes
 parent: Linking
-nav_order: 20
+nav_order: 10
 ---
 
 # Executable and Linking Format

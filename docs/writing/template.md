@@ -58,6 +58,7 @@ Summary:
 - Global mobile data is expected to **increase 10-fold** from 2014 to 2019.
 -  Whenever Green-Bag arranges a new segment, it chooses the link mode that consumes the least energy **out of three link modes**: dual-link mode, LTE-only mode, and WiFi-only mode, **in a way that** the remaining portion of a video file can be transferred in the link mode without incurring any playback interruption further according to the current bandwidth estimation. 
 -  We **term** services that converge to a track with declared bandwidth closer to available bandwidth **as more aggressive**.
+-  The IEEE 802.11ad standard with its 2 GHz-wide channels provides data rates of up to 6.7 Gbps, **a multi-fold increase** over legacy WiFi throughput.
 
 ## Instruction
 
@@ -69,6 +70,13 @@ Summary:
 - We **describe each component in turn**.
 - Without loss of generality, we list the keys in **monotonically decreasing order** of popularity, i.e.,
 - We **define PASR (peak-to-average size ratio) to be** the ratio between the 95𝑡h percentile chunk size and the average chunk size within a track.
+- We **model** a video **as** a set of consecutive *video segments* or chunks
+- We thus set up a multipath proxy running MPTCP v0.90 on a server with 64-core 2.6GHz CPU, 128GB memory, and 64-bit Ubuntu 14.04 installed.
+
+## Algorithm
+
+- Specifically, we begin by probing two ratios adjacent to the current ratio, one slightly lower and one slightly higher, and proceed our search in the direction where we observe higher throughput. 
+- These process types are (**in order of importance**):
 
 ## Conclusion
 

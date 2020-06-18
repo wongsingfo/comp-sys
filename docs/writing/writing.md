@@ -38,6 +38,7 @@ has_children: true
 - **Compared** to 4G LTE, 5G offers significantly higher bandwidth, lower latency, and better scalability (i.e., supporting more devices).
 - NSA **is contrasted with** a Standalone deployment (SA), which is fully independent of legacy cellular infrastructures.
 - Due to the ultra-high bandwidth of 5G, the bottleneck of an end-to-end path may easily **shift from** the wireless hop **to** the Internet – a situation that seldom appears in 3G/4G. 
+- The former provides multi-Gbps rates but is susceptible to blockage, whereas the latter is slower but offers reliable connectivity. 
 
 ### Solution
 
