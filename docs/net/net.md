@@ -264,6 +264,15 @@ Route actions:
 - Prohibit: generate ICMP message
 - Throw: continue with the matching (used with policy routing)
 
+## IPv4
+
+PMTU (path MTU) discovery: 
+
+- cached in associated routing table entry. The routing table cache has one single entry for each destination IP address.
+- probe PMTU with DF (Don't Fragment) flag set. If it is larger than the optimal size, the sender will receive `ICMP FRAGMENTATION NEEDED`.
+
+There are many problems with fragmentation, so the IPv6 decided to allow it only at the originating hosts, and not at intermediate hosts such as routers, NATs.
+
 ## Multicast Routing (IPMR)
 
 ## Software Forwarding

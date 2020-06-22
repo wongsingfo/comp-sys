@@ -154,10 +154,14 @@ diff <(ls foo) <(ls bar)
 # input for CMD as STDIN
 echo "example" | tee >(xargs mkdir) >(wc -c)
 
+# Here Documents, similar to cat file, while the file content contains asdf\nqwerty
 cat << END
 asdf
 qwerty
 END
+
+# Here Strings (a simpler form of Here Documents)
+cat <<< abc
 
 echo "to stdout"
 err "to stderr"

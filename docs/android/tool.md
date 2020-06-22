@@ -23,7 +23,7 @@ First, [download](https://developer.android.com/studio#command-tools) the `sdkma
 
 ```bash
 export ANDROID_HOME="${HOME}/android-home"
-export PATH=$PATH:${ANDROID_HOME}/cmdline-tools/tools/bin
+export PATH=$PATH:${ANDROID_HOME}/cmdline-tools/tools/bin:${ANDROID_HOME}/platform-tools
 yes | sdkmanager "platform-tools" "ndk;21.3.6528147"
 ```
 
@@ -51,11 +51,19 @@ tools/bin/avdmanager
 tools/emulator -list-avds
 tools/emulator @avd_name [ {-option [value]} … ]
 
+# forward host_port device_port
+# reverse device_port host_port
 platform-tools/adb forward tcp:5039 tcp:5039
 platform-tools/adb forward --remove tcp:8080
 platform-tools/adb forward --remove-all
 
+# package manager
 platform-tools/adb shell pm list packages
+
+# activity manager
+# https://developer.android.com/studio/command-line/adb#IntentSpec
+platform-tools/adb shell am start -a com.genymobile.gnirehtet.START \
+    -n com.genymobile.gnirehtet/.GnirehtetActivity
 ```
 
 ## Build Process

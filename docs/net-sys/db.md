@@ -20,8 +20,15 @@ Resources:
 - [SimpleDB](https://github.com/MIT-DB-Class/simple-db-hw), recommended
 - Database Management Systems, by Johannes Gehrke and Raghu Ramakrishnan, recommended
 - [UW CSE444](https://courses.cs.washington.edu/courses/cse444/19sp/), recommended
+- Designing Data-Intensive Application
 
 Database Management System (DBMS) Implementations: SQLite, PostgreSQL, MySQL, SQLite, Oracle, Microsoft, etc.
+
+## Data Model
+
+- Relation model (SQL): enforce a schema
+- Document database: one-to-many (NoSQL): self-contained document; relationships between documents are rare.
+- Graph model: many-to-many (NoSQL): anything is potentially related to everything
 
 
 ## Storage Management
