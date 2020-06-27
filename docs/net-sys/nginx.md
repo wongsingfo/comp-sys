@@ -23,6 +23,7 @@ References:
   - [Variable Documentation](http://nginx.org/en/docs/varindex.html)
 - [nginx module tutorial](https://www.evanmiller.org/nginx-modules-guide.html)
 - [lua nginx Documentation](https://openresty-reference.readthedocs.io/en/latest/Lua_Nginx_API/)
+- [Development Documentation](http://nginx.org/en/docs/dev/development_guide.html)
 - OpenResty: Best Practices
 
 ## Table of contents

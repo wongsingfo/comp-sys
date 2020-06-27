@@ -24,12 +24,39 @@ Resources:
 
 Database Management System (DBMS) Implementations: SQLite, PostgreSQL, MySQL, SQLite, Oracle, Microsoft, etc.
 
+Categories:
+
+- online transaction processing (OLTP): small number of records per query
+- online analytics processing (OLAP): aggregate over large number of records
+  - Data warehouse: 
+    - works without affecting OLTP operations
+    - OLTP system -> Extract-Transform-Load (ETL) -> data warehouse for OLAP operations
+
 ## Data Model
 
 - Relation model (SQL): enforce a schema
 - Document database: one-to-many (NoSQL): self-contained document; relationships between documents are rare.
 - Graph model: many-to-many (NoSQL): anything is potentially related to everything
 
+data structures:
+
+- LSM-tree (log-strutured merge-tree)
+  - log structure
+  - SSTable (sorted string table)
+  - an in-memory balanced tree data structure (**memtable**)
+- B-tree
+  - crash recovery 
+    - WAL (write-ahead log): an append-only file to which every B-tree modification must be written before it can be applied to the pages of the tree itself.
+    - CoW (copy on write)
+  - latch (lightweight lock)
+
+in-memory database:
+
+- faster:
+  - not because they dont need to read from the disk
+  - It is because they can avoid the overheads of encoding in-memory data structures in a form that can be written to disk
+- provide data models that are difficult to implement with disk-based indexes
+- Further changes: NVM (non-volatile memory)
 
 ## Storage Management
 
@@ -76,7 +103,10 @@ index: collection of data entries (now we have two files: data file and index fi
 - primary or secondary 
   - primary: determines the location of indexed records
 - clustered or unclustered
-  - clustered: records close in index are close in data
+  - clustered (**covering index**): store the row data within the index
+  - unclustered (**index with included column**)
+
+heap file: the value is a referece to the row stored elsewhere
 
 Large indexes: index the index itself
 
@@ -95,6 +125,11 @@ B+ tree (default index structure on most DBMSs):
   - the data records
   - the next leaf (for range queries)
 - usually:  2d x key-size + (2d+1) x pointer-size ≤ block-size
+
+Multi-column indexes:
+
+- latitude, longtitude (R-tree)
+- R, G, B
 
 ## Execution
 

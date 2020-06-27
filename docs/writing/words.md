@@ -23,6 +23,7 @@ mathjax: false
 - Regardless of implementation details, **a wide range** of factors **spanning** the server, the network and the client and across the transport and application layers can be customized based on the system designers’ considerations around different tradeoffs to optimize streaming performance. 
 - The ABR adaptation logic needs to deal with **time-varying** network conditions and make complex tradeoffs.
 - The former provides multi-Gbps rates but is **susceptible** to blockage, whereas the latter is slower but offers reliable connectivity. 
+- The use of an HLL that is **conducive** to static analysis made this approach possible.
 
 ## Nouns
 
