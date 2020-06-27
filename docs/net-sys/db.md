@@ -32,6 +32,29 @@ Categories:
     - works without affecting OLTP operations
     - OLTP system -> Extract-Transform-Load (ETL) -> data warehouse for OLAP operations
 
+## Encoding
+
+evolution:
+
+- backward compatibility
+- forward compatability 
+
+how to store data for un/marshaling, de/serialization, encode/decode:
+
+- Textual:
+  - JSON, XML
+  - CSV
+- Binary
+  - ASN.1 (deprecated)
+  - Apache Thrift, Google Protobuf
+  - Apache Avro
+
+models:
+
+- Database
+- Service call (REST and RPC)
+- Asynchronous message passing
+
 ## Data Model
 
 - Relation model (SQL): enforce a schema
