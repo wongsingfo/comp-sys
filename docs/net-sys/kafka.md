@@ -25,6 +25,7 @@ References:
 1. TOC
 {:toc}
 
+## KafKa
 
 Concept:
 
@@ -41,5 +42,36 @@ The structure of the Topic:
 - Each partition has one server which acts as the "leader" and zero or more servers which act as "followers". The followers passively replicate the leader.
 - Each instance is the exclusive consumer of a "fair share" of partitions at any point in time.
 
+## Distributed Data
 
+- scalability
+  - Vertical 
+    - Shared-memory architecture 
+    - Shared-disk architecture: machines are connected by fast network. often used for data warehousing workloads
+  - Horizontal
+    - Shared-nothing architecture 
+- high availability 
+- low latency
 
+## Replication
+
+Leader-based relication (active/passive or master-slave replication)
+
+- role
+  - Leader / master / primary
+  - Follower / replicas / slave / secondary / hot standby
+- writes only accepted on the leader
+- synchrounous update:
+  - Too slow
+  - semi-synchorous: in practice, there is one node to be synchronous; that gurantees that we have an up-to-date copy of the data at least two nodes.
+  - chain replication in Microsoft Azure Storage
+- outage
+  - follower: just catch up with the leader
+  - Leader ("failover" problem): choose a new leader
+    - the new leader may not be up-to-date
+    - two nodes believe they are leaders ("split brain" problem)
+
+Eventual consistency
+
+- Read-your-write 
+- Monotonic reads

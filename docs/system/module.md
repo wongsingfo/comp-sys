@@ -29,7 +29,22 @@ The object files are placed in `/lib/modules/2.6.12/`. In the same directory, th
 
 ## In-Tree and Out-of-Tree
 
+From Stackoverflow:
+
 "in-tree" and "out-of-tree" are actually generic software development terms. It refers to where the resulting build output/artifacts are placed during a compile, either "in-tree", right next to the files they come from, or "out-of-tree", in a separate root directory that separates the build output from the source files. 
 
 I have not come across "in-tree" and "out-of-tree" outside of the Linux kernel source development and then only for working with modules. All modules start out as "out-of-tree" developments, that can be compiled using the context of a source-tree. Once a module gets accepted to be included, it becomes an in-tree module.
+
+## Building Modules
+
+```bash
+# prepare a kernel source tree
+# but a full kernel build needs to be executed to make module versioning work.
+make modules_prepare 
+
+make -C /lib/modules/`uname -r`/build M=$PWD modules
+make -C /lib/modules/`uname -r`/build M=$PWD modules_install
+make -C /lib/modules/`uname -r`/build M=$PWD clean
+make -C /lib/modules/`uname -r`/build M=$PWD help
+```
 

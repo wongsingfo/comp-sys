@@ -37,6 +37,7 @@ Categories:
 evolution:
 
 - backward compatibility
+  - keep the new field intact
 - forward compatability 
 
 how to store data for un/marshaling, de/serialization, encode/decode:
@@ -52,8 +53,12 @@ how to store data for un/marshaling, de/serialization, encode/decode:
 models:
 
 - Database
-- Service call (REST and RPC)
+- Service call
+  - service-oriented architecture (SOA) / micro services architecture: a server itself is a clientt to another service. 
+  - REST v.s. SOAP (SOAP: an XML-based protocol described in Web Services Description Language (WSDL). It aims to be indenpendent from HTTP thought it is often over HTTP)
+  - RPC: gRPC (based on Protobuf), Rest.li (JSON over HTTP), Finagle (based on Thrift), RESTful API
 - Asynchronous message passing
+  - distributed actor framework
 
 ## Data Model
 

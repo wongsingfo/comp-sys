@@ -135,7 +135,7 @@ Messenger messenger = new Messenger(new ClientHandle(this));
 intent.putExtra("callback-messenger", messenger);
 super.startService(intent);
 
-class ClientHandle extends handler {
+class ClientHandle extends Handler {
   private final WeakReference<DownloadClientActivity> clientRef;
   public ClientHandler(DownloadClientActivity client) {
     this.clientRef = new WeakReference<DownloadClientActivity>(client);
