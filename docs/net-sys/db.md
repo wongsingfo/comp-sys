@@ -20,7 +20,7 @@ Resources:
 - [SimpleDB](https://github.com/MIT-DB-Class/simple-db-hw), recommended
 - Database Management Systems, by Johannes Gehrke and Raghu Ramakrishnan, recommended
 - [UW CSE444](https://courses.cs.washington.edu/courses/cse444/19sp/), recommended
-- Designing Data-Intensive Application
+- Designing Data-Intensive Applications [recommended]
 
 Database Management System (DBMS) Implementations: SQLite, PostgreSQL, MySQL, SQLite, Oracle, Microsoft, etc.
 

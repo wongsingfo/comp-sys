@@ -24,6 +24,7 @@ mathjax: false
 - The ABR adaptation logic needs to deal with **time-varying** network conditions and make complex tradeoffs.
 - The former provides multi-Gbps rates but is **susceptible** to blockage, whereas the latter is slower but offers reliable connectivity. 
 - The use of an HLL that is **conducive** to static analysis made this approach possible.
+- We will develop a more **nuanced** view over the course of the rest of this book.
 
 ## Nouns
 

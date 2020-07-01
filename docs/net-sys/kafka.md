@@ -60,7 +60,7 @@ Leader-based relication (active/passive or master-slave replication)
 - role
   - Leader / master / primary
   - Follower / replicas / slave / secondary / hot standby
-- writes only accepted on the leader
+- writes only accepted on the leader, but reads accepted by any followers.
 - synchrounous update:
   - Too slow
   - semi-synchorous: in practice, there is one node to be synchronous; that gurantees that we have an up-to-date copy of the data at least two nodes.
@@ -71,7 +71,42 @@ Leader-based relication (active/passive or master-slave replication)
     - the new leader may not be up-to-date
     - two nodes believe they are leaders ("split brain" problem)
 
-Eventual consistency
+Implementation:
 
-- Read-your-write 
-- Monotonic reads
+- Statement-based replication: the leader logs every statement it executes and sends the statement to its followers.
+  - cannot handle non-pure operation
+    - nondeterminstatic function, such as `NOW()` to get the current time
+    - autoincrementing function
+- Write-ahead log (WAL) shipping: log describe the data on veery low level. It contains details of which bytes were changed in which disk blocks.
+  - It supports zero-downtime upgrade (1. update a follower 2. make a failover)
+- Logical (row-based) log replication.
+- Trigger-based relication: The trigger has the opportunity to log a change into a table, to which a external process can apply any necessary application logic.
+  - flexable but high overhead
+
+Eventual consistency: we may wait some time (often a few seconds) to see up-to-date information from an asychronous follower.
+
+- Read-your-write / read-after-write consistency:  a user always see his updates (but no promises about others)
+  - solution:
+    - only read from leaders for one minute after the last update
+    - let the client remember the timestamp of the most recent update
+  - it is more difficult in the cross-device scenario 
+- Monotonic reads: a user may see things moving backward in time
+  - Solution: each user makes reads from the same replica
+- Consistent prefix reads: guarantee a sequence of writes happens in a centain order.
+  - solution:
+    - any related writes are written to the same partition (rather than the same replica)
+    - cacusal dependency
+
+Multi-leader replication: each leader is a follower of another leader.
+
+- Use case:
+  - multi-datacenter operation
+  - clients with offline operation / colllaboartive editing
+- Resolve write conflicts
+  - Avoidance: the reqeuests from the same user are routed to the same datacenter.
+  - Convergence: 
+    - last write win (LWW): the write with highest UUID wins
+    - the replica with highest UUID wins 
+    - Merge the values. Prompt the user at some later time
+- Replication topology: all-to-all, circular, star
+
