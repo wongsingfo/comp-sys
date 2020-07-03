@@ -95,18 +95,33 @@ Eventual consistency: we may wait some time (often a few seconds) to see up-to-d
 - Consistent prefix reads: guarantee a sequence of writes happens in a centain order.
   - solution:
     - any related writes are written to the same partition (rather than the same replica)
-    - cacusal dependency
+    - causal dependency
 
 Multi-leader replication: each leader is a follower of another leader.
 
 - Use case:
-  - multi-datacenter operation
+  - multi-datacenter operation. a leader per datacenter
   - clients with offline operation / colllaboartive editing
-- Resolve write conflicts
+- Resolve write conflicts (the concurrent values are call **siblings**)
   - Avoidance: the reqeuests from the same user are routed to the same datacenter.
   - Convergence: 
     - last write win (LWW): the write with highest UUID wins
     - the replica with highest UUID wins 
     - Merge the values. Prompt the user at some later time
+  - CRDT data structure used for mergeing siblings
 - Replication topology: all-to-all, circular, star
+
+Leaderless replication (Dynamo-style): in pratice, it is for app that tolerate eventual consistency
+
+- writes and reads are send to several replicas to achieve **Quorum consistency**
+  - n replicas; write is confirmed by w nodes; read is confirmed by r nodes;
+  - w + r > n (gurantee that read and write operations overlap in at least one node), we expect to get an up-to-date value when reading
+- slopyy quorums:
+  - Write to nodes outside the designated n nodes 
+  - Write back to the designated when network interruption is fixed. (**hinted handoff**)
+- how does a replica follow up?
+  - read repair: when a client reads from nodes, it can detect any stale responses.
+  - Anti-entropy process: a background process that looks for differences between replcas.
+
+## Partitioning
 
