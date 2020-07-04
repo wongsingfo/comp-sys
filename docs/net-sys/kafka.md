@@ -116,12 +116,47 @@ Leaderless replication (Dynamo-style): in pratice, it is for app that tolerate e
 - writes and reads are send to several replicas to achieve **Quorum consistency**
   - n replicas; write is confirmed by w nodes; read is confirmed by r nodes;
   - w + r > n (gurantee that read and write operations overlap in at least one node), we expect to get an up-to-date value when reading
-- slopyy quorums:
+- sloppy quorums:
   - Write to nodes outside the designated n nodes 
   - Write back to the designated when network interruption is fixed. (**hinted handoff**)
 - how does a replica follow up?
   - read repair: when a client reads from nodes, it can detect any stale responses.
   - Anti-entropy process: a background process that looks for differences between replcas.
 
-## Partitioning
+## Partitioning / Sharding
 
+also known as region, node, vBucket, tablet...
+
+each piece of data belongs to exactly one partition.
+
+- assign records randomly
+- by keys
+  - Pros: efficient range query 
+  - Cons: may lead to hot spot
+- by hash of key / consistent hashing
+  - Cons: range query need to send to all partitions
+
+Skewed / Hot spot
+
+- a user may have millions of followers -- hash does not help here
+- Future work: hot to automatically detect and compensate for skewed data? Todoy solution: change the application logic. For example, apped random number for the small number of hot keys.
+
+secondary index:
+
+- local index / by document
+  - Query: scatter / gather from all partitions
+- global index / by term
+  - more efficient query; but writes are slower and more complicated
+  - Require distributed transaction across all partitions affected by a write. Or in practice, it is often asynchronous.
+
+Rebalancing:
+
+- hash mod N + fixed number of partitions (more partition than there are nodes)
+- dynamic partition: merge and split partitions; smilar to B-tree 
+  - partitions per nodes
+  - #partitions proportional to the size of the data
+- caveat: combination of automateic reblancing and automatic failure detection can be dangerous
+- **request routing / service discovery**: how does a client know which node to connect to?
+  - client is allowed to contant any node; a node forward the request if "cache is missed" (**gossip protocol**, Cassandra, Riak). Nodes need to disseminate any changes in cluste.
+  - add a routing tier, which acts as a partition-aware load balancer  (**ZooKeeper**, Kafka, HBase, ColrCloud)
+  - all clients are required to be aware of the partition
