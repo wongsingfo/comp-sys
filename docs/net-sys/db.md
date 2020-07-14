@@ -235,3 +235,32 @@ Histograms: make size estimation much more accurate
 - eq-width: 0-10: 1000, 10-20: 500, 20-30: 5000
 - eq-depth: 0-33: 2000, 33 - 47: 2000, 47 - 100: 2000
 - v-optimal (adopted by modern DBMS): Defines bucket boundaries in an optimal way, to minimize the error over all point queries
+
+## Transaction
+
+Simplify the programming model:
+
+- the database takes case of the **safety guarantees**
+- Transitions are antithesis of scalability. (Hyperbole statement)
+- ACID: a marketing term because it's unclear what guarantees you can actually expect. It depends on the implementation.
+  - Atomicity / Abortability: It does not mean concurerency, but means that multiple writes are done atomically.
+  - Consistency: the meaning depends on the application's notion of invariants.
+  - Isolation / Serializability: concurrent transactions are isolated from each other. Each transaction appears to be committed serially. It incurs high performance penalty!
+    - Weak Isolation: protect against some but not all concurrency issues (common practice)
+  - Durability: data won't be lost. No absolute durability.
+
+Weak isolations:
+
+- read committed: default setting for many databases
+  - no dirty reads: can only see the data that has been committed. Implemented by remembering both the old and new values, or by a row-level lock (slower)
+  - no dirty writes: can only overwrite data that has been committed. Implemented by a row-level lock
+  - NOTE: read committed does not preven race condition between two counter increments
+    - A: read 10; B: read 10; A: write 11; B: write 11
+    - expected: 12, output 11
+- Snapshot Isolation
+  - motivation: nonrepeatable read or read skew
+  - Design principle: readers never block writers and vice versa
+    - Multi-version concurrency control (MVCC). (no dirty reads can be implemented by two-verison concurrency control.) 
+  - Name confusion: also imprecisely called "serializable" in Oracle and "repeatable read" in PostgreSQL and MySQL
+  - There are big differences in the guarantees that databases actually provide, depite being ostensibly standardized.
+- Preventing Lost Updates
