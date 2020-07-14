@@ -54,7 +54,7 @@ common configurations:
 
 - Starting from Android 4.0, system trusted certificates are on the (read-only) system partition in the folder `/system/etc/security/` as individual files. However, users can now easily add their own 'user' certificates which will be stored in `/data/misc/keychain/certs-added`.
 
-- [Since Android 7.0 Nougat](https://android-developers.googleblog.com/2016/07/changes-to-trusted-certificate.html), Apps that target API Level 24 and above no longer trust user or admin-added CAs for secure connections, by default. To see the traffic in debug mode, add these lines to `res/xml/network_security_config.xml`
+- [Since Android 7.0 Nougat](https://android-developers.googleblog.com/2016/07/changes-to-trusted-certificate.html), Apps that target API Level 24 and above no longer trust user or admin-added CAs for secure connections, by default. To see the traffic in debug mode, add `<application android:networkSecurityConfig=”@xml/network_security_config">` to the manifest and add these lines to `res/xml/network_security_config.xml`
 
   ```xml
   <network-security-config>  
@@ -83,6 +83,7 @@ adb reboot
 adb remount
 adb shell
 mount -o rw,remount /system
+chmod 644 hash.0
   ```
 4. Copy the file to `/system/etc/security/cacerts/`
 
@@ -92,4 +93,5 @@ also known as HTTP Public Key Pinning (HPKP). It's a a now-deprecated Internet s
 
 **Certificate Pinning** was where you ignore that whole thing, and say trust *this certificate only* or perhaps trust only certificates *signed by this certificate*, ignoring all the other root CAs that could otherwise be trust anchors. It was frequently also known as **Key Pinning**, since it was actually the public key hash that got saved.
 
-If you want to intercept the pinned connections, you need to patch the application manually. For Android and (jailbroken) iOS devices, various tools exist to accomplish this.
+If you want to intercept the pinned connections, you need to patch the application manually. For Android and (jailbroken) iOS devices, various tools exist to accomplish this. For example, [JustTrustMe](https://github.com/Fuzion24/JustTrustMe), [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller)
+

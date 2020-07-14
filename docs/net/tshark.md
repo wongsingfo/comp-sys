@@ -20,6 +20,8 @@ References:
 1. TOC
 {:toc}
 
+## Tools
+
 CLI tools:
 
 - tshark: CLI version of Wireshark
@@ -151,3 +153,16 @@ Lua can be used to write
 - post-dissectors 
 - taps (Taps are a mechanism to fetch data from every frame. They can be defined to use a display filter.)
 
+## decrypt SSL/TLS
+
+In Wireshark, go to *Preferences* -> *Protocols* -> *TLS*, and change the *(Pre)-Master-Secret log filename* preference.
+
+**Key logging **([ref: wireshark wiki](https://wiki.wireshark.org/TLS?action=show&redirect=SSL#Using_the_.28Pre.29-Master-Secret)):
+
+- firefox, mimtproxy, chrome: set the environment variable `SSLKEYLOGFILE` so that it points to a writable text file.
+- OpenSSL: could use a GDB or a LD_PRELOAD trick to extract the secrets. This includes Python.
+  - For a walkthrough for Apache HTTP Server using this libsslkeylog.so library, see [this post](https://security.stackexchange.com/questions/215358/extracting-openssl-pre-master-secret-from-apache2/215397#215397).
+- For Java programs, secrets can be extracted from the TLS debug log preference, or output directly in the format Wireshark requires via a Java agent. Two similar projects:
+  - jSSLKeyLog: http://jsslkeylog.sourceforge.net/
+  - extract-tls-secrets: https://github.com/neykov/extract-tls-secrets
+- Python scripts can be edited to dump keys as well.

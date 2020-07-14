@@ -186,7 +186,7 @@ Receiving Packets:
    - Device drivers:
       - NAPI-aware: calls `netif_rx_schduele` to adds itself to the `poll_list` (in `struct softnet_data`).
          - Frames are waiting in device memory.
-      - non-NAPI-aware:  `core/dev.c:netif_rx ` is called to store the recevied frame (`struct sk_buff`) onto `struct sk_buff_head input_pkt_queue` (its size can be tuned in userspace) in `struct softnet_data` and schedule the softireq that runs shortly to dequeue and handle the frames.
+      - non-NAPI-aware:  `core/dev.c:netif_rx` is called to store the recevied frame (`struct sk_buff`) onto `struct sk_buff_head input_pkt_queue` (its size can be tuned in userspace) in `struct softnet_data` and schedule the softireq that runs shortly to dequeue and handle the frames.
          - The actual data is copied before `netif_rx` is called. Frames are waiting in a shared CPU-specific queue.
          - `netif_rx` set the `skb->stamp` timestamp if at least one interested user (saving the timestamp has a CPU cost beacuse of the high timer resolution)
          - fake a NAPI-aware device (`struct net_device back_dev` in `struct softnet_data`). The associated virtual function `poll` is `process_backlog`, which process the frames in `input_pkt_queue`.

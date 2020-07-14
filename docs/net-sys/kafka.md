@@ -77,11 +77,11 @@ Implementation:
   - cannot handle non-pure operation
     - nondeterminstatic function, such as `NOW()` to get the current time
     - autoincrementing function
-- Write-ahead log (WAL) shipping: log describe the data on veery low level. It contains details of which bytes were changed in which disk blocks.
+- Write-ahead log (WAL) shipping: log describe the data on very low level. It contains details of which bytes were changed in which disk blocks.
   - It supports zero-downtime upgrade (1. update a follower 2. make a failover)
 - Logical (row-based) log replication.
-- Trigger-based relication: The trigger has the opportunity to log a change into a table, to which a external process can apply any necessary application logic.
-  - flexable but high overhead
+- Trigger-based replication: The trigger has the opportunity to log a change into a table, to which a external process can apply any necessary application logic.
+  - flexible but expensive 
 
 Eventual consistency: we may wait some time (often a few seconds) to see up-to-date information from an asychronous follower.
 
