@@ -14,6 +14,14 @@ nav_order: 80
 1. TOC
 {:toc}
 
+## Virtual Environment
+
+https://docs.python.org/3/library/venv.html
+
+```bash
+python3 -m venv /path/to/new/virtual/environment
+```
+
 ## Decorators
 
 Basically, `@d c` is equivalent to `c = d([the body of c])`.

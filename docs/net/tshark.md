@@ -166,3 +166,34 @@ In Wireshark, go to *Preferences* -> *Protocols* -> *TLS*, and change the *(Pre)
   - jSSLKeyLog: http://jsslkeylog.sourceforge.net/
   - extract-tls-secrets: https://github.com/neykov/extract-tls-secrets
 - Python scripts can be edited to dump keys as well.
+
+## Airport
+
+Airport on MacOS 10.14 has bugs that may cause the segmentation fault when sniffing packets.
+
+```bash
+alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/bin/airport
+```
+
+```
+airport <interface> <verb> <options>
+
+# set preference
+airport prefs
+airport en0 prefs DisconnectOnLogout=Yes
+
+# Monitor the driver's logging facility
+airport logger
+
+#
+airport en0 sniff 1
+```
+
+https://wiki.wireshark.org/CaptureSetup/WLAN#Mac_OS_X
+
+## Aircrack-ng
+
+Aircrack-ng is a network software suite consisting of a detector, packet sniffer, WEP and WPA/WPA2-PSK cracker and analysis tool for 802.11 wireless LANs.
+
+https://louisabraham.github.io/articles/WPA-wifi-cracking-MBP.html
