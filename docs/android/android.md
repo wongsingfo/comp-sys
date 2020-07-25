@@ -50,7 +50,7 @@ backgroud work:
 - Run at precise time: Alarmmanager
 - Generic: WorkManager
 
-## Threads Modle
+## Threads Model
 
 UI is handled by a *main thread* (sometimes called *Looper thread*). The Android UI toolkit is *not* thread-safe. So, you must not manipulate your UI from a worker thread—you must do all manipulation to your user interface from the UI thread (i.e. the main thread).
 
@@ -68,4 +68,39 @@ Access the UI thread from other threads
 - `View.post(Runnable)`
 - `Handler`
 - `AsyncTask`: `onPreExecute()` -> `doInBackground(Params...)` -> `onProgressUpdate(Progress...)` -> `onPostExecute(Result)` (**deprecated in API level 30**)
+
+## flash ROM
+
+reference:
+
+- https://www.howtogeek.com/162516/how-to-flash-your-nexus-s-or-any-other-android-device-with-a-new-rom/
+
+### Step1: recovery image
+
+```
+adb reboot bootloader # fastboot mode
+```
+
+recovery image: A bootable program on an Android flash memory partition that is used to perform a factory reset or restore the original OS version. In order to install a different OS version (a different ROM), the stock recovery image must be replaced with a custom version such as **ClockworkMod Recovery**. After rooting the Android, utilities such as **ROM Manager** install the custom recovery.
+
+After install the custom image (recovery.img), enter recover mode.
+
+```
+adb reboot recovery
+```
+
+### Step2: ROM
+
+Android ROM (not read-only-memory): A file containing the executable instructions (a system image) of an Android OS and affiliated apps.
+
+- stock ROM: comes installed on the phone
+- custom ROM: comes from a third party
+
+Flashing the ROM:  installing the system image into the device's internal flash memory. Flash memory holds the Android's firmware.
+
+- update.zip
+  - System.img: Android OS, affiliated apps
+  - Boot.img: 
+    - kernel
+    - rootfs
 

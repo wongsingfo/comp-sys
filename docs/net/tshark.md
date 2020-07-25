@@ -44,7 +44,7 @@ CLI tools:
 
 ## Best Practice
 
-```absh
+```bash
 Demo 1:
 ===========
 tshark -r http.pcap 
@@ -105,7 +105,7 @@ tshark -r mail-new.pcap -ta | tail -1
 capinfos -Teacu mail*
 ```
 
-```
+```bash
 Example 1:  # counting http response code
 ==========
 tshark -r example.pcap -Y http.response | head
