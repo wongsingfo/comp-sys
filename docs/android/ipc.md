@@ -3,7 +3,6 @@ layout: default
 title: IPC
 parent: Android
 nav_order: 60
-
 ---
 
 # IPC
@@ -18,6 +17,7 @@ nav_order: 60
 Reference: 
 
 - [Deep Dive into Android IPC/Binder Framework at Android Builders Summit 2013](https://events.static.linuxfound.org/images/stories/slides/abs2013_gargentas.pdf)
+- [Binder 系列](http://gityuan.com/2015/10/31/binder-prepare/)
 
 
 ## Binder
@@ -37,14 +37,20 @@ Solution Binder:
 
 Model:
 
-- Context Manager (a.k.a. `servicemanager`): A special Binder object with handle 0 that is used as a registry/loopup service for other Binders.
+- Context Manager (a.k.a. `servicemanager`): A special Binder object with handle 0 that is used as a registry/lookup service for other Binders.
 - The Binder transaction buffer has a limited fixed size, currently 1MB, which is shared by all transactions in progress for the process. This limit is at the process level rather than at the per activity level.
 
 `IBinder`
 
 - Do not implement this interface directly, instead extend from its subclass `Binder`. Most developers use Andorid Interface Definition Language (AIDL) to generate the appropriate Binder subclass.
+- Binder performs mapping of objects between two processes
 - You must keep in mind the situations in which your process could go away
 - synchronous: `transact(Parcel)` -> `onTransact(Parcel)` 
+
+Concurrency:
+
+- The binder thread is responsible to execute the RPC. Methods that may be called by Binder should take care of the concurrency problems.
+- A pool of threads is associated with each service to process incoming IPC
 
 ## Data Containers: Parcel and Bundle
 
@@ -53,6 +59,26 @@ Model:
 - container of messages 
 - It is recommend that you do not use custom parcelables, because the system cannot unmarshal a class that it has no knowledge of.
 
+```java
+class Rect implements Parceable {
+	private Rect(Parcel in) {
+        readFromParcel(in);
+    }
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(left);
+        out.writeInt(top);
+        out.writeInt(right);
+        out.writeInt(bottom);
+    }
+    public void readFromParcel(Parcel in) {
+        left = in.readInt();
+        top = in.readInt();
+        right = in.readInt();
+        bottom = in.readInt();
+    }
+}
+```
+
 `Bundle`
 
 - map from key to `parceable`
@@ -60,6 +86,7 @@ Model:
 `Message`:
 
 - Contain a `bundle`
+- several public fields: `what`, `arg1`, `arg2`
 
 ```java
 Bundle data = new Bundle(1);
@@ -79,6 +106,23 @@ interface IFooService {
   Bar getById(int id);
   void delete(in Bar bar);
   List<Bar> getAll();
+}
+```
+
+```java
+Binder binder = new IFooService.Stub() {
+    @Override 
+    public void save(inout Bar bar) {}
+    ...
+}
+// bind service
+public IBinder onBind(Intent intent) {
+    return binder;
+}
+
+// client
+public void onServiceConneted(ComponentName name, IBinder service) {
+    IFooService foo = IFooService.Stub.asInterface(service);
 }
 ```
 
@@ -124,7 +168,9 @@ public class Callee extends Activity {
 }
 ```
 
-## Messager and Handler
+## Messenger, Handler, Looper
+
+Handler is associated with a Looper, which is a **message queue** in a thread. That means the handler handles messages in the thread in which the handler is created.
 
 - All underlying communication is still based on Binder
 
@@ -167,6 +213,16 @@ protected void onHandleIntent(Intent intent) {
     message.recycle(); 
   }
 }
+```
 
+```java
+// bind service
+public IBinder onBind(Intent intent) {
+    return messenger.getBinder();
+}
+```
+
+```java
+message.replyTo = messenger;
 ```
 

@@ -125,3 +125,11 @@ platform-tools/adb forward tcp:7777 jdwp:XXX
 jdb -sourcepath /your/project/src -attach localhost:7777
 ```
 
+## Reverse Engineering
+
+Tools:
+
+- `apktool`: uncompress `apk` files
+- `dex2jar`
+- `jd_gui`: view java codes in the jar
+

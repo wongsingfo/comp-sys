@@ -11,6 +11,7 @@ has_children: true
 Reference: 
 
 - [Official Guide](https://developer.android.com/guide)
+- [Android基础入门教程](https://www.runoob.com/w3cnote/android-tutorial-intro.html)
 
 ## System
 
@@ -30,16 +31,24 @@ multiple entry points / activities:
   - Typically, one activity in an app is specified as the *main activity*, which is the first screen to appear when the user launches the app. 
   - [Life Cycle](https://developer.android.com/guide/components/activities/activity-lifecycle)
 - services: run in the background
-  - If it is not something the user is directly aware as running, the system may kill the service. Foreground services must display a [Notification](https://developer.android.com/guide/topics/ui/notifiers/notifications.html).
-  - We can bound a process to a server in another process. `bindService()`
+  - If it is not something the user is directly aware as running, the system may kill the service. Foreground services must display a [Notification](https://developer.android.com/guide/topics/ui/notifiers/notifications.html) `startForeground(1, notificationBuilder.getNotification()) in onCreate()`
+  - We can bound a process to a service in another process. `bindService()`. monitor the connection by `ServiceConnection`
   - The service does **not** create its own thread and does **not** run in a separate process unless you specify otherwise.
+  - use `IntentService`
+    - create a new thread for handling intents
+    - intent are processed one by one
 - broadcast receivers: e.g. alarm, low battery, ...
 - Content provides
 
 ```java
 Intent intent = new Intent(context, LogActivity.class);  // entry point 
 intent.putExtra(key, value);  // and its argv (intent)
+startActivityForResult(intent, request_code);
+
 String value = intent.getStringExtra(key); // get argv
+setResult(resultCode, intent);
+
+void onActivityResult(int requestCode, int resultCode, Intent data) ...
 ```
 
 backgroud work:
@@ -67,8 +76,28 @@ Access the UI thread from other threads
 - `Activity.runOnUiThread(Runnable)`
 - `View.post(Runnable)`
 - `Handler`
-- `AsyncTask`: `onPreExecute()` -> `doInBackground(Params...)` -> `onProgressUpdate(Progress...)` -> `onPostExecute(Result)` (**deprecated in API level 30**)
+- `AsyncTask`: `onPreExecute()` -> `doInBackground(Params...)` -> `onProgressUpdate(Progress...)` -> `onPostExecute(Result)` (**deprecated in API level 30**, [why?](https://www.techyourchance.com/asynctask-deprecated/))
+  - replacement: `ExecutorService`, `Thread` + `Handler`
 
+```java
+public class TaskRunner {
+    private final Executor executor = Executors.newSingleThreadExecutor(); // change according to your requirements
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    public interface Callback<R> {
+        void onComplete(R result);
+    }
+
+    public <R> void executeAsync(Callable<R> callable, Callback<R> callback) {
+        executor.execute(() -> {
+            final R result = callable.call();
+            handler.post(() -> {
+                callback.onComplete(result);
+            });
+        });
+    }
+}
+```
 ## flash ROM
 
 reference:
