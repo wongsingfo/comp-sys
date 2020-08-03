@@ -32,6 +32,8 @@ Useful tools:
 ```bash
 cmdline-tools/tools/bin/sdkmanager
 
+platform-tools/adb wait-for-device
+
 platform-tools/adb [-d |-e | -s serial_number] do_somthing
 # -s     select  (or use ANDROID_SERIAL env var)
 # -e     use emulator

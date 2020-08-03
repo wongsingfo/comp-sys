@@ -19,6 +19,7 @@ nav_order: 80
 - [TLDR page](https://tldr.sh)
 - [KMDR page](https://github.com/ediardo/kmdr-cli)
 - [shellcheck](https://github.com/koalaman/shellcheck) 
+- [explainshell](https://explainshell.com/)
 - [enhanced grep: rg](https://github.com/BurntSushi/ripgrep)
 - autojump
 - [fuzzy search: fasd](https://github.com/clvv/fasd)
