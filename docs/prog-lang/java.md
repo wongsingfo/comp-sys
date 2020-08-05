@@ -13,6 +13,7 @@ nav_order: 30
 {: .no_toc .text-delta }
 
 - [Tutorials](https://docs.oracle.com/javase/tutorial/)
+- [Kotlin vs. Java](https://kotlinlang.org/docs/reference/comparison-to-java.html)
 
 ## Table of contents
 {: .no_toc .text-delta }
