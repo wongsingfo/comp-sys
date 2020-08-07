@@ -30,6 +30,8 @@ nav_order: 10
  off[defalut] : 
  on : 
  step : 
+ 
+(gdb) set follow-fork-mode child
 ```
 
 ## Breakpoint

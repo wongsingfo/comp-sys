@@ -15,7 +15,7 @@ nav_order: 50
 1. TOC
 {:toc}
 
-A full-fledged IDE like Android Studio is strongly recommended, but here we are not going to use any **heavy** IDE in order to understand how the whole toolchain works. [In the past, there was no functionality in Android Studio that was not present in IntelliJ IDEA with the Android plugin installed. However, since its inception, Android Studio has grown and has diverged more and more from IntelliJ IDEA, especially recently.](https://stackoverflow.com/questions/30779596/difference-between-android-studio-and-intellij-idea-with-plugins)
+A full-fledged IDE like Android Studio is strongly recommended, but here we are not going to use any **heavy** IDE in order to understand how the whole toolchain works. In the past, there was no functionality in Android Studio that was not present in IntelliJ IDEA with the Android plugin installed. However, since its inception, Android Studio has grown and has diverged more and more from IntelliJ IDEA, especially recently [[ref](https://stackoverflow.com/questions/30779596/difference-between-android-studio-and-intellij-idea-with-plugins)].
 
 ## Setup
 
@@ -45,6 +45,10 @@ platform-tools/adb install app.apk
 platform-tools/adb logcat  # Verbose, Debug, Info, Warning, Error, Fatal, Slient
 platform-tools/adb logcat ActivityManager:I MyApp:D *:S
 export ANDROID_LOG_TAGS="ActivityManager:I MyApp:D *:S"
+
+# put /system partition in writable mode
+platform-tools/adb remount
+platform-tools/adb shell mount -o rw,remount,rw /system
 
 # a common bug: NoClassDefFoundError: javax/xml/bind/annotation/XmlSchema
 # try to use Java SE 8

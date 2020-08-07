@@ -41,6 +41,18 @@ annotation
 @JvmStatic
 @Throws(IOException::class)
 fun ....
+
+@get:Synchronized
+var a = 10
+set(x) {
+    synchronized(this) {
+        field = x // a = x
+    }
+}
+
+// don't generate getter/sette
+@JvmField
+val CONNECTION_PREFACE = "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n".encodeUtf8()
 ```
 
 ## Null
