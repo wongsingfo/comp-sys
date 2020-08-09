@@ -121,6 +121,65 @@ items.fold(0, {
 })
 ```
 
+Scope Functions: `let, run, with, apply, also`
+
+| Function | Object reference | Return value   | Is extension function                        |
+| :------- | :--------------- | :------------- | :------------------------------------------- |
+| `let`    | `it`             | Lambda result  | Yes                                          |
+| `run`    | `this`           | Lambda result  | Yes                                          |
+| `run`    | -                | Lambda result  | No: called without the context object        |
+| `with`   | `this`           | Lambda result  | No: takes the context object as an argument. |
+| `apply`  | `this`           | Context object | Yes                                          |
+| `also`   | `it`             | Context object | Yes                                          |
+
+non-local return. 
+
+```kotlin
+fun foo() {
+    inlined_foo {
+        return // OK: the lambda is inlined
+    }
+    ordinary_foo {
+    	return // compile-fail
+    }
+}
+
+fun foo() {
+    run loop@{
+        listOf(1, 2, 3, 4, 5).forEach {
+            if (it == 3) return@loop // non-local return from the lambda passed to run
+            print(it)
+        }
+    }
+    print(" done with nested loop")
+}
+
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach {
+        if (it == 3) return@forEach // local return to the caller of the lambda, i.e. the forEach loop
+        print(it)
+    }
+    print(" done with implicit label")
+}
+
+// preferred. Don't use lambda
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach(fun(value: Int) {
+        if (value == 3) return  // local return to the caller of the anonymous fun, i.e. the forEach loop
+        print(value)
+    })
+    print(" done with anonymous function")
+}
+
+// forbit it with `crossinline` modifier
+inline fun f(crossinline body: () -> Unit) {
+    val f = object: Runnable {
+        override fun run() = body()
+    }
+    // ...
+}
+```
+
 ## OOP
 
 basic
@@ -133,7 +192,7 @@ enum class Protocol (private val protocol: String) {
 
 // primary constructor
 class Person [modifier] constructor(firstName: String) { /*...*/ }
-class Person(firstName: String) { 
+class Person(firstName: String, secondName: String = "anonymous") { 
     init {}
     init {} // mutiple init blocks are executed in the same order as they appear
     
@@ -141,10 +200,21 @@ class Person(firstName: String) {
     constructor(i: Int) {}
 }
 
+// specify args name like Python
+Person(firstName = "wck")
+
 // By default, classes / methods / properties are final. use `open` modifier
 open class Base(p: Int) {
     open val vertexCount: Int = 0
     open fun draw() { /*...*/ }
+}
+
+// Calling the outerclass / superclass implementation
+super@FilledRectangle.draw()
+
+// anonymous subclass / object
+private val runnable: Runnable = object : Runnable {
+  override fun run() { ... }
 }
 ```
 
@@ -171,6 +241,7 @@ class MyClass {
 }
 val instance = MyClass.create()
 val factory = MyClass.Companion
+val factory2 = MyClass // the same as factory
 ```
 
 singleton:
@@ -182,6 +253,14 @@ object DataProviderManager {
     }
     val allDataProviders: Collection<DataProvider>
         get() = // ...
+}
+
+// or 
+class X {
+  companion object {
+    @JvmField
+    val INSTANCE = ...
+  }
 }
 ```
 
@@ -202,5 +281,33 @@ fun Any?.toString(): String {
     if (this == null) return "null"
     return toString()
 }
+```
+
+redefine operator
+
+```kotlin
+/**
+     * Constructs an interceptor for a lambda. This compact syntax is most useful for inline
+     * interceptors.
+     *
+     * ```
+     * val interceptor = Interceptor { chain: Interceptor.Chain ->
+     *     chain.proceed(chain.request())
+     * }
+     * ```
+     */
+inline operator fun invoke(crossinline block: (chain: Chain) -> Response): Interceptor =
+object : Interceptor {
+    override fun intercept(chain: Chain) = block(chain)
+}
+
+// interceptors += BridgeInterceptor(client.cookieJar)
+@kotlin.internal.InlineOnly
+public inline operator fun <T> MutableCollection<in T>.plusAssign(element: T) {
+    this.add(element)
+}
+
+// [i]
+public operator fun get(index: Int): E
 ```
 

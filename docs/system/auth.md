@@ -18,6 +18,12 @@ Reference:
 1. TOC
 {:toc}
 
+## Service
+
+```bash
+service [service_name]
+systemctl disable [service_name]
+```
 
 ## System Log
 

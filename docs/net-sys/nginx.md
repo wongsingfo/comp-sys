@@ -52,6 +52,8 @@ Trun `lua_code_cache` off for the ease of debugging (the lua code will be reload
 
 ## Configuration
 
+[FULL EXAMPLE](https://www.nginx.com/resources/wiki/start/topics/examples/full/)
+
 configuration file:
 
 - simple directive: `name: parameters;`
