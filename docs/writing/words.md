@@ -54,5 +54,7 @@ High-speed railway (HSR) networking asks the new question of how to improve aggr
 - These alternative algorithms were so far not **extensively tested against** MPTCP’s default scheduler. 
 - MPTCP can improve user experience over WiFi by **associating with multiple APs** simultaneously. By utilizing an MPTCP connection with subflows connected to all available APs, a mobile client can maintain **seamless connectivity** without having to consider a handover.
 - Regardless of implementation details, **a wide range** of factors **spanning** the server, the network and the client and across the transport and application layers can be customized based on the system designers’ considerations around different tradeoffs to optimize streaming performance. 
+- Our analysis suggests that the wireline paths, upper-layer protocols, computing and radio hardware architecture need to co-evolve with 5G to form an ecosystem, in order to fully **unleash its potential**.
+- To sum up, the web browsing performance is still **handicapped** by
+  the computational efficiency ofmobile devices, which cannot be resolved by 5G. Also, the transient behaviors o fTCP severely **hamper** the 5G network efficiency, especially for short bursty-flows. 
 
-  

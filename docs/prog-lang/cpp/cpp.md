@@ -10,6 +10,10 @@ has_children: true
 # C++ in 30 Minutes
 {: .no_toc }
 
+Recommend:
+
+- [CppCoreGuidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+
 Interesting Facts:
 
 - [Stack Overflow: How do exceptions work?](https://stackoverflow.com/questions/307610/how-do-exceptions-work-behind-the-scenes-in-c)
