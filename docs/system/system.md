@@ -11,6 +11,7 @@ has_children: true
 
 ## References
 
+- [Tutorial: linuxjourney](https://linuxjourney.com/)
 - O'Reilly series:
   - Understanding Linux Kernel
   - Understanding Linux Network Internals

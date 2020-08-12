@@ -16,11 +16,20 @@ nav_order: 60
 
 Reference: 
 
-- [Deep Dive into Android IPC/Binder Framework at Android Builders Summit 2013](https://events.static.linuxfound.org/images/stories/slides/abs2013_gargentas.pdf)
+- [Deep Dive into Android IPC/Binder Framework at Android Builders Summit 2013](https://events.static.linuxfound.org/images/stories/slides/abs2013_gargentas.pdf), [video](https://www.youtube.com/watch?v=ncuRsu2hbsQ)
 - [Binder 系列](http://gityuan.com/2015/10/31/binder-prepare/)
 
-
 ## Binder
+
+layers:
+
+```
+/framework/base/core/java/               (Java)
+/framework/base/core/jni/                (JNI)
+/framework/native/libs/binder            (Native)
+/framework/native/cmds/servicemanager/   (Native)
+/kernel/drivers/staging/android          (Driver)
+```
 
 Motivation: 
 
@@ -32,7 +41,7 @@ Solution Binder:
 
 - An IPC/component system for developing objectoriented OS services.
 - built-in reference-count + death-notification
-- Message-based; not well for streaming
+- Message-based; not well for data streaming
 - Binder driver is exposed via `/dev/binder` and offers a relatively simple API based on open, release, poll, mmap, flush, and ioctl operations.
 
 Model:

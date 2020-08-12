@@ -26,6 +26,8 @@ References:
 - [Development Documentation](http://nginx.org/en/docs/dev/development_guide.html)
 - OpenResty: Best Practices
 
+Alternative: [Caddy-v2](https://caddyserver.com/docs)
+
 ## Table of contents
 {: .no_toc .text-delta }
 
