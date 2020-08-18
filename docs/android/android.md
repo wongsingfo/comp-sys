@@ -12,6 +12,7 @@ Reference:
 
 - [Official Guide](https://developer.android.com/guide)
 - [Android基础入门教程](https://www.runoob.com/w3cnote/android-tutorial-intro.html)
+- Embedded Android: Porting, Extending, and Customizing
 
 ## System
 

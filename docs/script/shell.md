@@ -299,8 +299,28 @@ for path in $(echo "$DEFAULT_PATH" | /bin/sed "s/:/\\n/g"); do
 # 2020-05-13 12:38:13
 date +"%Y-%m-%d %H:%M:%S"
 
+# install tar
+sudo tar xvf package.tar.xz --directory=/usr/local --strip-components=1
+```
+
+Manipulate text:
+
+```bash
 # Print the fifth column
 # Use space as delimiter by default
-cat /proc/uptime | awk -F . '{print $5}'
+awk -F , '{print $5}'
+
+# -S buffer size
+# -n numeric
+# -k key1,key2,...
+sort -S 4G -n -k 1,11
+
+# remove redundant spaces
+tr -s " "
+
+# subsititution
+sed s/day/night/
+
+# use & as the matched string
 ```
 
