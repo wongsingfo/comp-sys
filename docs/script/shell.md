@@ -29,14 +29,15 @@ nav_order: 80
 - [httpie](https://httpie.org/)
 - recorder: [showterm](https://github.com/ConradIrwin/showterm)
 - `bc`: calculator
-- `paste`
-- `sed`, `awk`
+- `tr`
+- `sed`, `awk`,
 - `sort`, `uniq`
 - `xargs`
 - `tput bel`: alert when jobs finish
-- `sshfs`: [osxfuse](https://github.com/osxfuse/osxfuse/wiki/SSHFS)
-- `column -t`
+- `sshfs`: [osxfuse](https://github.com/osxfuse/osxfuse/wiki/SSHFS).   `service nfsclient start && mount server:/dir /mount_dir`
+- `column -t`, `paste`, `cut`, `join`, `split`
 - `od`, `hexdump`
+- `dd if=/home/pete/backup.img of=/dev/sdb bs=1M count=2`
 - `aria2c -x 16 -s 16 [url]`: file downloader 
 - expect (Recommended: Exploring Expect: A Tcl-Based Toolkit for Automating Interactive Programs)
 
@@ -110,9 +111,38 @@ tar -czf $output $input
 echo "Backup of $input completed! Details about the output backup file:"
 ls -l $output
 
+# https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+filename=$(basename -- "$fullfile")
+extension="${filename##*.}"
+```
+
+## Numbers / Strings / Timestamps
+
+```bash
 counter=0
 let counter+=1
 let all=$all+$arch_files+$arch_directories
+
+i=64
+let i=i/31
+echo $i  # 2
+
+# built-in Arithmetic Expansion substitution in POSIX shells
+$((0xbc))         # 188
+$((1+2+5*2))      # 13
+$((16#55))        # 85
+$((10#85))        # 55
+
+printf '%x\n' 85  # 55
+echo 'obase=16; 9999999999999999999999' | bc  # 21E19E0C9BAB23FFFFF
+
+echo 416E64726F69644C6162 | xxd -r -p         # AndroidLab
+
+date +"%Y-%m-%d %H:%M:%S"  # 2020-05-13 12:38:13
+date +"%s"                 # 1598082285
+date -d '04/05/2017 11:13:00' +"%s"  # 1491361980
+date -d '04/05/2017 11:13:00'        # depends on the system language
+date -d @1491361980 +"%Y-%m-%d %H:%M:%S"  # 2017-04-05 11:13:00
 ```
 
 ## Array
@@ -296,31 +326,50 @@ for path in $(echo "$DEFAULT_PATH" | /bin/sed "s/:/\\n/g"); do
 # set default value
 [ -z "${MAX_CARNUM}" ] && MAX_CARNUM=18
 
-# 2020-05-13 12:38:13
-date +"%Y-%m-%d %H:%M:%S"
-
 # install tar
 sudo tar xvf package.tar.xz --directory=/usr/local --strip-components=1
-```
 
-Manipulate text:
-
-```bash
-# Print the fifth column
+# Print the fifth and the second column
 # Use space as delimiter by default
-awk -F , '{print $5}'
+awk -F , '{print $5,$2}'
+# or cut -d',' -f5,2
+
+# filter
+awk '$3>10'
 
 # -S buffer size
 # -n numeric
-# -k key1,key2,...
-sort -S 4G -n -k 1,11
+# -k, --key=POS1[OPTS][,POS2]     start a key at POS1 (origin 1), end it at POS2
+#                          (default end of line)
+sort -S 4G -k1n,1 -k5n,5
+```
 
-# remove redundant spaces
-tr -s " "
+Sed [Tutorial](https://www.grymoire.com/Unix/Sed.html):
 
+```bash
 # subsititution
 sed s/day/night/
 
 # use & as the matched string
+$ echo "123 abc" | sed 's/[0-9]*/& &/' 
+123 123 abc
+
+# extended regex (-E / -r depends on the distribution)
+# -n don't print the original lines
+sed -rn '/([a-z]+) \1/p' # duplicated words
+
+# command
+/g # global
+/I # ignore cases
+/d # delete
+/p # print
+
+# script
+#!/bin/sed -f
+s/a/A/g
+s/e/E/g
+s/i/I/g
+s/o/O/g
+s/u/U/g
 ```
 

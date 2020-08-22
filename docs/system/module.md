@@ -27,6 +27,18 @@ The object files are placed in `/lib/modules/2.6.12/`. In the same directory, th
 - `modules.pcimap`, `modules.submap`: PCI and USB IDs of the devices supported by the kernel and a reference to the associated kernel module.
 - `modules.dep`: dependency graph
 
+```bash
+# list
+lsmod
+# try to load from /lib/modules/(kernel version)/kernel/drivers 
+#  and the dependencies by calling `insmod` incursively
+modprobe bluetooth
+# remove
+modprobe -r bluetooth
+
+# edit /etc/modprobe.d/ to load and not to load on bootup
+```
+
 ## In-Tree and Out-of-Tree
 
 From Stackoverflow:

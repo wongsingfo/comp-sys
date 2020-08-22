@@ -84,7 +84,7 @@ make modules_install
 
 ### [vmlinux](https://en.wikipedia.org/wiki/Vmlinux)
 
-On Linux systems, vmlinux is a statically linked executable file that contains the Linux kernel in one of the object file formats supported by Linux, which includes ELF, COFF and a.out. The vmlinux file might be required for kernel debugging, symbol table generation or other operations, but must be made bootable before being used as an operating system kernel by adding a multiboot header, bootsector and setup routines.
+On Linux systems, vmlinux is a statically linked executable file that contains the Linux kernel in one of the object file formats supported by Linux, which includes ELF, COFF and a.out. The vmlinux file might be required for kernel debugging, symbol table generation or other operations, but must be made bootable before being used as an operating system kernel by adding a multiboot header, bootsector and setup routines. It will be added to `/boot`. 
 
 ### bzImage
 
@@ -187,7 +187,7 @@ It has advantage of performance with KVM if the architecture is same with host a
 
 ## Create Root file system
 
-initial ramdisk (`initrd`): a temporary root file system that is used by the Linux kernel during initialization process while other filesystems are not mounted.
+initial ramdisk (`initrd`): a temporary root file system that contains essential modules that kernel need  to get to the rest of the hardware, and that is used by the Linux kernel during initialization process while other filesystems are not mounted. 
 
 ### minimal
 
@@ -256,6 +256,7 @@ apropos lx
 
 https://01.org/linuxgraphics/gfx-docs/drm/kernel-hacking/index.html
 
+The symbolic lookup table is at `/boot/System.map`. 
 
 Q&A:
 

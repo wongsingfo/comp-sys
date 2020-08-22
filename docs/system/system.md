@@ -36,6 +36,7 @@ User interface:
   - `kernel/[modprobe]`: change the default path to user-space helpers
 - `/sys` After 2.6, a newer filesystem compared with procfs and sysctl
   - can configure module options; `/sys/module/sis900/parameters/`
+- `/var`: valuable data. e.g. system logs, website content
 - `ioctl` work with socket. It is processed by kernel in many different places
   - `ethtool`, `ifconfig` are based on `ioctl`
 - netlink: a newer interface

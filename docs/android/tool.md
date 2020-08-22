@@ -72,6 +72,12 @@ platform-tools/adb shell pm list packages
 # https://developer.android.com/studio/command-line/adb#IntentSpec
 platform-tools/adb shell am start -a com.genymobile.gnirehtet.START \
     -n com.genymobile.gnirehtet/.GnirehtetActivity
+    
+# sysdump
+adb shell dumpsys -l # a complete list of system services
+adb shell dumpsys <service-name>
+adb shell dumpsys <service-name> -c # machine-friendly format
+adb shell dumpsys <service-name> -h # human-friendly format
 ```
 
 ## Build Process

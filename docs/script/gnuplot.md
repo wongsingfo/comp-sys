@@ -154,6 +154,16 @@ set format y "%g"    # 根据长度自动选择 %f 或者 %e
 1 7
 ```
 
+```
+plot 'in.txt' every I:J:K:L:M:N	using 1:2 with lines
+I	Line increment
+J	Data block increment
+K	The first line
+L	The first data block
+M	The last line
+N	The last data block
+```
+
 ## save to file
 
 ```

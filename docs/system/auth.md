@@ -27,15 +27,23 @@ systemctl disable [service_name]
 
 ## System Log
 
+There is a **service** called `syslog` that sends messages to the system logger. The logs are kept in `/var/log/syslog`.
+
+The `syslogd` **system logger daemon** (or `rsyslogd` in newer Linux) waits for event messages and filter the ones you interest in. The configuration file is `/etc/rsyslog.d/50-default.conf`.
+
 ```
-logger "Hello Logs"
+logger -s "Hello Logs"
 # On macOS
 log show --last 1m | grep Hello
 # On Linux
 journalctl --since "1m ago" | grep Hello
 ```
 
-In addition, most UNIX systems you can also use the `dmesg` command to access the kernel log.
+In addition, most UNIX systems you can also use the `dmesg` command to access the kernel log (bootup messages). The log is also written to `/var/log/kern.log`.
+
+Authentication log is stored at `/var/log/auth.log`.
+
+The logs are clean by `logrotate`. It is usually run out of cron once a day and the configuration files can be found in `/etc/logrotate.d`.
 
 ## Resouces
 
@@ -72,9 +80,21 @@ ss -n
 ps
 {{ site.bin_option_style }}
 
+- VSZ: Virtual memory usage
+- RSS: Resident set size, the non-swapped physical memory
+- STAT
+  - R: running or runnable
+  - S: Interruptable sleep
+  - D: Uninterruptible sleep, processes that cannot be killed or interrupted with a signal, usually to make them go away you have to reboot or fix the issue
+  - Z: Zombie
+  - T: suspended or stopped
+
 ```bash
 # List all running processes:
-ps aux
+   # a: all running processes
+   # u: more details / l: long format
+   # x: show processes that don't have a TTY
+ps aux / alx
 # List all running processes including the full command string:
 ps auxww
 # List all processes of the current user in extra full format:
@@ -86,6 +106,17 @@ ps -o ppid= -p pid
 # List all details
 ps -l pid
 ```
+
+A process is bound to one of the
+
+- regular terminal devices (`tty`)
+- pseudoterminal devices (`pts`): emulate terminals with the shell terminal window
+- daemon (`?`)
+
+collectl
+{{ site.bin_option_style }}
+
+homepage: http://collectl.sourceforge.net/
 
 ## User
 
