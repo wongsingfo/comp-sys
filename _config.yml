@@ -62,3 +62,7 @@ compress_html:
 bin_option_style: "{: .text-purple-000 .fw-500 .bin-option }"
 struct_style: "{: .text-blue-000 .fw-500 .bin-option }"
 function_style: "{: .text-blue-200 .fw-500 .bin-option }"
+
+markdown: kramdown
+kramdown:
+   math_engine: false
