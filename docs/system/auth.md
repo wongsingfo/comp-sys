@@ -47,6 +47,16 @@ The logs are clean by `logrotate`. It is usually run out of cron once a day and 
 
 ## Resouces
 
+ltrace
+{{ site.bin_option_style }}
+
+Track library calls
+
+strace
+{{ site.bin_option_style }}
+
+Track system calls
+
 lsof
 {{ site.bin_option_style }}
 

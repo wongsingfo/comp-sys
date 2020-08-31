@@ -167,11 +167,21 @@ Verison script (can used for symbol verison control).
 /lib/ld-version.so
 {{ site.bin_option_style }}
 
-`LD_PRELOAD`, env var, space-separated or colon-separated filenames : load the libraries even if the program do not need them. 
+LD_TRACE_LOADED_OBJECTS=1 command
+{{ site.bin_option_style }}
+
+As if run by `ldd`. When the program is a dynamic executable, the linker check the environment variable `LD_TRACE_LOADED_OBJECTS`. If the variable is not null, the linker dumps the libraries the program needs and exits. 
+
+Never use `ldd` or this environment variable for an untrusted program. Beacuse the program might use `-rpath-link` compile option to specify a malicious linker that does not check the environment variable and therefore executes the malicious program.
+
+LD_PRELOAD=a.so,b.so command
+{{ site.bin_option_style }}
+
+Load the libraries even if the program do not need them. 
 
 Where to find `libname.so` 
 
-- `-Wl,-rpath=. ` compiling option. `DT_RPATH` or `DT_RUNPATH` tag in ELF
+- `-Wl,-rpath=. ` compiling option, can be relative or absolute path. It is the`DT_RPATH` or `DT_RUNPATH` tag in ELF
   - `-Wl,-rpath,'$ORIGIN'/lib`: The dynamic linker interprets the string `$ORIGIN` to mean “the directory containing the application.
   - `objdump -p prog | grep RPATH`
 - `LD_RUN_PATH`: it is employed only if the `–rpath` option is not specified when building the executable.

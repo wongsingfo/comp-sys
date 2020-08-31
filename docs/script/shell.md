@@ -30,13 +30,15 @@ nav_order: 80
 - recorder: [showterm](https://github.com/ConradIrwin/showterm)
 - `bc`: calculator
 - `tr`
-- `sed`, `awk`,
-- `sort`, `uniq`
+- `sed`, `awk`
+- `diff`, `patch`
+- `sort`, `uniq`, `shuf`
 - `xargs`
 - `tput bel`: alert when jobs finish
 - `sshfs`: [osxfuse](https://github.com/osxfuse/osxfuse/wiki/SSHFS).   `service nfsclient start && mount server:/dir /mount_dir`
 - `column -t`, `paste`, `cut`, `join`, `split`
 - `od`, `hexdump`
+- `mtr`: a replacement for `routetrace`
 - `dd if=/home/pete/backup.img of=/dev/sdb bs=1M count=2`
 - `aria2c -x 16 -s 16 [url]`: file downloader 
 - expect (Recommended: Exploring Expect: A Tcl-Based Toolkit for Automating Interactive Programs)
@@ -223,7 +225,7 @@ A comprehensive list can be found [here](https://www.tldp.org/LDP/abs/html/speci
 - `$?` - Return code of the previous command
 - `$$` - PID for the current script
 - `!!` - Entire last command, including arguments. `sudo !!`
-- `$_` - Last argument from the last command. If you are in an interactive shell, you can also quickly get this value by typing Esc followed by `.`
+- `$_`, `!$` - Last argument from the last command. If you are in an interactive shell, you can also quickly get this value by typing Esc followed by `.`
 
 ## Comparison
 
@@ -320,6 +322,9 @@ kill -9 $(ps aux | grep h2o | tr -s " " | cut -f 2 -d ' ')
 # read variable: Store data that you type from the keyboard
 cat file.txt | sed '/^[[:space:]]*$/d' | while read -r a; do echo $a; done
 
+cat a b | sort | uniq -d > c   # c is a intersect b
+cat a b b | sort | uniq -u > c   # c is set difference a - b 
+
 # DEFAULT_PATH=/usr/local/sbin:/usr/local/bin
 for path in $(echo "$DEFAULT_PATH" | /bin/sed "s/:/\\n/g"); do
 
@@ -333,6 +338,9 @@ sudo tar xvf package.tar.xz --directory=/usr/local --strip-components=1
 # Use space as delimiter by default
 awk -F , '{print $5,$2}'
 # or cut -d',' -f5,2
+
+# sum 
+awk ‘{ x += $3 } END { print x }’
 
 # filter
 awk '$3>10'
