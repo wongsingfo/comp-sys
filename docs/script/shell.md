@@ -42,6 +42,7 @@ nav_order: 80
 - `dd if=/home/pete/backup.img of=/dev/sdb bs=1M count=2`
 - `aria2c -x 16 -s 16 [url]`: file downloader 
 - expect (Recommended: Exploring Expect: A Tcl-Based Toolkit for Automating Interactive Programs)
+- `tput` set [color](https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux)
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -125,6 +126,9 @@ counter=0
 let counter+=1
 let all=$all+$arch_files+$arch_directories
 
+# substring s[2..]
+s=$(echo $s | cut -c2-)
+
 i=64
 let i=i/31
 echo $i  # 2
@@ -198,6 +202,10 @@ cat <<< abc
 
 echo "to stdout"
 err "to stderr"
+
+# disable buffer
+# -oL means only buffer lines when writing to stdout
+( echo "LINE 1" ; sleep 1 ; echo "LINE 2" ; ) | stdbuf -oL grep LINE | cat
 ```
 
 ## Function
@@ -306,6 +314,9 @@ done
 trap 'kill $(jobs -p)' EXIT
 # Watch out to use single ', to prevent the shell from substituting the $() immediately.
 
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+# kill -- -$$ sends a SIGTERM to the whole process group, thus killing also descendants.
+
 set -x  # print before execution
 set -e  # die on error
 
@@ -333,6 +344,10 @@ for path in $(echo "$DEFAULT_PATH" | /bin/sed "s/:/\\n/g"); do
 
 # install tar
 sudo tar xvf package.tar.xz --directory=/usr/local --strip-components=1
+
+# prepend string
+awk '{print "prefix " $0}'
+sed -e "s/.*/prefix &/"
 
 # Print the fifth and the second column
 # Use space as delimiter by default

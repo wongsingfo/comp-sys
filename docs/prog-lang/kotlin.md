@@ -50,7 +50,7 @@ set(x) {
     }
 }
 
-// don't generate getter/sette
+// don't generate getter/setter
 @JvmField
 val CONNECTION_PREFACE = "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n".encodeUtf8()
 ```

@@ -69,4 +69,10 @@ frp is a fast reverse proxy to help you expose a local server behind a NAT or fi
 brew install proxychains-ng`
 ```
 
+## git
+
+```bash
+git config --global http.proxy http://127.0.0.1:8080
+git config --global --unset http.proxy
+```
 
