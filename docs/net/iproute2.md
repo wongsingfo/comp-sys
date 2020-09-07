@@ -94,6 +94,7 @@ tc qdisc list
 tc qdisc add dev DEV root QDISC QDISC-PARAMETERS
 tc qdisc del dev DEV root # or, tc qdisc del root dev eth0
 tc -g class show dev eth0  # Shows classes as ASCII graph on eth0 interface.
+tc -d -s qdisc show dev eth0  # dump stat
 
 modprobe sch_netem
 ```

@@ -26,6 +26,12 @@ has_children: true
 - [Linux Kernel Documentation 4.19](https://www.kernel.org/doc/html/v4.19/doc-guide/sphinx.html), [latest](https://www.kernel.org/doc/html/latest/index.html)
 - [woboq](https://code.woboq.org/linux)
 
+## Kernel
+
+- Written in GNU C and the GNU toolchain.
+- Adheres to ISO C89 standard and some extensions
+  - sometimes difficul to understand the assumptions the kernel has on the toolchain and the extensions and unfortunately there is no definitive reference :(
+
 ## Linux
 
 User interface: 

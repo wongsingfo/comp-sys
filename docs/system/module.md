@@ -11,7 +11,7 @@ nav_order: 11
 
 reference: 
 
-- [The Linux Kernel Module Programming Guide](http://tldp.org/LDP/lkmpg/2.6/html/lkmpg.html).
+- [The Linux Kernel Module Programming Guide](http://tldp.org/LDP/lkmpg/2.6/html/lkmpg.html) [recommended]
 - Documentation/kbuild/modules
 - [stackoverflow: add-a-linux-kernel-driver-module-as-a-buildroot-package](https://stackoverflow.com/questions/40307328/how-to-add-a-linux-kernel-driver-module-as-a-buildroot-package/43874273#43874273)
 

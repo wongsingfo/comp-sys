@@ -35,6 +35,7 @@ reference:
 
 ```
 make clean
+make mrproper    # clean up 
 make kernelversion
 make help
 

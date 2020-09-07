@@ -118,11 +118,9 @@ The area protected by locks runs with kernel preemption disabled.
 
 If the semaphore is not available, wait in `TASK_UNINTERRRETIBLE` state and switch to another runnable process.
 
+## Reference counting
 
-
-
-
-
+Many data structures can indeed have two levels of reference counting, when there are users of different `classes`. The subclass count counts the number of subclass users, and decrements the global count just once when the subclass count goes to zero.
 
 
 

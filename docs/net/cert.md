@@ -44,18 +44,14 @@ safety:
 1.client sends:
 
 - a list of cryptographic algorithms it supports
-
 - a client nonce. 
 
 2.server sends:
 
 - a symmetric algorithm (for example, AES), 
 - a public key algorithm (for example, RSA with a specific key length)
-
 - a MAC algorithm
-
 - a certificate
-
 - a server nonce. 
 
 3.client sends: 
@@ -93,7 +89,7 @@ Type:
 # generation
 # #   If you want a non password protected key just remove the -des3 option
 # #   -nodes: no password
-openssl genras -des3 -out server.key 2048 
+openssl genrsa -des3 -out server.key 2048 
 
 # remove passwd
 openssl rsa -in server.key -out server_no_pwd.key

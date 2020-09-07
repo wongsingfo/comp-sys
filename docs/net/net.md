@@ -223,7 +223,7 @@ Sending Packets:
       - it can be a direct call for `netif_rx` when the frame is transmitted over loopback device
 4. `core/dev.c:dev_queue_xmit(sk_buff)` (similar to `netif_rx`) transfer one frame from kernel's queue to driver buffer.
    1. Before it is called, all the information required to transmit the frame (e.g. outgoing device, the next hop, link layer addres) is ready.
-   2. use fragmented buffeter to combine the fragments if possible (scatter/gather DMA)
+   2. use fragmented buffer to combine the fragments if possible (scatter/gather DMA)
    3. compute checksum (or offload it to hardware)
    4. branch:
       - enqueue the frame by calling `dev->qdisc->enqueue`. Then try `qdisc_run`
