@@ -110,9 +110,53 @@ The area protected by locks runs with kernel preemption disabled.
 
 - spin lock
 - reader-writer lock
-- sequential locks (seq lock)
-  - writer is protected by spin lock
-  - reader check if the sequence numbers at the begin end end of critical section are the same.
+
+### sequential locks (seq lock)
+
+- writer is protected by spin lock
+- reader check if the sequence numbers at the begin end end of critical section are the same.
+- This is not as cache friendly as brlock.
+
+```c
+do {
+    seq = read_seqbegin(&foo);
+    ...
+} while (read_seqretry(&foo, seq));
+```
+
+```
+seqcount_t		running;
+```
+
+### big reader lock (brlock)
+
+patch: https://lwn.net/Articles/378781/
+
+Brlock Make read-only locking as fast as possible through the creation of a per-CPU array of spinlocks. 
+
+- read: Whenever a CPU needs to acquire the lock for read-only access, it takes its own dedicated lock. So read-locking is entirely CPU-local, involving no cache line bouncing. Since contention for a per-CPU spinlock should really be zero, this lock will be fast.
+- write:  The unlucky CPU must go through the entire array, acquiring every CPU's spinlock.
+
+Usecase:  vfsmount_lock (where, write rarely occurs). 
+
+## lockdep
+
+Runtime locking correctness validator.
+
+references:
+
+- https://www.kernel.org/doc/html/latest/locking/lockdep-design.html
+- https://lwn.net/Articles/185666/
+
+The validator tracks the ‘usage state’ of lock-classes, and it tracks the dependencies between different lock-classes. 
+
+A class of locks is a group of locks that are logically the same with respect to locking rules.  Once the kernel has seen how locking is handled for one instantiation, it knows how it will be handled for every instantiations. 
+
+Some tests:
+
+- The code looks at all other locks which are already held when a new lock is taken. For all of those locks, the validator looks for a past occurrence where any of them were taken *after* the new lock. If any such are found, it indicates a violation of locking order rules, and an eventual deadlock.
+- Any spinlock which is acquired by a hardware interrupt handler can never be held when interrupts are enabled.
+- Any lock being released should be at the top of the stack
 
 ## Semaphores
 
