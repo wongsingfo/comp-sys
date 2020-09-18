@@ -33,6 +33,8 @@ reference:
 
 ## Compile the Kernel
 
+Kernel compile flags can usually be checked by looking at `/proc/config.gz` (`gzip -d` to unzip it) or `/boot/config-<kernel-version>`.
+
 ```
 make clean
 make mrproper    # clean up 

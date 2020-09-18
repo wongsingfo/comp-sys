@@ -127,7 +127,11 @@ include/net/genetlink.h
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-### register a family
+We use dropwatch as an example to show how to use genetlink. Operations defined at `include/uapi/linux/net_dropmon.h` and the module `/net/core/drop_monitor.c`
+
+Check http://lwn.net/Articles/379903, http://lwn.net/Articles/381064 and http://lwn.net/Articles/383362
+
+### Register a Family
 
 ```c
 /* family definition */
@@ -165,84 +169,31 @@ static const struct genl_ops dropmon_ops[] = {
 genl_register_family(&net_drop_monitor_family);
 ```
 
-
-
-### example: dropwatch
-
-Operations defined at `include/uapi/linux/net_dropmon.h` and the module `/net/core/drop_monitor.c`
-
-Check http://lwn.net/Articles/379903, http://lwn.net/Articles/381064 and http://lwn.net/Articles/383362
+### Sending 
 
 ```c
-// userspace
-int disable_drop_monitor()
-{
-	struct netlink_message *msg;
+struct sk_buff *skb;
+// or use NLMSG_GOODSIZE for size when you do not know the size of the message buffer at the time of allocation.
+skb = genlmsg_new(size, GFP_KERNEL);
 
-	msg = alloc_netlink_msg(NET_DM_CMD_STOP, NLM_F_REQUEST|NLM_F_ACK, 0);
+void *msg_header;
+msg_header = genlmsg_put(skb, 0, 0, &net_drop_monitor_family,
+				 0, NET_DM_CMD_ALERT);
+// use API to put attributes
+nla_reserve(skb, NLA_UNSPEC, sizeof(struct net_dm_alert_msg));
+nla_put_string(skb, DOC_EXMPL_A_MSG, "Generic Netlink Rocks");
+... 
+    
+genlmsg_end(skb, genlmsg_data(gnlh));
 
-	if (monitor_sw && nla_put_flag(msg->nlbuf, NET_DM_ATTR_SW_DROPS))
-		goto nla_put_failure;
+genlmsg_unicast(skb, pid);
+genlmsg_multicast(&net_drop_monitor_family, skb, 0, 0, GFP_KERNEL);
+```
 
-	if (monitor_hw && nla_put_flag(msg->nlbuf, NET_DM_ATTR_HW_DROPS))
-		goto nla_put_failure;
+### Receiving 
 
-	set_ack_cb(msg, handle_dm_stop_msg);
-
-	return send_netlink_message(msg);
-
-nla_put_failure:
-	free_netlink_msg(msg);
-	return -EMSGSIZE;
-}
-
-// kernel
-static void trace_drop_common(struct sk_buff *skb, void *location)
-{
-	struct net_dm_alert_msg *msg;
-	struct nlmsghdr *nlh;
-	struct nlattr *nla;
-	int i;
-	struct sk_buff *dskb;
-	struct per_cpu_dm_data *data;
-	unsigned long flags;
-
-	local_irq_save(flags);
-	data = this_cpu_ptr(&dm_cpu_data);
-	spin_lock(&data->lock);
-	dskb = data->skb;
-
-	if (!dskb)
-		goto out;
-
-	nlh = (struct nlmsghdr *)dskb->data;
-	nla = genlmsg_data(nlmsg_data(nlh));
-	msg = nla_data(nla);
-	for (i = 0; i < msg->entries; i++) {
-		if (!memcmp(&location, msg->points[i].pc, sizeof(void *))) {
-			msg->points[i].count++;
-			goto out;
-		}
-	}
-	if (msg->entries == dm_hit_limit)
-		goto out;
-	/*
-	 * We need to create a new entry
-	 */
-	__nla_reserve_nohdr(dskb, sizeof(struct net_dm_drop_point));
-	nla->nla_len += NLA_ALIGN(sizeof(struct net_dm_drop_point));
-	memcpy(msg->points[msg->entries].pc, &location, sizeof(void *));
-	msg->points[msg->entries].count = 1;
-	msg->entries++;
-
-	if (!timer_pending(&data->send_timer)) {
-		data->send_timer.expires = jiffies + dm_delay * HZ;
-		add_timer(&data->send_timer);
-	}
-
-out:
-	spin_unlock_irqrestore(&data->lock, flags);
-}
+```c
+msg = alloc_netlink_msg(NET_DM_CMD_STOP, NLM_F_REQUEST|NLM_F_ACK, 0);
 ```
 
 ## Netfilter

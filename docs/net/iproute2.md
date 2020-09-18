@@ -117,7 +117,7 @@ $ tc qdisc add dev eth0 parent 1:2 handle 20: my_qdisc2 <args>
 
 Only the root qdisc gets dequeued by the kernel! When the kernel decides that it needs to extract packets to send to the interface, the root qdisc 1: gets a dequeue request, which is passed to 1:1, which is in turn passed to 10:, 11: and 12:, each of which queries its siblings, and tries to dequeue() from them. In this case, the kernel needs to walk the entire tree, because only 12:2 contains a packet.
 
-name:
+Naming conversion:
 
 - root: `ffff:ffff` or `1:0`
 - unspecified: `0000:0000`

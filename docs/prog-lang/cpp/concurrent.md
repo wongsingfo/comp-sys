@@ -33,7 +33,21 @@ std::this_thread::sleep_for(std::chrono::seconds(1));
 std::thread::id this_id = std::this_thread::get_id();
 ```
 
-## lock
+## atomic
+
+```c++
+std::atomic_flag a = ATOMIC_FLAG_INIT; // the simplest form
+std::atomic<int> = std::aotmic_int
+std::atomic</*user-defined type*/> udt;
+```
+
+use `is_lock_free()` member function to determine whether the operation are done with atomic instruction or done by using internal lock. `atomic_flag` is always done by atomic instruction.
+
+operations:
+
+- `atomic_flag:test_and_set`: set to `true` and returns the value it held before
+- `exchange`: set and return the original value
+- `compare_exchange_strong`: . The weak form is for machines that lack a single compare-and-exchange instruction.
 
 ```c++
 std::atomic<int> x(0);
@@ -168,14 +182,7 @@ int main()
 }
 ```
 
-## memory fence
-
-- write / store memory barrier
-- data dependency barrier / consume: a weaker form of read barrier. Two loads are performed such that the second depends on the result of the first.
-- read / load memory barrier
-- general memory barrier
-- acquire operation
-- release operation
+## Memory Ordering
 
 | Value                  | atomicity | not reordered before this load | not reordered after this store | read-modify-write (RMW) |
 | ---------------------- | --------- | ------------------------------ | ------------------------------ | ----------------------- |
@@ -185,6 +192,13 @@ int main()
 | `memory_order_release` | o         | x                              | o                              | x                       |
 | `memory_order_acq_rel` | o         | x                              | x                              | o                       |
 | `memory_order_seq_cst` | o         | o                              | o                              | o                       |
+
+- `memory_order_relaxed`: the **only** requirement is that accesses to *a single* variable from the *same thread* can not be reorder.
+- The default `memory_order_seq_cst` odering is named **sequentially consistent**.
+- release (store a patch) => acquire (read a patch). The paired operations have to be used on the **same** variable.
+- `memory_order_consume` is a "relaxer" version of `memory_order_acquire`. It limits the synchronized data to the depencencies. For optimization purpose in some rare cases, use `std::kill_dependency` to explicitly break the depenency chain.
+
+## Examples
 
 ```c++
 void append (int val) {     // append an element to the list
