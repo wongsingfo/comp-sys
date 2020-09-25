@@ -16,6 +16,11 @@ nav_order: 20
 
 
 
+resources:
+
+- https://binary.ninja/ Reversing Platform
+- https://www.godbolt.org/
+
 ## GCC options
 
 -g

@@ -117,6 +117,7 @@ ls -l $output
 # https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 filename=$(basename -- "$fullfile")
 extension="${filename##*.}"
+spath="$(dirname "$(readlink -f "$0")")"
 ```
 
 ## Numbers / Strings / Timestamps

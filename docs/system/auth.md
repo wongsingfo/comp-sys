@@ -11,6 +11,7 @@ nav_order: 0
 Reference: 
 
 - Secure Programming Cookbook for C and C++: Recipes for Cryptography, Authentication, Input Validation & More - John Viega and Matt Messier
+- [Linux Performance Analysis in 60s](http://www.brendangregg.com/blog/2015-12-03/linux-perf-60s-video.html)
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -46,6 +47,9 @@ Authentication log is stored at `/var/log/auth.log`.
 The logs are clean by `logrotate`. It is usually run out of cron once a day and the configuration files can be found in `/etc/logrotate.d`.
 
 ## Resouces
+
+uptime
+{{ site.bin_option_style }}
 
 ltrace
 {{ site.bin_option_style }}
@@ -87,6 +91,8 @@ ss -ltp
 ss -n
 ```
 
+pidstat
+{{ site.bin_option_style }}
 ps
 {{ site.bin_option_style }}
 
@@ -95,7 +101,7 @@ ps
 - STAT
   - R: running or runnable
   - S: Interruptable sleep
-  - D: Uninterruptible sleep, processes that cannot be killed or interrupted with a signal, usually to make them go away you have to reboot or fix the issue
+  - D: This is a state that a process can enter when doing certain system calls. In this state, the process is blocked performing a sytem call, and the process cannot be interrupted (or killed) until the system call completes. Most of these uninterruptible system calls are effectively instantaneous meaning that you never observe the uninterruptible nature of the system call. In rare cases (often because of buggy kernel drivers, but possibly for other reasons) the process can get stuck in this uninterruptible state. see [source](https://eklitzke.org/uninterruptible-sleep), [TASK_KILLABLE](https://lwn.net/Articles/288056/)
   - Z: Zombie
   - T: suspended or stopped
 
@@ -128,6 +134,27 @@ collectl
 
 homepage: http://collectl.sourceforge.net/
 
+vmstat | cat /proc/softirqs
+{{ site.bin_option_style }}
+
+mpstat -P ALL 1
+{{ site.bin_option_style }}
+
+iostat
+{{ site.bin_option_style }}
+
+free -m
+{{ site.bin_option_style }}
+
+sar
+{{ site.bin_option_style }}
+
+Network throughput
+
+```bash
+sar -n TCP,ETCP 1
+```
+
 ## User
 
 password file:
@@ -139,9 +166,9 @@ ubuntu:x:500:500:ubuntu,,,:/home/ubuntu:/bin/bash
 # uid and gid are both 500
 ```
 
-1. Real UserID : It is account of owner of this process. In our shell, every process that we'll now run will inherit the privileges of my user account and will run with the same UID and GID. (500 in this example)
+1. Real UserID : It is account of owner of this process. In our shell, every process that we'll now run will inherit the privileges of my user account and will run with the same UID and GID. (500 in this example). Only superuser process can change them.
 
-2. Effective UserID : When a file is **setuid** (`-rwsr-xr-x` the `s` bit indicates this),  the process changes its Effective User ID (EUID) from the default RUID to the owner of this special binary executable file 
+2. Effective UserID : Used for permission checks. When a file is **setuid** (`-rwsr-xr-x` the `s` bit indicates this),  the process changes its Effective User ID (EUID) from the default RUID to the owner of this special binary executable file.
 
 3. Saved UserID : It is used when a process is running with elevated privileges (generally root) needs to do some under-privileged work. In that case, the effective UID (EUID) from before will be saved inside SUID and then changed to an unprivileged task. 
 
