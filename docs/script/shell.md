@@ -309,6 +309,20 @@ while getopts ":o:h" flag; do
 done
 ```
 
+## Interpreter Files
+
+If we have a file `filename` start with 
+
+```bash
+#! pathname [ optional-argument ]
+```
+
+Running this file with `arguments`, acutally you are running command:
+
+```bash
+pathname [ optional-argument ] filename arguments
+```
+
 ## Best Practices 
 
 ```bash

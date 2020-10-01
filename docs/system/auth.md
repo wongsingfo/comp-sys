@@ -155,22 +155,41 @@ Network throughput
 sar -n TCP,ETCP 1
 ```
 
-## User
+## User Permission
 
-password file:
+group `etc/group`
+
+```bash
+nobody:*:-2:
+nogroup:*:-1:
+wheel:*:0:root
+daemon:*:1:root
+kmem:*:2:root
+sys:*:3:root
+tty:*:4:root
+
+# groupname:passwd:ID:users
+```
+
+- change group with `newgrp`
+- supplementary group IDs: we could also belong to as many as 16 additional groups. we no longer have to change groups explicitly.
+
+password file (get entries with `getpwnam`, `getpwuid`, `getpwent`):
 
 ```bash
 $ grep $LOGNAME /etc/passwd
 ubuntu:x:500:500:ubuntu,,,:/home/ubuntu:/bin/bash
 
-# uid and gid are both 500
+# name:passwd:userID:groupID:comment:workingdir:shell
 ```
 
+Encrypted password is stored in anthoer file, called **shadow password file**. The shadow password file should not be readable by the world.
+
 1. Real UserID : It is account of owner of this process. In our shell, every process that we'll now run will inherit the privileges of my user account and will run with the same UID and GID. (500 in this example). Only superuser process can change them.
-
 2. Effective UserID : Used for permission checks. When a file is **setuid** (`-rwsr-xr-x` the `s` bit indicates this),  the process changes its Effective User ID (EUID) from the default RUID to the owner of this special binary executable file.
+3. Saved UserID : It is used when a process is running with elevated privileges (generally root) needs to do some under-privileged work. In that case, the effective UID (EUID) from before will be saved inside SUID and then changed to an unprivileged task. The saved set-user-ID is copied from the effective user ID by `exec`. 
 
-3. Saved UserID : It is used when a process is running with elevated privileges (generally root) needs to do some under-privileged work. In that case, the effective UID (EUID) from before will be saved inside SUID and then changed to an unprivileged task. 
+{{ include img.html filename="Screen Shot 2020-09-29 at 12.20.20 PM.png" }}
 
 Traditional UNIX implementations distinguish two categories of processes: privileged processes (whose effective user ID is 0, referred to as superuser or root), and unprivileged processes (whose effective UID is nonzero). 
 
@@ -188,6 +207,8 @@ scirpt:
 useradd -m user -s /bin/bash
 yes "123456" | passwd user
 adduser user sudo
+usermod -aG sudo newuser
+groups # shows the groups you belongs to 
 ```
 
 ## Package Manager
