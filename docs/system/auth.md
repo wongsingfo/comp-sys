@@ -48,6 +48,8 @@ The logs are clean by `logrotate`. It is usually run out of cron once a day and 
 
 ## Resouces
 
+tutorial: [Linux Performance Analysis in 60s](http://techblog.netflix.com/2015/11/linux-performance-analysis-in-60s.html)
+
 uptime
 {{ site.bin_option_style }}
 

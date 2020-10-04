@@ -125,7 +125,7 @@ adb reboot bootloader # fastboot mode
 
 recovery image: A bootable program on an Android flash memory partition that is used to perform a factory reset or restore the original OS version. In order to install a different OS version (a different ROM), the stock recovery image must be replaced with a custom version such as **ClockworkMod Recovery**. After rooting the Android, utilities such as **ROM Manager** install the custom recovery.
 
-After install the custom image (recovery.img), enter recover mode.
+After install the custom image (`recovery.img`), enter recover mode.
 
 ```
 adb reboot recovery

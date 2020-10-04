@@ -5,7 +5,19 @@ parent: Script
 nav_order: 5
 ---
 
-# gnu make
+# CMake in 30 Minutes
+{: .no_toc }
+
+## References
+{: .no_toc .text-delta }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+## gnu make
 
 ```makefile
 MAKEFILE=Makefile
@@ -29,7 +41,7 @@ dependinit:
 	     ${MAKEFILE}.new
 ```
 
-# CMake
+## CMake
 
 ```cmake
 cmake_minimum_required(VERSION 3.14)

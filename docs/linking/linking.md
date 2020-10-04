@@ -12,6 +12,16 @@ has_children: true
 - [uclibc docs](https://uclibc.org/docs/), [uclibc intro](https://www.uclibc.org/FAQ.html)
 - 程序员的自我修养
 
+## Target
+
+The triple has the general format `<arch><sub>-<vendor>-<sys>-<abi>`, where:
+
+- `arch` = `x86_64`, `i386`, `arm`, `thumb`, `mips`, etc.
+- `sub` = for ex. on ARM: `v5`, `v6m`, `v7a`, `v7m`, etc.
+- `vendor` = `pc`, `apple`, `nvidia`, `ibm`, etc.
+- `sys` = `none`, `linux`, `win32`, `darwin`, `cuda`, etc.
+- `abi` = `eabi`, `gnu`, `android`, `macho`, `elf`, etc.
+
 ## Static Library
 
 ```bash

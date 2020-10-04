@@ -47,7 +47,9 @@ operations:
 
 - `atomic_flag:test_and_set`: set to `true` and returns the value it held before
 - `exchange`: set and return the original value
-- `compare_exchange_strong`: . The weak form is for machines that lack a single compare-and-exchange instruction.
+- `compare_exchange_strong`: The weak form is for machines that lack a single compare-and-exchange instruction. 
+  - Use strong form if the calculatation of the value is time consuming
+  - Use weak form to avoid double loops
 
 ```c++
 std::atomic<int> x(0);
@@ -193,26 +195,13 @@ int main()
 | `memory_order_acq_rel` | o         | x                              | x                              | o                       |
 | `memory_order_seq_cst` | o         | o                              | o                              | o                       |
 
-- `memory_order_relaxed`: the **only** requirement is that accesses to *a single* variable from the *same thread* can not be reorder.
-- The default `memory_order_seq_cst` odering is named **sequentially consistent**.
-- release (store a patch) => acquire (read a patch). The paired operations have to be used on the **same** variable.
+- `memory_order_relaxed`: the **only** requirement is that accesses to a **single** variable from the **same** thread can not be reorder.
+- The default `memory_order_seq_cst` odering is named **sequentially consistent**. It provides read and write ordering globally. [example on stackoverflow](https://stackoverflow.com/questions/12340773/how-do-memory-order-seq-cst-and-memory-order-acq-rel-differ#:~:text=Essentially memory_order_acq_rel provides read and,same order across all threads.)
+- release (store a patch) => acquire (read a patch). The paired operations have to be used on the **same** variable. 
+  - synchronizeds-with relation:
+  - inter-thread happens-before relation is relatively simple and relies on the synchronizeds-with relation
 - `memory_order_consume` is a "relaxer" version of `memory_order_acquire`. It limits the synchronized data to the depencencies. For optimization purpose in some rare cases, use `std::kill_dependency` to explicitly break the depenency chain.
-
-## Examples
-
-```c++
-void append (int val) {     // append an element to the list
-  Node* oldHead = list_head;
-  Node* newNode = new Node {val,oldHead};
-
-  // what follows is equivalent to: list_head = newNode, but in a thread-safe way:
-  while (!list_head.compare_exchange_weak(oldHead, newNode))
-    newNode->next = oldHead;
-}
-
-// this weak version is allowed to fail spuriously 
-// For non-looping algorithms, compare_exchange_strong is generally preferred.
-
-```
+- **release sequence**: It means that the initial store is synchronized-with the final load even if the value read by the final load isn't directly the same value stored at beginning, but it is the value modified by one of the atomic instruction which could race into. https://stackoverflow.com/questions/38565650/what-does-release-sequence-mean
+- **fence / memory barrier** `std::atomic_thread_fence` : the global operation
 
 

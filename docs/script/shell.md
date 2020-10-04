@@ -114,10 +114,6 @@ tar -czf $output $input
 echo "Backup of $input completed! Details about the output backup file:"
 ls -l $output
 
-# https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
-filename=$(basename -- "$fullfile")
-extension="${filename##*.}"
-spath="$(dirname "$(readlink -f "$0")")"
 ```
 
 ## Numbers / Strings / Timestamps
@@ -144,6 +140,11 @@ printf '%x\n' 85  # 55
 echo 'obase=16; 9999999999999999999999' | bc  # 21E19E0C9BAB23FFFFF
 
 echo 416E64726F69644C6162 | xxd -r -p         # AndroidLab
+
+filename=$(basename "$fullfile")
+extension="${filename##*.}"
+spath="$(dirname "$(readlink -f "$0")")"
+spath="$(dirname "$(realpath "$0")")"  # preferred
 
 date +"%Y-%m-%d %H:%M:%S"  # 2020-05-13 12:38:13
 date +"%s"                 # 1598082285
@@ -258,6 +259,8 @@ echo $?  # => 0
 
 # http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions
 if [ ! -d "/home/$1" ]; then
+[ -z "${MAX_CARNUM}" ] && MAX_CARNUM=18
+if [ ! -z "$PULL" ]; then
 ```
 
 ## Control
